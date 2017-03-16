@@ -1,0 +1,230 @@
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2015-05-18">
+
+	<description> PCA using FactoMineR package </description>
+    
+  	<requirements>
+		<requirement type="binary"> R </requirement>
+	</requirements>
+
+	<command interpreter="Rscript">
+		pcaFactoMineR_galaxy.R
+
+		datafile $datafile
+		factor $factor
+ 		npc $npc
+		title $title
+		tc $tc
+		pch $pch
+		pcv $pcv
+		scaleoption $scaleoption
+		plotev $plotev
+		plotcontrib $plotcontrib
+		plotindiv $plotindiv
+		colorfactor $colorfactor
+		plotvar $plotvar
+		contribh $contribh
+		contribv $contribv
+
+		## Outputs
+		logOut $logOut
+		outgraphpdf $outgraphpdf
+
+	</command>
+
+  <inputs>
+    <param name="datafile" type="data" label="Data matrix" help="First column is a qualitative variable" format="tabular" />
+
+    <param name="factor" label="Name of the column of the data matrix corresponding to the qualitative variable" type="text" value="None" help=""/>
+
+    <param name="npc" label="Number of principal components" type="integer" value="2" min="2" help=""/>
+
+    <param name="title" type="text" label="Title" help="Title printed on all plots; if none, leave 'PCA'" value="PCA" />
+
+    <param name="tc" label="Numeric character expansion factor" type="float" value="1.0" min="0.5" help="A value greater than 1 increases and a value lower than 1 decreases character size"/>
+
+    <param name="pch" label="Horizontal Principal Component" type="integer" value="1" help="Principal component displayed on the abscissa" />
+
+    <param name="pcv" label="Vertical Principal Component" help="Principal component displayed on the ordinate" type="integer" value="2" />
+
+    <param name="scaleoption" label="Scaling method" type="select" help="Variable standardisation">
+        <option value="none"> None </option>
+        <option value="uv" selected="True"> Unit variance </option>
+        <option value="pareto"> Pareto </option>
+    </param>
+
+     <param name="plotev" type="select" label="Eigenvalue plot" help="Eigenvalue and percentage of explained variance plots" >
+         <option value="yes" selected="true" > Yes </option>
+         <option value="no"> No </option>
+    </param>
+
+     <param name="plotcontrib" type="select" label="Contribution plot" help="" >
+         <option value="yes" selected="true" > Yes </option>
+         <option value="no"> No </option>
+    </param>
+
+    <param name="plotindiv" label="Score plot" type="select" help="" >
+         <option value="yes" selected="true" > Yes </option>
+         <option value="no"> No </option>
+    </param>
+
+    <param name="colorfactor" label="Factor color" type="select" help="Colouring of observations according to levels of qualitative variable (biological factor of interest)" >
+         <option value="yes" selected="true" > Yes </option>
+         <option value="no"> No </option>
+    </param>
+
+    <param name="plotvar" label="Loading plot" type="select" help="">
+         <option value="yes" selected="true" > Yes </option>
+         <option value="no"> No </option>
+    </param>
+
+    <param name="contribh" label="Contribution threshold (abscissa)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the abscissa axis)"/>
+    <param name="contribv" label="Contribution threshold (ordinate)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the ordinate axis)" />
+
+  </inputs>
+  
+  <outputs>
+    <data name="logOut" format="txt" label="${tool.name}_log" />
+    <data name="outgraphpdf" label="${tool.name}_graph" format="pdf" />
+  </outputs>
+
+	<stdio>
+	     <exit_code range="1:" level="fatal" />
+	</stdio>
+    
+	<help>
+	
+.. class:: infomark
+
+**Authors** Sandrine Laguerre (laguerre@insa-toulouse.fr), J.F Martin (jean-francois.martin@toulouse.inra.fr) et M. Tremblay-Franco (marie.tremblay-franco@toulouse.inra.fr)
+
+
+---
+
+Version Galaxy Tool : V1.0
+
+
+---
+
+Contacts : sigenae-support@listes.inra.fr
+
+E-learning available : Not yet.
+
+Please cite :
+    
+    Depending on the help provided you can cite us in acknowledgements, references or both.
+    
+    Examples :
+    Acknowledgements
+    We wish to thank the SIGENAE group for ....
+    
+    References
+    X. SIGENAE [http://www.sigenae.org/]
+
+
+===
+PCA
+===
+
+-----------
+Description
+-----------
+
+Principal Component Analysis (PCA) as done in the FactoMineR package
+ 
+
+-----------
+Input files
+-----------
+
++---------------------------+------------+
+| Parameter : num + label   |   Format   |
++===========================+============+
+| 1 : data matrix name      |   tabular  |
++---------------------------+------------+
+
+**Data matrix name**
+
+	| ...
+
+----------
+Parameters
+----------
+
+Data matrix name
+	| see "Input files" section above
+	| 
+
+Factor
+	| Name of the column containing the biological factor (qualitative variable) to color observations according to levels of this
+	|
+
+Number of principal component
+	| How many principal components include in the PCA model?
+	|
+
+Title
+	| Title printed on all plots; if none, leave 'PCA'" value="PCA"
+	|
+
+Numeric character expansion factor 
+	| A value greater than 1 increases and a value lower than 1 decreases character size
+	|
+
+Horizontal Principal Component
+	| Principal component displayed on the abscissa
+	|
+
+Vertical Principal Component
+	| Principal component displayed on the ordinate
+	|
+
+Scaling method
+	| Standardisation to apply to the variables
+	| None, Unit variance (default value) or Pareto scaling
+	|
+
+Eigenvalue plot
+	| Eigenvalue and percentage of explained variance plots. Default value is "Yes"
+	|
+
+Contribution plot
+	| Contribution plot. Default value is "Yes"
+	|
+
+Score plot
+	| Score plot" plot. Default value is "Yes"
+	|
+
+Factor color	
+	| Colouring of observations. Default value is "Yes"
+	|
+
+Loading plot
+	| Loading plot. Default value is "Yes"
+	|
+
+Contribution threshold (abscissa)
+	| Contribution threshold for loading plot: principal component displayed in the abscissa axis
+	|
+
+Contribution threshold (ordinate)
+	| Contribution threshold for loading plot: principal component displayed in the ordinate axis
+	|
+
+
+------------
+Output files
+------------
+
+outgraphpdf.pdf
+	| pdf output
+	| ...
+	| 
+
+
+---------------------------------------------------
+
+    </help>
+
+
+</tool>
