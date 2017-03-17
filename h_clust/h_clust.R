@@ -42,12 +42,13 @@ h_clust <- function(input_file,
   #
   # Parameters :
   # - input_file : input_file name
-  # - group_member_file : input sapmle/tag group_member_file name
+  # - group_member_file : input sample/tag group_member_file name
   # - output_file : output_file name
+  # - log_file : log file name
   # - format_image_out : graphic format of the output_file. This must be one of "png", "jpeg", "tiff", "pdf"
   # - distance_method : the distance measure to be used. This must be one of "euclidean", "correlation", "maximum", "manhattan", "canberra", "binary" or "minkowski"
   # - agglomeration_method : the agglomeration_method to be used. This should be one of "ward", "single", "complete", "average", "mcquitty", "median" or "centroid"
-  # - column_clustering : if TRUE clustering is performed on the samples
+  # - column_clustering : if TRUE clustering is performed on the columns
   # - select : number of top variables to use for clustering, selected by highest row variance. If NULL all the variables are selected
   # - plot_title : an overall title for the plot
   # - xlab : a title for the x axis
@@ -87,7 +88,7 @@ h_clust <- function(input_file,
 	
   log_error=function(message="") {
   		cat("<HTML><HEAD><TITLE>Hierarchical clustering report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
-  		cat("An error occurred while trying to read your table.\n<BR>",file=log_file,append=T,sep="")
+  		cat("&#9888 An error occurred while trying to read your table.\n<BR>",file=log_file,append=T,sep="")
   		cat("Please check that:\n<BR>",file=log_file,append=T,sep="")
   		cat("<UL>\n",file=log_file,append=T,sep="")
   		cat("  <LI> the table you want to process contains the same number of columns for each line</LI>\n",file=log_file,append=T,sep="")
@@ -341,7 +342,7 @@ h_clust <- function(input_file,
   # Treatment successfull
   ##########################################################
   cat("<HTML><HEAD><TITLE>Hierarchical clustering report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
-  cat("Your clustering process is sucessfull !<BR>",file=log_file,append=T,sep="")
+  cat("&#10003; Your clustering process is successfull !<BR>",file=log_file,append=T,sep="")
   cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
    
   q(save="no",status=0)
@@ -353,41 +354,41 @@ h_clust <- function(input_file,
 #setwd("H:/INRA/cati/groupe stats/Galaxy/hclust")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon1")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon2",column_clustering=FALSE,
-#	  xlab="Competitors",ylab="Distance")
+#         xlab="Competitors",ylab="Distance")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon3",column_clustering=FALSE,
-#	  select=5)
+#         select=5)
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon4",column_clustering=FALSE,
-#	  distance_method="correlation",agglomeration_method="average",
-#	  format_image_out="tiff",ppi=100,width=3,height=3
+#         distance_method="correlation",agglomeration_method="average",
+#         format_image_out="tiff",ppi=100,width=3,height=3
 #)
 ##Group : competitors
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon5",column_clustering=FALSE,
-#	  xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 1 column.txt")
+#         xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 1 column.txt")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon6",column_clustering=FALSE,
-#	  xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 2 columns.txt")
+#         xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 2 columns.txt")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon7",column_clustering=FALSE,
-#	  xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 1 column with header.txt")
+#         xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 1 column with header.txt")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon8",column_clustering=FALSE,
-#	  xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 2 columns with header.txt")
+#         xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 2 columns with header.txt")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon8",column_clustering=FALSE,
-#	  xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 2 columns - with error.txt")
+#         xlab="Competitors",ylab="Distance",group_member_file="in/competitors_groups - 2 columns - with error.txt")
 #
 ##Group : competitions
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon9",column_clustering=TRUE,
-#	  xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 1 column.txt")
+#         xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 1 column.txt")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon10",column_clustering=TRUE,
-#	  xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 2 columns.txt")
+#         xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 2 columns.txt")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon11",column_clustering=TRUE,
-#	  xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 1 column with header.txt")
+#         xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 1 column with header.txt")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon12",column_clustering=TRUE,
-#	  xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 2 columns with header.txt")
+#         xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 2 columns with header.txt")
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon13",column_clustering=TRUE,
-#	  xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 2 columns - with error.txt")
+#         xlab="Competitions",ylab="Distance",group_member_file="in/competitions_groups - 2 columns - with error.txt")
 #
 ##Missing values
 #hclustfun(input_file="in/decathlon - with NA.txt",plot_title="declathlon",output_file="out/decathlon14",column_clustering=TRUE,
-#	  xlab="Competitions",ylab="Distance",na_encoding="missing_value")
+#         xlab="Competitions",ylab="Distance",na_encoding="missing_value")
 #
 ##Top 5 competitions
 #hclustfun(input_file="in/decathlon.txt",plot_title="declathlon",output_file="out/decathlon15",column_clustering=TRUE,
-#	  xlab="Competitions",ylab="Distance",select=5)
+#         xlab="Competitions",ylab="Distance",select=5)

@@ -19,16 +19,16 @@ my ($working_dir,$r_bin,$log_dir,$R,$cmd,$line);
 #printf STDERR "%s\n",join("***** ",$0,@ARGV);
 
 # Parameters :
-  # - count.file : input count file name
-  # - group.member.file : input sapmle/tag group member file name
-  # - output.file : output file name
-  # - formatformat.image.out : graphic format of the output file. This must be one of "png", "jpeg", "tiff", "pdf"
-  # - transformation.method : count data transformation for graphical display. This must be one of "none", "rld", "vsd"
-  # - distance.method : the distance measure to be used. This must be one of "euclidean", "correlation", "maximum", "manhattan", "canberra", "binary" or "minkowski"
-  # - agglomeration.method : the agglomeration method to be used. This should be one of "ward", "single", "complete", "average", "mcquitty", "median" or "centroid"
-  # - sample.clustering : if TRUE clustering is performed on the samples
-  # - select : number of top genes to use for clustering, selected by highest row variance. If NULL all the genes are selected 
-  # - plot.title : an overall title for the plot
+  # - input_file : input file name
+  # - group_member_file : input sample/tag group member file name
+  # - output_file : output file name
+  # - log_file : log file name
+  # - format_image_out : graphic format of the output file. This must be one of "png", "jpeg", "tiff", "pdf"
+  # - distance_method : the distance measure to be used. This must be one of "euclidean", "correlation", "maximum", "manhattan", "canberra", "binary" or "minkowski"
+  # - agglomeration_method : the agglomeration method to be used. This should be one of "ward", "single", "complete", "average", "mcquitty", "median" or "centroid"
+  # - column_clustering : if TRUE clustering is performed on the columns
+  # - select : number of top variables to use for clustering, selected by highest row variance. If NULL all the variables are selected 
+  # - plot_title : an overall title for the plot
   # - xlab : a title for the x axis
   # - ylab : a title for the y axis
   # - width : the width of the graphics region in inches
@@ -38,22 +38,21 @@ my ($working_dir,$r_bin,$log_dir,$R,$cmd,$line);
 
 
 #Parametres d'entree
-my $count_file               =$ARGV[0]; #input count file name
+my $input_file               =$ARGV[0]; #input file name
 my $group_member_file        =$ARGV[1]; #input sapmle/tag group member file name
-#my $conditional              =$ARGV[2];
 my $output_file              =$ARGV[2]; #output file name
-my $transformation_method    =$ARGV[3]; #count data transformation for graphical display. This must be one of "none", "rld", "vsd"
+my $log_file                 =$ARGV[3]; #log file name
 my $distance_method          =$ARGV[4]; #the distance measure to be used. This must be one of "euclidean", "correlation", "maximum", "manhattan", "canberra", "binary" or "minkowski"
 my $agglomeration_method     =$ARGV[5]; #the agglomeration method to be used. This should be one of "ward", "single", "complete", "average", "mcquitty", "median" or "centroid"
-my $sample_clustering        =$ARGV[6]; #if TRUE clustering is performed on the samples
-my $select                   =$ARGV[7]; #number of top genes to use for clustering, selected by highest row variance. If NULL all the genes are selected 
+my $column_clustering        =$ARGV[6]; #if TRUE clustering is performed on the columns
+my $select                   =$ARGV[7]; #number of top variables to use for clustering, selected by highest row variance. If NULL all the variables are selected 
 my $plot_title               =$ARGV[8]; #an overall title for the plot
 my $xlab                     =$ARGV[9]; #a title for the x axis
 my $ylab                     =$ARGV[10];#a title for the y axis
 my $width                    =$ARGV[11];#the width of the graphics region in inches
 my $height                   =$ARGV[12];#the height of the graphics region in inches
 my $ppi                      =$ARGV[13];#the nominal resolution in ppi 
-my $NA_code;                 =$ARGV[14];#label used to indicate missing values
+my $NA_code                  =$ARGV[14];#label used to indicate missing values
 
 
 #ligne de commande test :
@@ -73,8 +72,6 @@ my ($nb) = ($output_file=~/galaxy_dataset_(\d+)\.\S+$/);
 $plot_title =~ s/@$§/ /g;
 $xlab =~ s/@$§/ /g;
 $ylab =~ s/@$§/ /g;
-
-
 
 #On suppose que le fichier de donnees en entree a ete place dans un repertoire
 #de travail working_dir
@@ -135,42 +132,49 @@ $R->send(
      "setwd('$working_dir')\n".
      "$cmd\n".
      "h_clust( ".
-     "count.file = '$count_file', ".
-     "group.member.file = $group_member_file, ".
-     "format.image.out = 'jpeg', ".
-     "transformation.method = '$transformation_method', ".
-     "sample.clustering = $sample_clustering, ".
+     "input_file = '$input_file', ".  #########
+     "group_member_file = $group_member_file, ".
+     "output_file = '$working_dir/out', ".
+     "log_file = '$log_file', ".
+     "format_image_out = 'jpeg', ".
+     "distance_method = '$distance_method', ".
+     "agglomeration_method = '$agglomeration_method', ".
+     "column_clustering = $column_clustering, ".  #########
      "select = $select, ".
-     "distance.method = '$distance_method', ".
-     "agglomeration.method = '$agglomeration_method', ".
-     "plot.title = '$plot_title', ".
+     "plot_title = '$plot_title', ".
      "xlab = '$xlab', ".
      "ylab = '$ylab', ".
-     "output.file = '$working_dir/out', ".
      "width = $width,  ".
      "height = $height, ".
      "ppi = $ppi, ".
      "na_encoding= $NA_code)\n");
      
-print STDOUT "\n h_clust(
-      count.file = \"$count_file\",
-      group.member.file = $group_member_file,
-      format.image.out = \"jpeg\",
-      transformation.method = \"$transformation_method\",
-      sample.clustering = $sample_clustering,
-      select = $select,
-      distance.method = \"$distance_method\",
-      agglomeration.method = \"$agglomeration_method\",
-      plot.title = \"$plot_title\",
-      xlab = \"$xlab\",
-      ylab = \"$ylab\",
-      output.file = \"$working_dir/out\",
-      width = $width, 
-      height = $height,
+print STDOUT "\n h_clust(^M
+      input_file = \"$input_file\",^M
+      group_member_file = $group_member_file,^M
+      output_file = \"$working_dir/out\",^M
+      log_file = \"$log_file\",^M
+      format_image_out = \"jpeg\",^M
+      distance_method = \"$distance_method\",^M
+      agglomeration_method = \"$agglomeration_method\",^M
+      column_clustering = $column_clustering,^M
+      select = $select,^M
+      plot_title = \"$plot_title\",^M
+      xlab = \"$xlab\",^M
+      ylab = \"$ylab\",^M
+      width = $width, ^M
+      height = $height,^M
       ppi = $ppi
       na_encoding= $NA_code)\n";
 
 print STDOUT "Envoi duscript R \n";
+
+my $status = WEXITSTATUS($?);    # état de sortie
+if ( -z $output_file ) {    # vrai pour une fin non normale
+        print STDERR "Etat du process : $status \n";
+}
+print STDOUT "Etat du process : $status \n";
+
 
 #Fermeture du pont
 $R->stopR();
@@ -206,3 +210,5 @@ my $out= "$working_dir/statistics_report.html";
 if (! -e $out){print STDERR "Pas de fichier html produit \n";}
 else {$cmdhtml = "(mv $out $output_file) >& ./cp_html.log 2>&1";
 system $cmdhtml;}
+
+

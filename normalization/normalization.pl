@@ -15,8 +15,6 @@ use GalaxyPath;
 
 my ($working_dir,$r_bin,$log_dir,$R,$cmd,$line);
 
-
-
 #pour voir ce que le xml renvoie au wrapper perl. Sachant que $0 est la ligne de commande et @ARGV les arguments
 #printf STDERR "%s\n",join("***** ",$0,@ARGV);
 
@@ -44,10 +42,6 @@ my $na_encoding              =$ARGV[2]; #string used to indicate NA values
 my $output_file              =$ARGV[3]; #output file produced after transformation
 my $log_file                 =$ARGV[4]; #output file containing messages for user if something bad happens
 my $variable_in_line         =$ARGV[5]; #boolean flag (0/1) indicating if variables are in lin or in columns
-
-
-
-
 
 #ligne de commande test :
 #perl sm_hclustfun.pl Data/gene_counts.txt Data/member.csv outfile none  euclidean  ward TRUE 100 titre x y 7 7 300
@@ -132,15 +126,11 @@ print STDOUT "\n normalization(
 
 print STDOUT "Envoi du script R \n";
 
-
-
 my $status = WEXITSTATUS($?);    # état de sortie
 if ( -z $output_file ) {    # vrai pour une fin non normale
         print STDERR "Etat du process : $status \n";
 }
 print STDOUT "Etat du process : $status \n";
-
-
 
 
 #Fermeture du pont
