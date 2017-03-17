@@ -34,6 +34,7 @@ my ($working_dir,$r_bin,$log_dir,$R,$cmd,$line);
   # - width : the width of the graphics region in inches
   # - height : the height of the graphics region in inches
   # - ppi : the nominal resolution in ppi 
+  # - na_code : label used to indicate missing values
 
 
 #Parametres d'entree
@@ -52,6 +53,7 @@ my $ylab                     =$ARGV[10];#a title for the y axis
 my $width                    =$ARGV[11];#the width of the graphics region in inches
 my $height                   =$ARGV[12];#the height of the graphics region in inches
 my $ppi                      =$ARGV[13];#the nominal resolution in ppi 
+my $NA_code;                 =$ARGV[14];#label used to indicate missing values
 
 
 #ligne de commande test :
@@ -147,7 +149,8 @@ $R->send(
      "output.file = '$working_dir/out', ".
      "width = $width,  ".
      "height = $height, ".
-     "ppi = $ppi)\n");
+     "ppi = $ppi, ".
+     "na_encoding= $NA_code)\n");
      
 print STDOUT "\n h_clust(
       count.file = \"$count_file\",
@@ -164,7 +167,8 @@ print STDOUT "\n h_clust(
       output.file = \"$working_dir/out\",
       width = $width, 
       height = $height,
-      ppi = $ppi)\n";
+      ppi = $ppi
+      na_encoding= $NA_code)\n";
 
 print STDOUT "Envoi duscript R \n";
 
