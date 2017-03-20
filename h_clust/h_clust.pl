@@ -5,6 +5,7 @@ use Statistics::R;
 use Cwd qw(abs_path);
 use File::Basename;
 
+use POSIX;
 
 #Variables Globales ###########################
 defined $ENV{'MY_GALAXY_DIR'} || die "MY_GALAXY_DIR environment variable not defined";
@@ -12,8 +13,6 @@ use lib "$ENV{'MY_GALAXY_DIR'}";
 use GalaxyPath;
 
 my ($working_dir,$r_bin,$log_dir,$R,$cmd,$line);
-
-
 
 #pour voir ce que le xml renvoie au wrapper perl. Sachant que $0 est la ligne de commande et @ARGV les arguments
 #printf STDERR "%s\n",join("***** ",$0,@ARGV);
@@ -35,7 +34,6 @@ my ($working_dir,$r_bin,$log_dir,$R,$cmd,$line);
   # - height : the height of the graphics region in inches
   # - ppi : the nominal resolution in ppi 
   # - na_code : label used to indicate missing values
-
 
 #Parametres d'entree
 my $input_file               =$ARGV[0]; #input file name
@@ -169,12 +167,6 @@ print STDOUT "\n h_clust(^M
 
 print STDOUT "Envoi duscript R \n";
 
-my $status = WEXITSTATUS($?);    # état de sortie
-if ( -z $output_file ) {    # vrai pour une fin non normale
-        print STDERR "Etat du process : $status \n";
-}
-print STDOUT "Etat du process : $status \n";
-
 
 #Fermeture du pont
 $R->stopR();
@@ -211,4 +203,9 @@ if (! -e $out){print STDERR "Pas de fichier html produit \n";}
 else {$cmdhtml = "(mv $out $output_file) >& ./cp_html.log 2>&1";
 system $cmdhtml;}
 
+my $status =  WEXITSTATUS($?);    # état de sortie
+if (! -f "$working_dir/out.jpeg" ) {    # vrai pour une fin non normale
+        print STDERR "Etat du process : $status \n";
+}
+print STDOUT "Etat du process : $status \n";
 

@@ -1,4 +1,3 @@
-##VAL
 #Declaration de l espace de travail et du chemin de l executable R : 
 use strict;
 use Carp;
