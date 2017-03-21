@@ -13,108 +13,94 @@
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
 <tool id="h_clust" name="Hierarchical clustering">
-    <description>(documentation available)</description>
-          <command interpreter="perl">h_clust.pl 
-          $count_file
+    <description>on NGS data (documentation available)</description>
+    <command interpreter="perl">h_clust.pl
+    $count_file
     #if $conditional.selector =="YES":
           $conditional.group_member_file
     #else
-         $conditional.selector  
+          $conditional.selector  
     #end if
-          <!--$conditional.group_member_file
-          $conditional.selector-->
-          $output_file
-          $transformation_method
-          $distance_method
-          $agglomeration_method
-          $sample_clustering
-          "$select"
-          "$plot_title"
-          "$xlab"
-          "$ylab"
+    $output_file
+    $log_file
+    $distance_method
+    $agglomeration_method
+    $sample_clustering
+    "$select"
+    "$plot_title"
+    "$xlab"
+    "$ylab"
     #if $moreoption.more =="YES":
           $moreoption.width
           $moreoption.height
           $moreoption.ppi
     #end if      
     #if $moreoption.more =="NO":
-           "7"
-           "7"
-           "300"
+          "7"
+          "7"
+          "300"
     #end if
-        
-           </command>
-                  <inputs>                  
-                        <param format="csv, txt" name="count_file" type="data" label="Input count file"/>
-                     
-                        
-                         <conditional name="conditional">
-                          <param name="selector" type="select" label="Do you have an input sample / tag group member file ?">
-                            <option value="NO">No</option>
-                            <option value="YES">Yes</option>
-                        </param>
-                        <when value="YES">
-                              <param format="csv, txt" name="group_member_file" type="data" label="Input sample/tag group member file"/>  <!-- optionnal -->
-                        </when>
-                        <when value="NO" />
-                      </conditional>                     
-                      
-                        <param name="transformation_method" type="select" label="Count data transformation for graphical display (one choice mandatory)">
-                                   <option value="none">none</option>
-                                   <option value="rld">rld</option>
-                                   <option value="vsd">vsd</option>
-                                   <validator type="empty_field" message="Please choose, at least, one count data transformation for graphical display." />
-                        </param>
-                        <param name="distance_method" type="select" label="The distance measure to be used (one choice mandatory)">
-                                   <option value="euclidean">euclidean</option>
-                                   <option value="correlation">correlation</option>
-                                   <option value="maximum">maximum</option>
-                                   <validator type="empty_field" message="Please choose, at least, one distance measure to be used." />
-                        </param>
-                        <param name="agglomeration_method" type="select" label="The agglomeration method to be used (one choice mandatory)">
-                                   <option value="ward">ward</option>
-                                   <option value="single">single</option>
-                                   <option value="complete">complete</option>
-                                   <option value="average">average</option>
-                                   <validator type="empty_field" message="Please choose, at least, one agglomeration method to be used." />
-                        </param>
-                        <param name="sample_clustering" type="select" help="Clustering is performed on the samples" label="Clustering is performed on the samples">
-                                       <option value="TRUE">Yes</option> <!-- member.csv -->
-                                       <option value="FALSE">No</option>
-                        </param> 
-                        <param name="select" size="20" type="text" value="100"  label="Number of top genes to use for clustering, selected by highest row variance. If NULL all the genes are selected" />
-                        <param name="plot_title" size="20" type="text" value="Title"  label="An overall title for the plot" />
-                        <param name="xlab" size="20" type="text" value="x axis"  label="A title for the x axis" /> 
-                        <param name="ylab" size="20" type="text" value="y axis"  label="A title for the y axis" />
-                        
-                        
-                                   
-                       <conditional name="moreoption">
-                        <param name="more" type="select" label="Would you like to parameter more  graphic option">
-                            <option value="NO">No</option>
-                            <option value="YES">Yes</option>
-                        </param>
-                                <when value="YES">
-                                        <param name="width" size="20" type="integer" value="7"  label="The width of the graphics region in inches" />
-                                        <param name="height" size="20" type="integer" value="7"  label="The height of the graphics region in inches" />
-                                        <param name="ppi" size="20" type="integer" value="300"  label="The nominal resolution in ppi" />
-                                </when>
-                                <when value="NO">
-                                </when>
-                      </conditional> 
-                                   
-		              
-                  </inputs>
-                  <outputs>
-                     <data format="html" name="output_file" label ="Hierarchical classif report"/> 
-                  </outputs>
-  <help>
+    $NA_code
+
+    </command>
+    <inputs>                  
+        <param format="csv, txt" name="count_file" type="data" label="Data file on which clustering will be performed"/>
+        <conditional name="conditional">
+            <param name="selector" type="select" label="Do you have an input variable/individual group member file ?">
+                <option value="NO">No</option>
+                <option value="YES">Yes</option>
+            </param>
+            <when value="YES">
+                <param format="csv, txt" name="group_member_file" type="data" label="Input variable/individual group member file"/>  <!-- optionnal -->
+            </when>
+            <when value="NO" />
+        </conditional>                     
+        <param name="distance_method" type="select" label="The distance measure to be used (one choice mandatory)">
+            <option value="euclidean">euclidean</option>
+            <option value="correlation">correlation</option>
+            <option value="maximum">maximum</option>
+            <validator type="empty_field" message="Please choose, at least, one distance measure to be used." />
+        </param>
+        <param name="agglomeration_method" type="select" label="The agglomeration method to be used (one choice mandatory)">
+            <option value="ward">ward</option>
+            <option value="single">single</option>
+            <option value="complete">complete</option>
+            <option value="average">average</option>
+            <validator type="empty_field" message="Please choose, at least, one agglomeration method to be used." />
+        </param>
+        <param name="sample_clustering" type="select" label="Clustering is performed on the columns">
+            <option value="TRUE">Yes</option> <!-- member.csv -->
+            <option value="FALSE">No</option>
+        </param> 
+        <param name="select" size="20" type="text" value="100"  label="Number of top elements to use for clustering, selected by highest row variance. If NULL all the elements will be used" />
+        <param name="NA_code" size="30" type="text" value="NA" label="Label used for Missing values"/>
+        <param name="plot_title" size="20" type="text" value="Title"  label="An overall title for the plot" />
+        <param name="xlab" size="20" type="text" value="x axis"  label="A title for the x axis" /> 
+        <param name="ylab" size="20" type="text" value="y axis"  label="A title for the y axis" />
+        <conditional name="moreoption">
+            <param name="more" type="select" label="Would you like to parameter more  graphic option">
+                <option value="NO">No</option>
+                <option value="YES">Yes</option>
+            </param>
+            <when value="YES">
+                <param name="width" size="20" type="integer" value="7"  label="The width of the graphics region in inches" />
+                <param name="height" size="20" type="integer" value="7"  label="The height of the graphics region in inches" />
+                <param name="ppi" size="20" type="integer" value="300"  label="The nominal resolution in ppi" />
+            </when>
+            <when value="NO" />
+        </conditional> 
+        </inputs>
+        <outputs>
+            <data name="log_file" format="html" label="Hierarchical_classif.log"/>
+            <data name="output_file" format="html" label ="Hierarchical_classif.report"/> 
+        </outputs>
+    <help>
 
 .. class:: infomark
 
-What it does :  This function allows to generate hierarchical cluster analysis on a count data according to differents parameters. 
+What it does :  This function allows to generate hierarchical cluster analysis on a numeric data table according to different parameters. 
 
-It needs a dataset : the count data and optionally a group member data to set colored labels. 
+It needs a dataset : the numeric data table and optionally a group member data to set colored labels. 
 It generates a graphic tree from hierarchical clustering. 
  
 
@@ -125,29 +111,19 @@ Download documentation here : http://genoweb.toulouse.inra.fr/~formation/CATIBIO
 
 Parameters :
 
-Input count file: Input count file should be a txt or csv file with tabular as separator. the data must have no NA value.
-Do you have an input sample / tag group member file ?: if YES the labels are colored. if NO the labels aren't colored. If NO the labels are not colored.
-      
-Input sample/tag group member file: Input sample/tag group member file should be a tabular file, with only one column which correspond to the condition, group you want to color in the hierarchical clustering. No title to the column (look at the example).
+Data file: Numeric data table file should be a txt or csv file with tabular as separator. Do you have an input variable/individual group member file ?: if YES the labels are colored. If NO the labels are not colored.
 
-Count data transformation for graphical display (one choice mandatory): count data transformation for graphical display. This must be one of "none", "rld", "vsd".
-   
-   - none : the data is not transformed
-   
-   - rld : the data is a specific log2 transformed. It allows to minimizes differences between samples for genes / contigs with small counts
-   
-   - vsd : the data is transformed by an algorithm which  calculates a variance stabilizing transformation
-   
+Input variable/individual group member file: Input variable/individual group member file should be a tabular file, with only one column which correspond to the condition, group you want to color in the hierarchical clustering. No title to the column (look at the example).
+ 
+The distance measure to be used (one choice mandatory): This must be one of "euclidean", "correlation" or "maximum". The distance measure mostly used is "euclidean" and "correlation". 
+The agglomeration method to be used (one choice mandatory): This should be one of "ward", "single", "complete" or "average". The distance measure mostly used is "ward".
 
-Advices:    
-   
-- Normally when we do an hierarchical clustering, we should have homoscedastic data which means that the variance of an observable quantity (i.e., the expression strength of a gene) does not depend on the mean. In RNA-Seq data, however, variance grows with the mean. So different methods are implemented to stabilized the variance such as rld (regularized-logarithm transformation) and vsd (varianceStabilizingTransformation). Currently, the regularized-logarithm transformation is the best method in order to have homoscedastic data (This method is more robust in the case when the size factors of samples vary widely, that the varianceStabilizingTransformation method). 
-   
-The distance measure to be used (one choice mandatory): the distance measure to be used. This must be one of "euclidean", "correlation" or "maximum". The most distance measure used is "euclidean" and "correlation". The agglomeration method to be used (one choice mandatory): the agglomeration method to be used. This should be one of "ward", "single", "complete" or "average". The most distance measure used is "ward".
 
-Clustering is performed on the samples: if YES clustering is performed on the samples. if NO clustering is performed on the genes.
+Clustering is performed on the columns: if YES clustering is performed on the columns. if NO clustering is performed on the lines.
 
-Number of top genes to use for clustering, selected by highest row variance. If NULL all the genes are selected: enter a number
+Number of top elements to use for clustering: Number of columns (or lines) to take into account for the clustering. The top elements will be selected by variance (top 10 elements with the biggest variance). If NULL all the elements will be used to perform clustering. For NGS or microarray data, this allows to perform a clustering on the top n most variables genes.
+
+Label used for Missing values : Missing value coding characters
 
 An overall title for the plot: enter a title for the plot
 
@@ -183,5 +159,5 @@ References
 X. SIGENAE [http://www.sigenae.org/]
 Love MI, Huber W and Anders S (2014). “Moderated estimation of fold change and dispersion for RNA-Seq data with DESeq2.”
 bioRxiv. http://dx.doi.org/10.1101/002832, http://dx.doi.org/10.1101/002832.
-  </help>
+    </help>
 </tool>
