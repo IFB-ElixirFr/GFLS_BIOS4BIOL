@@ -13,7 +13,7 @@
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
 <tool id="h_clust" name="Hierarchical clustering">
-    <description>on NGS data (documentation available)</description>
+    <description>(documentation available)</description>
     <command interpreter="perl">h_clust.pl
     $count_file
     #if $conditional.selector =="YES":
