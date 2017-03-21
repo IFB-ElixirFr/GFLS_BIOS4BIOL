@@ -57,17 +57,21 @@ To work on this project you need to clone it (html or ssh way)
 
 <code> git pull origin branchYourName # EXEPTIONAL : If another member use it to develop (or if you use several developement environment), recover the last changes in your branch </code>
 
-<code> git push origin branchYourName #</code>
+<code> git push origin branchYourName # Push to the dev branch</code>
 
 - ![#ff0000](https://placehold.it/10/ff0000/000000?text=+) **Merge with the "Dev" branch**
 
-<code> git checkout dev</code>
+<code> git checkout dev       # Change branch to Dev</code>
 
-<code> git merge branchMyName</code>
+<code> git pull origin dev    # Recover the last changes from Dev</code>
+
+<code> git merge branchMyName # Merge your change with the dev branch</code>
 
 - ![#ff0000](https://placehold.it/10/ff0000/000000?text=+) **If it's ok, push on the remote dev branch**
 
-<code> git push origin dev</code>
+<code> git commit -a -m "YourMessage" # Record changes to the repository</code>
+
+<code> git push origin dev            # Push to the dev branch</code>
 
 - ![#ff0000](https://placehold.it/10/ff0000/000000?text=+)![#0000ff](https://placehold.it/10/0000ff/000000?text=+) : **Inform the administrator, and ask him to make the test with the dev branch if you are not able to**
 - ![#0000ff](https://placehold.it/10/0000ff/000000?text=+) **Finally if the developement work, the administrator will push on the master branch**
