@@ -69,8 +69,6 @@ To work on this project you need to clone it (html or ssh way)
 
 - ![#ff0000](https://placehold.it/10/ff0000/000000?text=+) **If it's ok, push on the remote dev branch**
 
-<code> git commit -a -m "YourMessage" # Record changes to the repository</code>
-
 <code> git push origin dev            # Push to the dev branch</code>
 
 - ![#ff0000](https://placehold.it/10/ff0000/000000?text=+)![#0000ff](https://placehold.it/10/0000ff/000000?text=+) : **Inform the administrator, and ask him to make the test with the dev branch if you are not able to**
