@@ -38,7 +38,7 @@ h_clust <- function(input_file,
   
   # This function allows to generate hierarchical cluster analysis on a table  according to differents parameters.
   # It needs a dataset : the table of data and optionally a group_member data to set colored labels.
-  # It generates a classification tree graphic from hierarchical clustering.
+  # It generates a clustering tree graphic from hierarchical clustering.
   #
   # Parameters :
   # - input_file : input_file name
