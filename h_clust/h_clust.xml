@@ -13,7 +13,7 @@
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
 <tool id="h_clust" name="Hierarchical clustering">
-    <description>on NGS data (documentation available)</description>
+    <description>(documentation available)</description>
     <command interpreter="perl">h_clust.pl
     $count_file
     #if $conditional.selector =="YES":
@@ -72,7 +72,7 @@
             <option value="TRUE">Yes</option> <!-- member.csv -->
             <option value="FALSE">No</option>
         </param> 
-        <param name="select" size="20" type="text" value="100"  label="Number of top elements to use for clustering, selected by highest row variance. If NULL all the elements will be used" />
+        <param name="select" size="20" type="text" value="NULL"  label="Number of top elements to use for clustering, selected by highest row variance. If NULL all the elements will be used" />
         <param name="NA_code" size="30" type="text" value="NA" label="Label used for Missing values"/>
         <param name="plot_title" size="20" type="text" value="Title"  label="An overall title for the plot" />
         <param name="xlab" size="20" type="text" value="x axis"  label="A title for the x axis" /> 
@@ -91,8 +91,8 @@
         </conditional> 
         </inputs>
         <outputs>
-            <data name="log_file" format="html" label="Hierarchical_classif.log"/>
-            <data name="output_file" format="html" label ="Hierarchical_classif.report"/> 
+            <data name="log_file" format="html" label="Hierarchical_clustering.log"/>
+            <data name="output_file" format="html" label ="Hierarchical_clustering.report"/> 
         </outputs>
     <help>
 

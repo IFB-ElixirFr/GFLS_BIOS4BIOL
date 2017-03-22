@@ -181,7 +181,7 @@ print OUT "<BODY>\n";
 
 #if (-f "$working_dir/$stat_out" ) {
 if (-f "$working_dir/out.jpeg" ) {
-	print OUT "<H1>Hierarchical classification :</H1>\n";
+	print OUT "<H1>Hierarchical clustering :</H1>\n";
 	my $file_url = "$working_dir/out.jpeg";
         my $tar = "$file_url.zip";
         `cp $file_url $tar`;
@@ -189,7 +189,7 @@ if (-f "$working_dir/out.jpeg" ) {
         print OUT "<A HREF=\"$file_url\"><IMG  height=\"700\" width=\"700\" src=\"$file_url\"></A>";
         print OUT "<BR /><BR /><BR />";
         $tar =~s/^$file_path/\/galaxy\/download/;
-        print OUT "<A HREF=\"$file_url\">Download here your hierarchical classification map.</A>";
+        print OUT "<A HREF=\"$file_url\">Download here your hierarchical clustering map.</A>";
         print OUT "</HTML>\n";
         print OUT "</BODY>\n";
 }
