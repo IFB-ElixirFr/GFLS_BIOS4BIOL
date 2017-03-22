@@ -1,33 +1,67 @@
-<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-03-22_TEST">
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-03-22">
 
-	<description> PCA using FactoMineR package [EN TEST VAL]</description>
+	<description> PCA using FactoMineR package</description>
     
   	<requirements>
 		<requirement type="binary"> R </requirement>
 	</requirements>
 
 	<command interpreter="Rscript">
-		pcaFactoMineR_galaxy.R
 
-		datafile $datafile
-		factor $factor
- 		npc $npc
-		title $title
-		tc $tc
-		pch $pch
-		pcv $pcv
-		scaleoption $scaleoption
-		plotev $plotev
-		plotcontrib $plotcontrib
-		plotindiv $plotindiv
-		colorfactor $colorfactor
-		plotvar $plotvar
-		contribh $contribh
-		contribv $contribv
+                pcaFactoMineR_galaxy.R
 
-		## Outputs
-		logOut $logOut
-		outgraphpdf $outgraphpdf
+                datafile $datafile
+                scaleoption $scaleoption
+                npc $npc
+                #if str( $condPlot.plotOptions ) == "yes":
+                  plotev $condPlot.plotev
+                  plotcontrib $condPlot.plotcontrib
+                  plotindiv $condPlot.condScore.plotindiv
+                  #if str( $condPlot.condScore.plotindiv ) == "yes":
+                    colorfactor $condPlot.condScore.condColor.colorfactor
+                    #if str( $condPlot.condScore.condColor.colorfactor ) == "yes":
+                      factor $condPlot.condScore.condColor.factor
+                    #else :
+                      factor "None"
+                    #end if
+                  #else :
+                    colorfactor yes
+                    factor "None"
+                  #end if
+                  plotvar $condPlot.condLoading.plotvar
+                  #if str( $condPlot.condLoading.plotvar ) == "yes":
+                    contribh $condPlot.condLoading.contribh
+                    contribv $condPlot.condLoading.contribv
+                  #else :
+                    contribh 0
+                    contribv 0
+                  #end if
+                #else :
+                  plotev yes
+                  plotcontrib yes
+                  plotindiv yes
+                  colorfactor no
+                  factor "None"
+                  plotvar yes
+                  contribh 0
+                  contribv 0
+                #end if
+
+                #if str( $condGraphical.graphicalOptions ) == "yes":
+                  title $condGraphical.title
+                  pch $condGraphical.pch
+                  pcv $condGraphical.pcv
+                  tc $condGraphical.tc
+                #else :
+                  title "PCA" 
+                  pch 1
+                  pcv 2
+                  tc 1
+                #end if
+
+                ## Outputs
+                logOut $logOut
+                outgraphpdf $outgraphpdf
 
 	</command>
 
@@ -44,7 +78,7 @@
     <param name="npc" label="Number of principal components" type="integer" value="2" min="2" help=""/>
 
     <conditional name="condPlot">
-        <param name="plotOptions" type="select" label="Plot Options">
+        <param name="plotOptions" type="select" label="Plot Options" help="If no, it will create the 4 plot and take the default parameters">
             <option value="no" selected="true">No</option>
             <option value="yes">Yes</option>
         </param>
@@ -66,6 +100,7 @@
                     <option value="no"> No </option>
                 </param>
                 <when value="yes">
+
                     <conditional name="condColor">
                         <param name="colorfactor" label="Factor color" type="select" help="Colouring of observations according to levels of qualitative variable (biological factor of interest)" >
                             <option value="no" selected="true" > No </option>
@@ -76,18 +111,22 @@
                         </when>
                         <when value="no"></when>
                     </conditional>
+
                 </when>
-               <when value="no"></when>
-           </conditional>
+                <when value="no"></when>
+            </conditional>
 
-
-            <param name="plotvar" label="Loading plot" type="select" help="">
-                <option value="yes" selected="true" > Yes </option>
-                <option value="no"> No </option>
-            </param>
-
-               <param name="contribh" label="Contribution threshold (abscissa)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the abscissa axis)"/>
-               <param name="contribv" label="Contribution threshold (ordinate)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the ordinate axis)" />
+            <conditional name="condLoading">
+                <param name="plotvar" label="Loading plot" type="select" help="">
+                    <option value="yes" selected="true" > Yes </option>
+                    <option value="no"> No </option>
+                </param>
+                <when value="yes">          
+                    <param name="contribh" label="Contribution threshold (abscissa)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the abscissa axis)"/>
+                    <param name="contribv" label="Contribution threshold (ordinate)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the ordinate axis)" />
+                </when>
+                <when value="no"></when>
+            </conditional>
 
         </when>
         <when value="no"></when>
@@ -95,7 +134,7 @@
 
 
     <conditional name="condGraphical">
-        <param name="graphicalOptions" type="select" label="GraphicalOptions">
+        <param name="graphicalOptions" type="select" label="GraphicalOptions" help="If not, it will take the default parameters">
             <option value="no" selected="true">No</option>
             <option value="yes">Yes</option>
         </param>
@@ -128,7 +167,7 @@
 	
 .. class:: infomark
 
-**Authors** Sandrine Laguerre (laguerre@insa-toulouse.fr), J.F Martin (jean-francois.martin@toulouse.inra.fr) et M. Tremblay-Franco (marie.tremblay-franco@toulouse.inra.fr)
+**Authors** Sandrine Laguerre (laguerre@insa-toulouse.fr), J.F Martin (jean-francois.martin@inra.fr), M. Tremblay-Franco (marie.tremblay-franco@inra.fr) and V. Marcon (valentin.marcon@inra.fr)
 
 
 ---
@@ -172,49 +211,29 @@ Input files
 +---------------------------+------------+
 | Parameter : num + label   |   Format   |
 +===========================+============+
-| 1 : data matrix name      |   tabular  |
+| 1 : data matrix           |   tabular  |
 +---------------------------+------------+
-
-**Data matrix name**
-
-	| ...
 
 ----------
 Parameters
 ----------
 
-Data matrix name
+Data matrix
 	| see "Input files" section above
 	| 
 
-Factor
-	| Name of the column containing the biological factor (qualitative variable) to color observations according to levels of this
+Scaling method
+	| Standardisation to apply to the variables
+	| None, Unit variance (default value) or Pareto scaling
 	|
 
 Number of principal component
 	| How many principal components include in the PCA model?
 	|
 
-Title
-	| Title printed on all plots; if none, leave 'PCA'" value="PCA"
-	|
-
-Numeric character expansion factor 
-	| A value greater than 1 increases and a value lower than 1 decreases character size
-	|
-
-Horizontal Principal Component
-	| Principal component displayed on the abscissa
-	|
-
-Vertical Principal Component
-	| Principal component displayed on the ordinate
-	|
-
-Scaling method
-	| Standardisation to apply to the variables
-	| None, Unit variance (default value) or Pareto scaling
-	|
+(?)Plot options
+        | Show (or not) more options for the plots
+        |
 
 Eigenvalue plot
 	| Eigenvalue and percentage of explained variance plots. Default value is "Yes"
@@ -232,6 +251,10 @@ Factor color
 	| Colouring of observations. Default value is "Yes"
 	|
 
+Factor
+	| Name of the column containing the biological factor (qualitative variable) to color observations according to levels of this
+	|
+
 Loading plot
 	| Loading plot. Default value is "Yes"
 	|
@@ -244,20 +267,36 @@ Contribution threshold (ordinate)
 	| Contribution threshold for loading plot: principal component displayed in the ordinate axis
 	|
 
+(?)Graphical options
+        | Show (or not) more graphical options
+        |
+
+Title
+	| Title printed on all plots; if none, leave 'PCA'" value="PCA"
+	|
+
+Numeric character expansion factor 
+	| A value greater than 1 increases and a value lower than 1 decreases character size
+	|
+
+Horizontal Principal Component
+	| Principal component displayed on the abscissa
+	|
+
+Vertical Principal Component
+	| Principal component displayed on the ordinate
+	|
 
 ------------
 Output files
 ------------
 
-outgraphpdf.pdf
-	| pdf output
-	| ...
+PCAFactoMineR_graph (pdf output)
 	| 
 
-
----------------------------------------------------
+PCAFactoMineR_log 
+	| 
 
     </help>
-
 
 </tool>
