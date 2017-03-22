@@ -1,6 +1,6 @@
-<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2015-05-18">
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-03-22_TEST">
 
-	<description> PCA using FactoMineR package </description>
+	<description> PCA using FactoMineR package [EN TEST VAL]</description>
     
   	<requirements>
 		<requirement type="binary"> R </requirement>
@@ -32,19 +32,8 @@
 	</command>
 
   <inputs>
+
     <param name="datafile" type="data" label="Data matrix" help="First column is a qualitative variable" format="tabular" />
-
-    <param name="factor" label="Name of the column of the data matrix corresponding to the qualitative variable" type="text" value="None" help=""/>
-
-    <param name="npc" label="Number of principal components" type="integer" value="2" min="2" help=""/>
-
-    <param name="title" type="text" label="Title" help="Title printed on all plots; if none, leave 'PCA'" value="PCA" />
-
-    <param name="tc" label="Numeric character expansion factor" type="float" value="1.0" min="0.5" help="A value greater than 1 increases and a value lower than 1 decreases character size"/>
-
-    <param name="pch" label="Horizontal Principal Component" type="integer" value="1" help="Principal component displayed on the abscissa" />
-
-    <param name="pcv" label="Vertical Principal Component" help="Principal component displayed on the ordinate" type="integer" value="2" />
 
     <param name="scaleoption" label="Scaling method" type="select" help="Variable standardisation">
         <option value="none"> None </option>
@@ -52,33 +41,77 @@
         <option value="pareto"> Pareto </option>
     </param>
 
-     <param name="plotev" type="select" label="Eigenvalue plot" help="Eigenvalue and percentage of explained variance plots" >
-         <option value="yes" selected="true" > Yes </option>
-         <option value="no"> No </option>
-    </param>
+    <param name="npc" label="Number of principal components" type="integer" value="2" min="2" help=""/>
 
-     <param name="plotcontrib" type="select" label="Contribution plot" help="" >
-         <option value="yes" selected="true" > Yes </option>
-         <option value="no"> No </option>
-    </param>
+    <conditional name="condPlot">
+        <param name="plotOptions" type="select" label="Plot Options">
+            <option value="no" selected="true">No</option>
+            <option value="yes">Yes</option>
+        </param>
+        <when value="yes">
 
-    <param name="plotindiv" label="Score plot" type="select" help="" >
-         <option value="yes" selected="true" > Yes </option>
-         <option value="no"> No </option>
-    </param>
+            <param name="plotev" type="select" label="Eigenvalue plot" help="Eigenvalue and percentage of explained variance plots" >
+                <option value="yes" selected="true" > Yes </option>
+                <option value="no"> No </option>
+            </param>
 
-    <param name="colorfactor" label="Factor color" type="select" help="Colouring of observations according to levels of qualitative variable (biological factor of interest)" >
-         <option value="yes" selected="true" > Yes </option>
-         <option value="no"> No </option>
-    </param>
+            <param name="plotcontrib" type="select" label="Contribution plot" help="" >
+                <option value="yes" selected="true" > Yes </option>
+                <option value="no"> No </option>
+            </param>
 
-    <param name="plotvar" label="Loading plot" type="select" help="">
-         <option value="yes" selected="true" > Yes </option>
-         <option value="no"> No </option>
-    </param>
+            <conditional name="condScore">
+                <param name="plotindiv" label="Score plot" type="select" help="" >
+                    <option value="yes" selected="true" > Yes </option>
+                    <option value="no"> No </option>
+                </param>
+                <when value="yes">
+                    <conditional name="condColor">
+                        <param name="colorfactor" label="Factor color" type="select" help="Colouring of observations according to levels of qualitative variable (biological factor of interest)" >
+                            <option value="no" selected="true" > No </option>
+                            <option value="yes"> Yes </option>
+                        </param>
+                        <when value="yes">
+                            <param name="factor" label="Name of the column of the data matrix corresponding to the qualitative variable" type="text" value="None" help=""/>
+                        </when>
+                        <when value="no"></when>
+                    </conditional>
+                </when>
+               <when value="no"></when>
+           </conditional>
 
-    <param name="contribh" label="Contribution threshold (abscissa)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the abscissa axis)"/>
-    <param name="contribv" label="Contribution threshold (ordinate)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the ordinate axis)" />
+
+            <param name="plotvar" label="Loading plot" type="select" help="">
+                <option value="yes" selected="true" > Yes </option>
+                <option value="no"> No </option>
+            </param>
+
+               <param name="contribh" label="Contribution threshold (abscissa)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the abscissa axis)"/>
+               <param name="contribv" label="Contribution threshold (ordinate)" type="float" value="0" help="Contribution threshold for loading plot (Principal component displayed in the ordinate axis)" />
+
+        </when>
+        <when value="no"></when>
+    </conditional>
+
+
+    <conditional name="condGraphical">
+        <param name="graphicalOptions" type="select" label="GraphicalOptions">
+            <option value="no" selected="true">No</option>
+            <option value="yes">Yes</option>
+        </param>
+        <when value="yes">
+
+            <param name="title" type="text" label="Title" help="Title printed on all plots; if none, leave 'PCA'" value="PCA" />
+
+            <param name="pch" label="Horizontal Principal Component" type="integer" value="1" help="Principal component displayed on the abscissa" />
+
+            <param name="pcv" label="Vertical Principal Component" help="Principal component displayed on the ordinate" type="integer" value="2" />
+
+            <param name="tc" label="Numeric character expansion factor" type="float" value="1.0" min="0.5" help="A value greater than 1 increases and a value lower than 1 decreases character size"/>
+
+        </when>
+        <when value="no"></when>
+    </conditional>
 
   </inputs>
   
