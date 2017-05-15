@@ -112,7 +112,7 @@ $R->send(
      "input_file= '$input_file', ".
      "output_file= '$output_file', ".
      "log_file= '$log_file', ".
-     "variable_in_line= '$variable_in_line')\n");
+     "variable_in_line= $variable_in_line)\n");
 
 print STDOUT "\n normalization(
 
@@ -121,7 +121,7 @@ print STDOUT "\n normalization(
      input_file= \"$input_file\",
      output_file= \"$output_file\",
      log_file= \"$log_file\",
-     variable_in_line= \"$variable_in_line\")\n";
+     variable_in_line= $variable_in_line)\n";
 
 print STDOUT "Envoi du script R \n";
 
