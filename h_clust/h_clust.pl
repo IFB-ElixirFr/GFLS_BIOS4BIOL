@@ -145,7 +145,7 @@ $R->send(
      "width = $width,  ".
      "height = $height, ".
      "ppi = $ppi, ".
-     "na_encoding= $NA_code)\n");
+     "na_encoding= '$NA_code')\n");
      
 print STDOUT "\n h_clust(^M
       input_file = \"$input_file\",^M
@@ -163,7 +163,7 @@ print STDOUT "\n h_clust(^M
       width = $width, ^M
       height = $height,^M
       ppi = $ppi
-      na_encoding= $NA_code)\n";
+      na_encoding= \"$NA_code\")\n";
 
 print STDOUT "Envoi duscript R \n";
 
