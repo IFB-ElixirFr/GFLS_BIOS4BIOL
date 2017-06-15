@@ -114,8 +114,13 @@ pca.indiv <- function(res.PCA,hb,facteur=NULL,contribmin=c(0,0),mt,cexc,linev=3,
 }
 
 ###############################################################################################
+## MODIFICATIONS 15062017
+## Suppression standardisation car fonction externe
+## Concatenation samplemetadata et datamatrix avec merge si pas meme ordre de tri
+## HYPOTHESES : 1) datamatrix : nxp et 2) colonne 1 = identifiants individus
+###############################################################################################
 
-pca.main <- function(ids,bioFact,ncp,hb=0,scalingMethod,minContribution=c(0,0),mainTitle,textSize=0.5,linev=3,
+pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle,textSize=0.5,linev=3,
                      principalPlane=c(1,2),eigenplot=0,contribplot=0,scoreplot=0,loadingplot=0,nomGraphe) 
 {
   # Sortie graphique
@@ -125,18 +130,19 @@ pca.main <- function(ids,bioFact,ncp,hb=0,scalingMethod,minContribution=c(0,0),m
   ## suivant la presence variable qualitative (hb=1),l'appel a la fonction PCA est modifié
   if (hb==1) 
   {
-    # Standardisation
-    scaledIds <- standardisation(ids[,2:ncol(ids)],scaling=scalingMethod)
-    scaledIds <- cbind.data.frame(bioFact,scaledIds)
-    # Analyse
-    res <- PCA(scaledIds,scale.unit=FALSE,ncp,graph=F,quali.sup=1)    
+	## Concatenation
+    data <- merge(bioFact,data,by.x=1,by.y=1)
+	## Suppression identifiants individus
+	data <- data[,1]
+    ## Analyse
+    res <- PCA(data,scale.unit=FALSE,ncp,graph=F,quali.sup=1)    
   }
   else 
   { 
-    # Standardisation
-    scaledIds <- standardisation(ids,scaling=scalingMethod)
-    # Analyse
-    res <- PCA(scaledIds,scale.unit=FALSE,ncp,graph=F)
+	## Suppression identifiants individus
+	data <- ids[,-1]
+    ## Analyse
+    res <- PCA(data,scale.unit=FALSE,ncp,graph=F)
   }
   
   if (eigenplot==1) 
