@@ -72,7 +72,7 @@ pca.var <- function(res.PCA,contribmin=c(0,0),mt,cexc,linev=3,plotax=c(1,2))
   fres.PCA$var$contrib <- res.PCA$var$contrib[selvar,]
 
   #### Plot du cercle des corrélations
-  plot.PCA(fres.PCA,choix="var",cex=cexc,axes=plotax,title=NULL)  
+  plot.PCA(fres.PCA,choix="var",cex=cexc,axes=plotax,title=NULL, habillage=1)  
   title(main = mt,line = linev,cex=cexc)
 }
 
@@ -120,7 +120,7 @@ pca.indiv <- function(res.PCA,hb,facteur=NULL,contribmin=c(0,0),mt,cexc,linev=3,
 ## HYPOTHESES : 1) datamatrix : nxp et 2) colonne 1 = identifiants individus
 ###############################################################################################
 
-pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle,textSize=0.5,linev=3,
+pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle=NULL,textSize=0.5,linev=3,
                      principalPlane=c(1,2),eigenplot=0,contribplot=0,scoreplot=0,loadingplot=0,nomGraphe) 
 {
   # Sortie graphique
@@ -130,10 +130,12 @@ pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle,textS
   ## suivant la presence variable qualitative (hb=1),l'appel a la fonction PCA est modifié
   if (hb==1) 
   {
-	## Concatenation
-    data <- merge(bioFact,data,by.x=1,by.y=1)
-	## Suppression identifiants individus
-	data <- data[,1]
+	  ## Concatenation
+    data <- merge(bioFact,ids,by.x=1,by.y=1)
+	  ## Suppression identifiants individus
+	  data <- data[,-1]
+	  data[,1] <- as.factor(data[,1])
+	  facteur <- as.factor(bioFact[,-1])
     ## Analyse
     res <- PCA(data,scale.unit=FALSE,ncp,graph=F,quali.sup=1)    
   }
@@ -153,7 +155,7 @@ pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle,textS
     
   if (contribplot==1)
   {
-    par(mfrow=c(2,2))
+    par(mfrow=c(1,2))
     plot.contrib(res,mt=mainTitle,cexc=textSize)
   }
     
@@ -175,7 +177,9 @@ pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle,textS
     par(mfrow=c(1,1))
     pca.var(res,contribmin=minContribution,mt=mainTitle,cexc=textSize,plotax=principalPlane)
   }
-  dev.off()
+  
+  if (eigenplot==1 || contribplot==1 || scoreplot==1 || loadingplot==1)
+    dev.off()
   
   return(res)
 }
