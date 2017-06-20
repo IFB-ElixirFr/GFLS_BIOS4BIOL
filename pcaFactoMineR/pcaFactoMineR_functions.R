@@ -1,4 +1,21 @@
 ####################  fonctions utilisées #####################################################
+log_error=function(message="") {
+  cat("<HTML><HEAD><TITLE>PCA FactoMineR report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+  cat("&#9888 An error occurred while trying to read your table.\n<BR>",file=log_file,append=T,sep="")
+  cat("Please check that:\n<BR>",file=log_file,append=T,sep="")
+  cat("<UL>\n",file=log_file,append=T,sep="")
+  cat("  <LI> the table you want to process contains the same number of columns for each line</LI>\n",file=log_file,append=T,sep="")
+  cat("  <LI> the first line of your table is a header line (specifying the name of each ",column_use,")</LI>\n",file=log_file,append=T,sep="")
+  cat("  <LI> the first column of your table specifies the name of each ",line_use,"</LI>\n",file=log_file,append=T,sep="")
+  cat("  <LI> both individual and variable names should be unique</LI>\n",file=log_file,append=T,sep="")
+  cat("  <LI> each value is separated from the other by a <B>TAB</B> character</LI>\n",file=log_file,append=T,sep="")
+  cat("  <LI> except for first line and first column, table should contain a numeric value</LI>\n",file=log_file,append=T,sep="")
+  cat("  <LI> this value may contain character '.' as decimal separator </LI>\n",file=log_file,append=T,sep="")
+  cat("</UL>\n",file=log_file,append=T,sep="")
+  cat("-------<BR>\nError messages recieved :<BR><FONT color=red>\n",conditionMessage(message),"</FONT>\n",file=log_file,append=T,sep="")
+  cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
+  q(save="no",status=1)
+}
 
 standardisation <- function(rawX,centrage=TRUE,scaling=c("none","uv","pareto"))
 {
@@ -122,16 +139,44 @@ pca.indiv <- function(res.PCA,hb,facteur=NULL,contribmin=c(0,0),mt,cexc,linev=3,
 
 pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle=NULL,textSize=0.5,linev=3,
                      principalPlane=c(1,2),eigenplot=0,contribplot=0,scoreplot=0,loadingplot=0,nomGraphe,
-                     variable_in_line=0) 
+                     variable_in_line=0, log_file) 
 {
   # Sortie graphique
   if (eigenplot==1 || contribplot==1 || scoreplot==1 || loadingplot==1)
     pdf(nomGraphe,onefile=TRUE)
   
-  ## Transposition si variables en ligne
+  # Verify data
+  if (length(dim(ids)) != 2 | ncol(ids) < 2 | nrow(ids) < 2)
+      log_error(simpleCondition("The table on which you want to do PCA must be a data table with at least 2 rows and 
+                              2 columns."))
+    tab=as.matrix(ids)
+    cell.with.na=c()
+    for (i in 1:ncol(tab)) {
+      na.v1=is.na(tab[,i])
+      na.v2=is.na(as.numeric(tab[,i]))
+      if (sum(na.v1)!=sum(na.v2)) {
+        sel=which(na.v1!=na.v2)
+        sel=sel[1]
+        value=tab[sel,i]
+        log_error(simpleCondition(
+          paste("Column '",colnames(tab)[i],"' of your table contains non numeric values. Please check its content (on line #",sel," : value='",value,"').",sep="")
+        ))
+      }
+      if (length(cell.with.na)==0 & sum(na.v1)!=0) {
+        cell.with.na=c(i,which(na.v1)[1])
+      }
+    }  
+  ## Disposition matrice de donnees
+    ## Transposition si variables en ligne
   Tids <- ids
+  line_use <- "individual"
+  column_use <- "variable"
+
   if (variable_in_line == 1)
   {
+    column_use <- "individual"
+    line_use <- "variable"
+    
     rownames(Tids) <- Tids[,1]
     Tids <- Tids[,-1]
     Tids <- t(Tids)
