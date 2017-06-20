@@ -121,17 +121,29 @@ pca.indiv <- function(res.PCA,hb,facteur=NULL,contribmin=c(0,0),mt,cexc,linev=3,
 ###############################################################################################
 
 pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle=NULL,textSize=0.5,linev=3,
-                     principalPlane=c(1,2),eigenplot=0,contribplot=0,scoreplot=0,loadingplot=0,nomGraphe) 
+                     principalPlane=c(1,2),eigenplot=0,contribplot=0,scoreplot=0,loadingplot=0,nomGraphe,
+                     variable_in_line=0) 
 {
   # Sortie graphique
   if (eigenplot==1 || contribplot==1 || scoreplot==1 || loadingplot==1)
     pdf(nomGraphe,onefile=TRUE)
   
+  ## Transposition si variables en ligne
+  Tids <- ids
+  if (variable_in_line == 1)
+  {
+    rownames(Tids) <- Tids[,1]
+    Tids <- Tids[,-1]
+    Tids <- t(Tids)
+    Tids <- data.frame(rownames(Tids), Tids)
+    colnames(Tids)[1] <- "Sample"
+  }
+  
   ## suivant la presence variable qualitative (hb=1),l'appel a la fonction PCA est modifié
   if (hb==1) 
   {
 	  ## Concatenation
-    data <- merge(bioFact,ids,by.x=1,by.y=1)
+    data <- merge(bioFact,Tids,by.x=1,by.y=1)
 	  ## Suppression identifiants individus
 	  data <- data[,-1]
 	  data[,1] <- as.factor(data[,1])
@@ -142,7 +154,7 @@ pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle=NULL,
   else 
   { 
 	## Suppression identifiants individus
-	data <- ids[,-1]
+	data <- Tids[,-1]
     ## Analyse
     res <- PCA(data,scale.unit=FALSE,ncp,graph=F)
   }
