@@ -55,7 +55,7 @@ To work on this project you need to clone it (html or ssh way)
 
 <code> git commit -a -m "YourMessage" # Record changes to the repository</code>
 
-<code> git pull origin branchYourName # EXEPTIONAL : If another member use it to develop (or if you use several developement environment), recover the last changes in your branch </code>
+<code> git pull origin branchYourName # EXCEPTIONAL : If another member use it to develop (or if you use several developement environment), recover the last changes in your branch </code>
 
 <code> git push origin branchYourName # Push to the dev branch</code>
 
@@ -68,8 +68,6 @@ To work on this project you need to clone it (html or ssh way)
 <code> git merge branchMyName # Merge your change with the dev branch</code>
 
 - ![#ff0000](https://placehold.it/10/ff0000/000000?text=+) **If it's ok, push on the remote dev branch**
-
-<code> git commit -a -m "YourMessage" # Record changes to the repository</code>
 
 <code> git push origin dev            # Push to the dev branch</code>
 

@@ -39,34 +39,35 @@ if(stat & length(chosen.stat)!=0){
   
   stat.res <- t(Dataset[0,,drop=FALSE])
   
+  numdig <- 5
   
   if("mean" %in% stat.list){  
-    stat.res <- cbind(stat.res,c("Mean",colMeans(Dataset[,-1],na.rm=TRUE)))  
+    stat.res <- cbind(stat.res,c("Mean",round(colMeans(Dataset[,-1],na.rm=TRUE),digits=numdig)))
   }
   
   if("sd" %in% stat.list){
     colSd <- apply(Dataset[,-1],2,sd,na.rm=TRUE)
-    stat.res <- cbind(stat.res,c("Std.Dev",colSd))
+    stat.res <- cbind(stat.res,c("Std.Dev",round(colSd,digits=numdig)))
   } 
   
   if("variance" %in% stat.list){
     colVar <- apply(Dataset[,-1],2,var,na.rm=TRUE)
-    stat.res <- cbind(stat.res,c("Variance",colVar))
+    stat.res <- cbind(stat.res,c("Variance",round(colVar,digits=numdig)))
   }
   
   if(("median" %in% stat.list)&&(!("quartile" %in% stat.list))){
     colMed <- apply(Dataset[,-1],2,median,na.rm=TRUE)
-    stat.res <- cbind(stat.res,c("Median",colMed))
+    stat.res <- cbind(stat.res,c("Median",round(colMed,digits=numdig)))
   }
   
   if("quartile" %in% stat.list){
-    colQ <- apply(Dataset[,-1],2,quantile,na.rm=TRUE)
+    colQ <- round(apply(Dataset[,-1],2,quantile,na.rm=TRUE),digits=numdig)
     stat.res <- cbind(stat.res,c("Min",colQ[1,]),c("Q1",colQ[2,]),
                       c("Median",colQ[3,]),c("Q3",colQ[4,]),c("Max",colQ[5,]))
   }
   
   if("decile" %in% stat.list){
-    colD <- t(apply(Dataset[,-1],2,quantile,na.rm=TRUE,seq(0,1,0.1)))
+    colD <- round(t(apply(Dataset[,-1],2,quantile,na.rm=TRUE,seq(0,1,0.1))),digits=numdig)
     colD <- rbind(paste("D",seq(0,10,1),sep=""),colD)
     stat.res <- cbind(stat.res,colD)
   }
