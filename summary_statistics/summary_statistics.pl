@@ -31,8 +31,7 @@ my $stat_chosen; #ex : "mean,sd,variance,median,quartile,decile"      #--statcon
 my $ploting;     #Valeurs possibles T or F                            #--plotingcondploting  $ploting_cond.ploting 
 my $plot_chosen; #ex : "boxplot,histogram,density,pairsplot,MAplot"   #--statcondplotchosen  $stat_cond.plot_chosen (IF)
 my $outputfile;                                                       #--outputfile $outputfile 
-my $logfile;                                                          #--logfile $logfile 
-
+my $logfile;                                                          #--logfile $logfile
 
 Getopt::Long::Configure( 'no_ignorecase', 'bundling' );
 GetOptions (
@@ -42,8 +41,8 @@ GetOptions (
 'statcondstatchosen=s' => \$stat_chosen,
 'plotingcondploting=s' => \$ploting, 
 'plotingcondplotchosen=s' => \$plot_chosen,
-'outputfile=s' => \$outputfile 
-'logfile=s' => \$logfile 
+'outputfile=s' => \$outputfile,
+'logfile=s' => \$logfile
 ) or die "Usage: Error in command line arguments\n";
 
 print STDOUT "Input file : $file_in \n
