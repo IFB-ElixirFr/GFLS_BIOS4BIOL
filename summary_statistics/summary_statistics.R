@@ -16,7 +16,7 @@
 #      (quantiles, mean, variance, standard error of the mean)            #
 ###########################################################################
         
-desc_fct <- function(file.in, nacode, stat.out, stat, chosen.stat, ploting, chosen.plot){
+desc_fct <- function(file.in, nacode, stat.out, stat, chosen.stat, ploting, chosen.plot, log_file){
   # Parameters :
   # - file.in : count matrix input (tab-separated) [file name]
   # - nacode : missing value coding character
@@ -25,12 +25,98 @@ desc_fct <- function(file.in, nacode, stat.out, stat, chosen.stat, ploting, chos
   # - chosen.stat : character listing the chosen statistics (comma-separated)
   # - ploting : should graphics be displayed ? (TRUE/FALSE)
   # - chosen.plot : character listing the chosen plots (comma-separated)
-
-# Data import - - - - - - - - - - - - - - - - - 
-
-Dataset <- read.table(file.in,header=TRUE,na.strings=nacode,sep="\t")
+  # - log_file : a log file [file name]
 
 
+##########################################################
+# Read and verify data - - - - - - - - - - - - 
+# Checks valids for all modules
+
+	line_use="line"
+	column_use="column"
+
+log_error=function(message="") {
+		cat("<HTML><HEAD><TITLE>Normalization report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+		cat("&#9888 An error occurred while trying to read your table.\n<BR>",file=log_file,append=T,sep="")
+		cat("Please check that:\n<BR>",file=log_file,append=T,sep="")
+		cat("<UL>\n",file=log_file,append=T,sep="")
+		cat("  <LI> the table you want to process contains the same number of columns for each line</LI>\n",file=log_file,append=T,sep="")
+		cat("  <LI> the first line of your table is a header line (specifying the name of each ",column_use,")</LI>\n",file=log_file,append=T,sep="")
+		cat("  <LI> the first column of your table specifies the name of each ",line_use,"</LI>\n",file=log_file,append=T,sep="")
+		cat("  <LI> both individual and variable names should be unique</LI>\n",file=log_file,append=T,sep="")
+		cat("  <LI> each value is separated from the other by a <B>TAB</B> character</LI>\n",file=log_file,append=T,sep="")
+		cat("  <LI> except for first line and first column, table should contain a numeric value</LI>\n",file=log_file,append=T,sep="")
+		cat("  <LI> this value may contain character '.' as decimal separator or '",nacode,"' for missing values</LI>\n",file=log_file,append=T,sep="")
+		cat("</UL>\n",file=log_file,append=T,sep="")
+		cat("-------<BR>\nError messages recieved :<BR><FONT color=red>\n",conditionMessage(message),"</FONT>\n",file=log_file,append=T,sep="")
+		cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
+		q(save="no",status=1)
+}
+
+tab_in=tryCatch(
+	{
+		tab_in=read.table(file.in,header=TRUE,na.strings=nacode,sep="\t")
+		#column names may have been transformed if they contain space, begin with a digit, ...
+		first_line=readLines(file.in,n=1)
+		colnames(tab_in)=unlist(strsplit(first_line,"\t"))
+		tab_in
+	},
+	error=function(cond) {
+		log_error(message=cond)
+		return(NA)
+	},
+	warning=function(cond) {
+		log_error(message=cond)
+		return(NA)
+	},
+	finally={
+		#Do nothing special
+	}
+)
+
+if (ncol(tab_in)<2) {
+	log_error(simpleCondition("The table you want to use contains less than two columns."))
+}
+
+rn=as.character(tab_in[,1])
+if (length(rn)!=length(unique(rn))) {
+	duplicated_rownames=table(rn)
+	duplicated_rownames=duplicated_rownames[duplicated_rownames>1]
+	duplicated_rownames=names(duplicated_rownames)
+	if (length(duplicated_rownames)>3) {
+		duplicated_rownames=c(duplicated_rownames[1:3],"...")
+	}
+	duplicated_rownames=paste(duplicated_rownames,collapse=", ")
+	log_error(simpleCondition(
+		paste("The table you want to use have duplicated values in the first column (",
+			" - duplicated names : ",duplicated_rownames,sep="")
+	))
+}
+tab=tab_in[,-1]
+rownames(tab)=rn
+
+#Check all columns are numerical
+tab=as.matrix(tab)
+cell.with.na=c()
+for (i in 1:ncol(tab)) {
+	na.v1=is.na(tab[,i])
+	na.v2=is.na(as.numeric(tab[,i]))
+	if (sum(na.v1)!=sum(na.v2)) {
+		sel=which(na.v1!=na.v2)
+		sel=sel[1]
+		value=tab[sel,i]
+		log_error(simpleCondition(
+			paste("Column '",colnames(tab)[i],"' of your table contains non numerical values. Please check its content (on line #",sel," : value='",value,"').",sep="")
+		))
+	}
+	if (length(cell.with.na)==0 & sum(na.v1)!=0) {
+		cell.with.na=c(i,which(na.v1)[1])
+	}
+}
+
+Dataset <- tab_in
+
+##########################################################
 # Statistics table computation - - - - - - - - -
 
 if(stat & length(chosen.stat)!=0){
@@ -77,7 +163,7 @@ if(stat & length(chosen.stat)!=0){
 } # end if(stat)
 
 
-
+##########################################################
 # Graphics generation - - - - - - - - - - - - - 
 
 if(ploting & length(chosen.plot)!=0){
@@ -131,6 +217,13 @@ if(ploting & length(chosen.plot)!=0){
   
 } # end if(ploting)
 
+
+##########################################################
+# Treatment successfull
+##########################################################
+cat("<HTML><HEAD><TITLE>Summary statistics report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+cat("&#10003; Your process is successfull !<BR>",file=log_file,append=T,sep="")
+cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
 
 
 } # end of function

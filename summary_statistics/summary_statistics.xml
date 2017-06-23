@@ -12,8 +12,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
-<tool id="summary_statistics" name="Summary statistics">
-    <description>(beta version)</description>
+<tool id="summary_statistics" name="Summary statistics"  version="1.0.0">
+    <description>Produce simple descriptive statistics from a numeric table</description>
           <command interpreter="perl">summary_statistics.pl 
           --filein $file_in 
           --NAcode $NA_code          
@@ -26,6 +26,7 @@
              --plotingcondplotchosen  $ploting_cond.plot_chosen
           #end if
           --outputfile $outputfile  
+          --logfile $log_file 
            </command>
                   <inputs>
                         <param format="csv, txt" name="file_in" type="data" label="Input File"/>
@@ -73,6 +74,7 @@
                        </conditional>            
                   </inputs>
                   <outputs>
+	             <data format="html" name="log_file" label ="Summary_statistics.log"/>
                      <data format="html" name="outputfile" label ="Summary_statistics_report.html"/>
                   </outputs>
   <help>
