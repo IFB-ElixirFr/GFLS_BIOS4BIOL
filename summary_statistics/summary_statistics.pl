@@ -137,7 +137,7 @@ if ($NA_code eq ""){$NA_code = $NA_code2}else {$NA_code = $NA_code};
 $R->send("$cmd\n".
 	 "desc_fct(file.in='$working_dir/infile',".
          "         nacode='$NA_code',stat.out='$working_dir/stat_out',stat=$stat, ".
-         "         chosen.stat='$stat_chosen',ploting=$ploting,chosen.plot='$plot_chosen')");
+         "         chosen.stat='$stat_chosen',ploting=$ploting,chosen.plot='$plot_chosen',log_file='$logfile')");
 
 
 
