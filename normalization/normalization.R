@@ -30,13 +30,13 @@ output_file="out/table_out.txt",
 #Path to file containing messages for user if something bad happens
 log_file="log/normalization_report.html",
 #Boolean flag (0/1) indicating if variables are in line or in columns
-variable_in_line=1) {
+variable_in_line="1") {
 
 ##########################################################
 # Read and verify data
 ##########################################################
 #1°) Checks valids for all modules
-if (variable_in_line==1) {
+if (variable_in_line=="1") {
 	column_use="individual"
 	line_use="variable"
 } else {
@@ -168,8 +168,8 @@ if (transformation_method %in% c("log","TSS","TSS_CLR","DESeq2","Rlog")) {
 # End of data checks
 ##########################################################
 
-### Transpose if variable are not in line ###
-if (variable_in_line==FALSE) {
+### Transpose if variable are in line ###
+if (variable_in_line=="1") {
 	#Transpose matrix
 	tab=t(tab)
 }
@@ -253,7 +253,7 @@ for (idx_col in 1:ncol(tab)) {
 ##########################################################
 # Prepare and write output table
 ##########################################################
-if (variable_in_line==FALSE) {
+if (variable_in_line=="1") {
 	#Transpose matrix again
 	tab=t(tab)
 }
@@ -280,6 +280,6 @@ q(save="no",status=0)
 #Used for debug : LJO 6/3/2017
 #normalization()
 #setwd("H:/INRA/cati/groupe stats/Galaxy/normalisation")
-#normalization(transformation_method="Pareto",na_encoding="NA",input_file="datasets/valid - decathlon.txt",output_file="out/table_out.txt",log_file="log/normalization.html",variable_in_line=1)
-#normalization(transformation_method="Pareto",na_encoding="NA",input_file="datasets/invalid - NA for DESeq2_Rlog.txt",output_file="out/table_out.txt",log_file="log/normalization.html",variable_in_line=1)
+#normalization(transformation_method="Standard_score",na_encoding="NA",input_file="datasets/valid - decathlon.txt",output_file="out/table_out.txt",log_file="log/normalization.html",variable_in_line="0")
+#normalization(transformation_method="Pareto",na_encoding="NA",input_file="datasets/valid - decathlon.txt",output_file="out/table_out.txt",log_file="log/normalization.html",variable_in_line="1")
 
