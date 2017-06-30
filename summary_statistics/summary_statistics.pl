@@ -31,7 +31,7 @@ my $stat_chosen; #ex : "mean,sd,variance,median,quartile,decile"      #--statcon
 my $ploting;     #Valeurs possibles T or F                            #--plotingcondploting  $ploting_cond.ploting 
 my $plot_chosen; #ex : "boxplot,histogram,density,pairsplot,MAplot"   #--statcondplotchosen  $stat_cond.plot_chosen (IF)
 my $outputfile;                                                       #--outputfile $outputfile 
-
+my $logfile;                                                          #--logfile $logfile
 
 Getopt::Long::Configure( 'no_ignorecase', 'bundling' );
 GetOptions (
@@ -41,7 +41,8 @@ GetOptions (
 'statcondstatchosen=s' => \$stat_chosen,
 'plotingcondploting=s' => \$ploting, 
 'plotingcondplotchosen=s' => \$plot_chosen,
-'outputfile=s' => \$outputfile 
+'outputfile=s' => \$outputfile,
+'logfile=s' => \$logfile
 ) or die "Usage: Error in command line arguments\n";
 
 print STDOUT "Input file : $file_in \n
@@ -51,6 +52,7 @@ stat chosen : $stat_chosen \n
 ploting cond $ploting \n
 plot chosen : $plot_chosen \n
 outputfile : $outputfile  \n
+logfile : $logfile  \n
 ";
 
 # SETTING GLOBAL VARIABLES ################################################################################
@@ -135,7 +137,7 @@ if ($NA_code eq ""){$NA_code = $NA_code2}else {$NA_code = $NA_code};
 $R->send("$cmd\n".
 	 "desc_fct(file.in='$working_dir/infile',".
          "         nacode='$NA_code',stat.out='$working_dir/stat_out',stat=$stat, ".
-         "         chosen.stat='$stat_chosen',ploting=$ploting,chosen.plot='$plot_chosen')");
+         "         chosen.stat='$stat_chosen',ploting=$ploting,chosen.plot='$plot_chosen',log_file='$logfile')");
 
 
 
