@@ -5,6 +5,7 @@ use Statistics::R;
 use Cwd qw(abs_path);
 use File::Basename;
 use Getopt::Long;
+use POSIX;
 
 #Variables Globales ###########################
 defined $ENV{'MY_GALAXY_DIR'} || die "MY_GALAXY_DIR environment variable not defined";
@@ -112,7 +113,7 @@ $R->startR;
 
 #envoi du repertoire de travail
 $R->send(qq`setwd("$working_dir")`); 
-print STDOUT "1 - envoi du repertoire de travail\n";
+print STDOUT "1 - Envoi du repertoire de travail\n";
 
 #Read R script
 $cmd="";
@@ -122,7 +123,7 @@ while ($line=<IN>) {
 	$cmd.=$line;
 }
 close(IN);
-print STDOUT "2 - Read summary_statistics.R\n";
+print STDOUT "2 - Ouverture summary_statistics.R\n";
 
 #Declare R function
 #$R->send($cmd);
@@ -139,6 +140,11 @@ $R->send("$cmd\n".
          "         nacode='$NA_code',stat.out='$working_dir/stat_out',stat=$stat, ".
          "         chosen.stat='$stat_chosen',ploting=$ploting,chosen.plot='$plot_chosen',log_file='$logfile')");
 
+my $status = WEXITSTATUS($?);    # état de sortie
+if ($status==1) {    # vrai pour une fin non normale
+        print STDERR "Etat du process : $status \n";
+}
+print STDOUT "Etat du process : $status \n";
 
 
 
@@ -272,7 +278,7 @@ if ($#files!=-1) {
 }
 
 
-print STDOUT "5 - Fin de la ise en forme du rapport HTML\n";
+print STDOUT "5 - Fin de la mise en forme du rapport HTML\n";
 
 #Recuperation des outputs dans Galaxy
 my $cmdhtml ='';

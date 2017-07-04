@@ -58,7 +58,7 @@ What it does: Normalize your data with some well known methods
 * Parameters:
    - -Input count file: File containg table of values (separator="tab")
    - -Data transformation method: Possible values: "log", "DESeq2", "Rlog", "Standard_score", "TSS", "TSS_CLR"
-   - -Label used for Missing values: Missing value coding character
+   - -Label used for Missing values: Missing value coding character (if blanks, leave default 'NA')
    - -Variable in line or column: Indicate if variables are in lin or in columns
 
 

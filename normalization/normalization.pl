@@ -51,6 +51,12 @@ my $file_path = $cfg->my_path( 'workPath', 'MYWORKSPACE' );
 $r_bin = $cfg->my_path( 'toolsPath', 'R_BIN_PATH' );
 my $SCRIPTS_R_path = $cfg->my_path( 'workPath', 'SCRIPTS_R_path' );
 
+print STDOUT "\n";
+print STDOUT "cfg: $cfg\n";
+print STDOUT "ENV{Galaxy_config_file}: ",$ENV{"GALAXY_CONFIG_FILE"},"\n";
+print STDOUT "file_path: $file_path\n";
+print STDOUT "r_bin: $r_bin\n";
+print STDOUT "Scripts_r_path: $SCRIPTS_R_path\n";
 
 #Récuperer le numero (unique) de l'output
 my ($nb) = ($output_file=~/galaxy_dataset_(\d+)\.\S+$/);
