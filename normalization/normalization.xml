@@ -39,8 +39,8 @@
         </param>                     
         <param name="na_encoding" size="30" type="text" value="NA" label="Label used for Missing values"/> 
         <param name="variable_in_line" type="select" multiple="false" display="radio" label="Variable in line or column?">
-            <option value="TRUE">Line</option>
-            <option value="FALSE">Column</option>
+            <option value="1">Line</option>
+            <option value="0">Column</option>
         </param>
     </inputs>
     <outputs>
