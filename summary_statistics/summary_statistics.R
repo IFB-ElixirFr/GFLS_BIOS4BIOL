@@ -55,11 +55,7 @@ log_error=function(message="") {
 
 tab_in=tryCatch(
 	{
-		tab_in=read.table(file.in,header=TRUE,na.strings=nacode,sep="\t")
-		#column names may have been transformed if they contain space, begin with a digit, ...
-		first_line=readLines(file.in,n=1)
-		colnames(tab_in)=unlist(strsplit(first_line,"\t"))
-		tab_in
+		tab_in=read.table(file.in,header=TRUE,na.strings=nacode,sep="\t",check.names=FALSE,quote="\"")
 	},
 	error=function(cond) {
 		log_error(message=cond)
