@@ -12,7 +12,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
-<tool id="normalization" name="Normalization" version="0.2.0">
+<tool id="normalization" name="Normalization" version="1.0.0">
     <description>Normalize your data with some well known methods</description>
     <command interpreter="perl">
     normalization.pl 
