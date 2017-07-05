@@ -15,32 +15,32 @@
 <tool id="h_clust" name="Hierarchical clustering">
     <description>(documentation available)</description>
     <command interpreter="perl">h_clust.pl
-    $count_file
+    "$count_file"
     #if $conditional.selector =="YES":
-          $conditional.group_member_file
+          "$conditional.group_member_file"
     #else
-          $conditional.selector  
+          "$conditional.selector"
     #end if
-    $output_file
-    $log_file
-    $distance_method
-    $agglomeration_method
-    $sample_clustering
+    "$output_file"
+    "$log_file"
+    "$distance_method"
+    "$agglomeration_method"
+    "$sample_clustering"
     "$select"
     "$plot_title"
     "$xlab"
     "$ylab"
     #if $moreoption.more =="YES":
-          $moreoption.width
-          $moreoption.height
-          $moreoption.ppi
+          "$moreoption.width"
+          "$moreoption.height"
+          "$moreoption.ppi"
     #end if      
     #if $moreoption.more =="NO":
           "7"
           "7"
           "300"
     #end if
-    $NA_code
+    "$NA_code"
 
     </command>
     <inputs>                  

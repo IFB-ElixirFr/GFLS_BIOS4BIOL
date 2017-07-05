@@ -15,18 +15,18 @@
 <tool id="summary_statistics" name="Summary statistics"  version="1.0.0">
     <description>Produce simple descriptive statistics from a numeric table</description>
           <command interpreter="perl">summary_statistics.pl 
-          --filein $file_in 
-          --NAcode $NA_code          
-          --statcondstat $stat_cond.stat
+          --filein "$file_in"
+          --NAcode "$NA_code"
+          --statcondstat "$stat_cond.stat"
           #if $stat_cond.stat =="T":
-             --statcondstatchosen $stat_cond.stat_chosen
+             --statcondstatchosen "$stat_cond.stat_chosen"
           #end if 
-          --plotingcondploting  $ploting_cond.ploting 
+          --plotingcondploting  "$ploting_cond.ploting"
           #if $ploting_cond.ploting =="T":
-             --plotingcondplotchosen  $ploting_cond.plot_chosen
+             --plotingcondplotchosen  "$ploting_cond.plot_chosen"
           #end if
-          --outputfile $outputfile  
-          --logfile $log_file 
+          --outputfile "$outputfile"
+          --logfile "$log_file"
            </command>
                   <inputs>
                         <param format="csv, txt" name="file_in" type="data" label="Input File"/>
