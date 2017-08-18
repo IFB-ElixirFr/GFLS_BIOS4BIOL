@@ -1,31 +1,31 @@
 ###########################################################################
 #            Quality controls and descriptive analysis plots              #
 ###########################################################################
-# Authors : Melanie Petera                                                #
+# Authors: Melanie Petera                                                 #
 ###########################################################################
 # Description : This script allows various displays of data for quality   #
 #      control and descriptive analysis. The input data is a matrix of    #
 #      quantitative variables, and it returns chosen plots in png format  #
 #      and a table with chosen statistics.                                #
 ###########################################################################
-# Specific R packages :                                                   #
+# Specific R packages:                                                    #
 #      - edgeR (needed for MA plots)                                      #
 ###########################################################################
-# Version 1 (06-06-2014) : display boxplot, histogram, density plot,      #
+# Version 1 (06-06-2014): display boxplot, histogram, density plot,       #
 #      MA plot, pairs plot, and return a table of chosen statistics       #
 #      (quantiles, mean, variance, standard error of the mean)            #
 ###########################################################################
         
 desc_fct <- function(file.in, nacode, stat.out, stat, chosen.stat, ploting, chosen.plot, log_file){
-  # Parameters :
-  # - file.in : count matrix input (tab-separated) [file name]
-  # - nacode : missing value coding character
-  # - stat.out : results file of chosen statistics [file name]
-  # - stat : should statistics be calculated ? (TRUE/FALSE)
-  # - chosen.stat : character listing the chosen statistics (comma-separated)
-  # - ploting : should graphics be displayed ? (TRUE/FALSE)
-  # - chosen.plot : character listing the chosen plots (comma-separated)
-  # - log_file : a log file [file name]
+  # Parameters:
+  # - file.in: count matrix input (tab-separated) [file name]
+  # - nacode: missing value coding character
+  # - stat.out: results file of chosen statistics [file name]
+  # - stat: should statistics be calculated? (TRUE/FALSE)
+  # - chosen.stat: character listing the chosen statistics (comma-separated)
+  # - ploting: should graphics be displayed? (TRUE/FALSE)
+  # - chosen.plot: character listing the chosen plots (comma-separated)
+  # - log_file: a log file [file name]
 
 
 ##########################################################
@@ -48,7 +48,7 @@ log_error=function(message="") {
 		cat("  <LI> except for first line and first column, table should contain a numeric value</LI>\n",file=log_file,append=T,sep="")
 		cat("  <LI> this value may contain character '.' as decimal separator or '",nacode,"' for missing values</LI>\n",file=log_file,append=T,sep="")
 		cat("</UL>\n",file=log_file,append=T,sep="")
-		cat("-------<BR>\nError messages recieved :<BR><FONT color=red>\n",conditionMessage(message),"</FONT>\n",file=log_file,append=T,sep="")
+		cat("-------<BR>\nError messages recieved:<BR><FONT color=red>\n",conditionMessage(message),"</FONT>\n",file=log_file,append=T,sep="")
 		cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
 		q(save="no",status=1)
 }
@@ -85,7 +85,7 @@ if (length(rn)!=length(unique(rn))) {
 	duplicated_rownames=paste(duplicated_rownames,collapse=", ")
 	log_error(simpleCondition(
 		paste("The table you want to use have duplicated values in the first column (",
-			" - duplicated names : ",duplicated_rownames,sep="")
+			" - duplicated names: ",duplicated_rownames,sep="")
 	))
 }
 tab=tab_in[,-1]
@@ -102,7 +102,7 @@ for (i in 1:ncol(tab)) {
 		sel=sel[1]
 		value=tab[sel,i]
 		log_error(simpleCondition(
-			paste("Column '",colnames(tab)[i],"' of your table contains non numerical values. Please check its content (on line #",sel," : value='",value,"').",sep="")
+			paste("Column '",colnames(tab)[i],"' of your table contains non numerical values. Please check its content (on line #",sel,": value='",value,"').",sep="")
 		))
 	}
 	if (length(cell.with.na)==0 & sum(na.v1)!=0) {
@@ -218,7 +218,7 @@ if(ploting & length(chosen.plot)!=0){
 # Treatment successfull
 ##########################################################
 cat("<HTML><HEAD><TITLE>Summary statistics report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
-cat("&#10003; Your process is successfull !<BR>",file=log_file,append=T,sep="")
+cat("&#10003; Your process is successfull!<BR>",file=log_file,append=T,sep="")
 cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
 
 
