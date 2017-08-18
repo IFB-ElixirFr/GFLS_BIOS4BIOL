@@ -198,7 +198,10 @@ if(ploting & length(chosen.plot)!=0){
   }
   
   if("MAplot" %in% graph.list){
-    if(min(Dataset[,-1],na.rm=TRUE)<0){stop("\n----\nError : MAplot only avaible for positive variables\n----")}
+    if(min(Dataset[,-1],na.rm=TRUE)<0){
+	  cat("\n----\nError: MAplot only available for positive variables\n----",file=log_file,append=T,sep="")
+	  q(save="no",status=1)
+	}
     library(edgeR)
     for(ech in 2:(ncol(Dataset)-1)){
       for(ech2 in (ech+1):ncol(Dataset)){
