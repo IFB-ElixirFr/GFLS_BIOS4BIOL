@@ -1,4 +1,4 @@
-<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-03-22">
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-08-21">
 
 	<description> PCA using FactoMineR package</description>
     
@@ -11,7 +11,7 @@
                 pcaFactoMineR_galaxy.R
 
                 datafile $datafile
-                scaleoption $scaleoption
+                samplemetadata $samplemetadata
                 npc $npc
                 #if str( $condPlot.plotOptions ) == "yes":
                   plotev $condPlot.plotev
@@ -58,6 +58,7 @@
                   pcv 2
                   tc 1
                 #end if
+                varinline $varinline
 
                 ## Outputs
                 logOut $logOut
@@ -67,13 +68,8 @@
 
   <inputs>
 
-    <param name="datafile" type="data" label="Data matrix" help="First column is a qualitative variable" format="tabular" />
-
-    <param name="scaleoption" label="Scaling method" type="select" help="Variable standardisation">
-        <option value="none"> None </option>
-        <option value="uv" selected="True"> Unit variance </option>
-        <option value="pareto"> Pareto </option>
-    </param>
+    <param name="datafile" type="data" label="Data matrix" help="First column is a qualitative variable" format="tabular,csv" />
+    <param name="samplemetadata" type="data" label="Biological Factors" help="File with Biological Factor(s)" format="tabular,csv" />
 
     <param name="npc" label="Number of principal components" type="integer" value="2" min="2" help=""/>
 
@@ -107,7 +103,7 @@
                             <option value="yes"> Yes </option>
                         </param>
                         <when value="yes">
-                            <param name="factor" label="Name of the column of the data matrix corresponding to the qualitative variable" type="text" value="None" help=""/>
+  ctoMineR.xml                           <param name="factor" label="Name of the column of the data matrix corresponding to the qualitative variable" type="text" value="None" help=""/>
                         </when>
                         <when value="no"></when>
                     </conditional>
@@ -152,10 +148,15 @@
         <when value="no"></when>
     </conditional>
 
+        <param name="varinline" type="select" multiple="false" display="radio" label="Variable in line or column?">
+            <option value="1">Line</option>
+            <option value="0">Column</option>
+        </param>
+
   </inputs>
   
   <outputs>
-    <data name="logOut" format="txt" label="${tool.name}_log" />
+    <data name="logOut" format="html" label="${tool.name}.log" />
     <data name="outgraphpdf" label="${tool.name}_graph" format="pdf" />
   </outputs>
 
