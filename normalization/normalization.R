@@ -63,11 +63,7 @@ log_error=function(message="") {
 
 tab_in=tryCatch(
 	{
-		tab_in=read.csv(file=input_file,sep="\t",header=T,quote="",na.strings=na_encoding)
-		#column names may have been transformed if they conatin space, begin with a digit, ...
-		first_line=readLines(input_file,n=1)
-		colnames(tab_in)=unlist(strsplit(first_line,"\t"))
-		tab_in
+		tab_in=read.table(file=input_file,sep="\t",header=T,quote="\"",na.strings=na_encoding,check.names=FALSE)
 	},
 	error=function(cond) {
 		log_error(message=cond)

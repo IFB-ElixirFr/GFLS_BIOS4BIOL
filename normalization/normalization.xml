@@ -12,16 +12,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
-<tool id="normalization" name="Normalization" version="0.2.0">
+<tool id="normalization" name="Normalization" version="1.0.0">
     <description>Normalize your data with some well known methods</description>
     <command interpreter="perl">
     normalization.pl 
-    $input_file
-    $transformation_method
-    $na_encoding
-    $output_file
-    $log_file
-    $variable_in_line
+    "$input_file"
+    "$transformation_method"
+    "$na_encoding"
+    "$output_file"
+    "$log_file"
+    "$variable_in_line"
     </command>
     <inputs>                  
         <param format="tabular,csv,txt" name="input_file" type="data" label="Input count file"/>
@@ -58,7 +58,7 @@ What it does: Normalize your data with some well known methods
 * Parameters:
    - -Input count file: File containg table of values (separator="tab")
    - -Data transformation method: Possible values: "log", "DESeq2", "Rlog", "Standard_score", "TSS", "TSS_CLR"
-   - -Label used for Missing values: Missing value coding character (if blanks, leave default 'NA')
+   - -Label used for Missing values: Missing value coding character 
    - -Variable in line or column: Indicate if variables are in lin or in columns
 
 
