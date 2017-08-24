@@ -1,4 +1,4 @@
-<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-08-21">
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-08-24">
 
 	<description> PCA using FactoMineR package</description>
     
@@ -149,8 +149,8 @@
     </conditional>
 
         <param name="varinline" type="select" multiple="false" display="radio" label="Variable in line or column?">
-            <option value="1">Line</option>
-            <option value="0">Column</option>
+            <option value="yes">Line</option>
+            <option value="no">Column</option>
         </param>
 
   </inputs>
