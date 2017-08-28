@@ -65,6 +65,7 @@ pca.var <- function(res.PCA,contribmin=c(0,0),mt,cexc,linev=3,plotax=c(1,2))
   # toutes les variables.
   selvar=c(which(res.PCA$var$contrib[,plotax[1]]>contribmin[1]),
            which(res.PCA$var$contrib[,plotax[2]]>contribmin[2]))	 
+  selvar <- selvar[!duplicated(selvar)]
   fres.PCA <- res.PCA
   fres.PCA$var$coord <- res.PCA$var$coord[selvar,]
   fres.PCA$var$cor <- res.PCA$var$cor[selvar,]
@@ -96,22 +97,8 @@ pca.indiv <- function(res.PCA,hb,facteur=NULL,contribmin=c(0,0),mt,cexc,linev=3,
   #### Plot l'espace des individus
   if (hb ==1 ) 
   {
-    
-    print("pca.indiv")
-    print("pca.indiv1")
-    print(facteur)
-    print("pca.indiv2")
-    print(res.PCA$ind$coord)
-    print("pca.indiv3")
     aa <- cbind.data.frame(facteur,res.PCA$ind$coord)
-
-    print(aa)
     bb <- coord.ellipse(aa,bary=TRUE,level.conf=0.99) 
-
-
-###    Error in if (scale[1] > 0) r <- r/scale[1] : 
-###      missing value where TRUE/FALSE needed
-###      Calls: pca.main ... pca.indiv -> coord.ellipse -> <Anonymous> -> ellipse.default
 
     colVal = rainbow(length(unique(facteur)))
     plot.PCA(fres.PCA,choix="ind",habillage=1,cex=cexc,axes=plotax,title=NULL,invisible="quali")
@@ -139,6 +126,8 @@ pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle=NULL,
                      variable_in_line=0,log_file) 
 {
 
+  res<-NULL
+
   ## Variable in line or column?
   if (variable_in_line==1){
         column_use="individual"
@@ -147,12 +136,11 @@ pca.main <- function(ids,bioFact,ncp,hb=0,minContribution=c(0,0),mainTitle=NULL,
         line_use="individual"
         column_use="variable"
   }
-
+  
 
   ## Fonction d'écriture du fichier de log
 
 log_error=function(message="") {
-  print(log_file)
   cat("<HTML><HEAD><TITLE>PCA FactoMineR report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
   cat("&#9888 An error occurred while trying to read your table.\n<BR>",file=log_file,append=T,sep="")
   cat("Please check that:\n<BR>",file=log_file,append=T,sep="")
@@ -182,7 +170,6 @@ verif_data=function(){
     tab=as.matrix(data)
     cell.with.na=c()
     colstart=2-variable_in_line #
-    #for (i in 1:ncol(tab)) {
     for (i in colstart:ncol(tab)) {
       na.v1=is.na(tab[,i])
       na.v2=is.na(as.numeric(tab[,i]))
@@ -214,27 +201,20 @@ verif_data=function(){
     Tids <- data.frame(rownames(Tids), Tids)
     colnames(Tids)[1] <- "Sample"
   }
+  print(Tids)
+  rownames(Tids) <- as.character(Tids[,1])
+  print(Tids)
+
    
   ## suivant la presence variable qualitative (hb=1),l'appel a la fonction PCA est modifié
   if (hb==1) 
   {
-    print("hb1")
-	  ## Concatenation
+    ## Concatenation
     data <- merge(bioFact,Tids,by.x=1,by.y=1)
-    #data <- merge(Tids,bioFact,by.x=1,by.y=1)
-    print("lllllll1")
-    #print(data)
-	  ## Suppression identifiants individus
-	  data <- data[,-1]
-    print("llllll2")
-    print(data)
-	  data[,1] <- as.factor(data[,1])
-    print("llllll3")
-    print(data)
-	  facteur <- as.factor(bioFact[,-1]) #facteur? bioFact à la place?
-    print("llllll4")
-    print(facteur)
-    print("llllll5")
+    ## Suppression identifiants individus
+    data <- data[,-1]
+    data[,1] <- as.factor(data[,1])
+    facteur <- as.factor(bioFact[,-1]) 
     verif_data()   
 
     ## Analyse
@@ -242,12 +222,8 @@ verif_data=function(){
   }
   else 
   { 
-  print("hb2")
-	## Suppression identifiants individus
-	data <- Tids[,-1]
-   print("lllllll1")
-   print(data)
-   
+    ## Suppression identifiants individus
+    data <- Tids[,-1]
     verif_data()
 
     ## Analyse
@@ -276,7 +252,7 @@ verif_data=function(){
     if (hb==1)
     { 
       par(mfrow=c(1,1))
-      pca.indiv(res,hb=1,facteur=bioFact,contribmin=minContribution,mt=mainTitle,cexc=textSize,plotax=principalPlane) 
+      pca.indiv(res,hb=1,facteur=facteur,contribmin=minContribution,mt=mainTitle,cexc=textSize,plotax=principalPlane) 
     }
   }
   if (loadingplot==1) 
@@ -287,10 +263,16 @@ verif_data=function(){
   
   if (eigenplot==1 || contribplot==1 || scoreplot==1 || loadingplot==1)
     dev.off()
-  
-  return(res)
+
+
+  if (!is.null(res)){
+    cat("<HTML><HEAD><TITLE>PCA FactoMineR report report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+    cat("&#10003; Your process is successfull !<BR>",file=log_file,append=T,sep="")
+    cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
+
+
+
+  }
 }
 
 ###############################################################################################
-
-

@@ -39,8 +39,6 @@ source_local <- function(fname)
 }
 
 #Import the different functions used for PCA
-#sarah maman smaman ajout path 
-#source_local("/usr/local/bioinfo/src/galaxy-test/galaxy-dist/tools/R_ACP_CATIBIOSDBIOL/pca_FactoMiner_galaxy_functions.R")
  source_local("pcaFactoMineR_functions.R")
 
 ##------------------------------
@@ -56,31 +54,17 @@ flagC <- "\n"
 argLs <- parseCommandArgs(evaluate=FALSE)
 
 log <- argLs[["logOut"]]
-print(log)
   # Inputs
 	# Matrice donnees
 data <- read.table(argLs[["datafile"]],header=TRUE,sep="\t",dec=".",check.names = FALSE)
 rownames(data) <- data[,1]
-print(rownames(data))
-##data <- data[,-1]
-##print(data)
 
 	# Facteur biologique
 hb=0
 if(argLs[["factor"]] != "None")
 {
-##  facteur <- data[,1]
-##  print(facteur)
-##  if(mode(facteur) != 'character')
-##  {
-##    stop("\n First column must be a factor (variable qualitative)\n")
-##  }
-##  facteur <- as.factor(facteur)
-##  data[,1] <- as.factor(data[,1])
-
   metadatasample <- read.table(argLs[["samplemetadata"]],header=TRUE,sep="\t",dec=".",check.names = FALSE)
   rownames(metadatasample) <- metadatasample[,1]
-  print(rownames(metadatasample))
 # Test si le  facteur choisi est bien dans le samplemetadata
   if (any(argLs[["factor"]] %in% colnames(metadatasample)) ==FALSE)
   {
@@ -90,13 +74,8 @@ if(argLs[["factor"]] != "None")
 # On cree une dataframe avec l’id des samples (1ere colonne de metadatasample+ le facteur choisi 
 # qui est en colonne “colfactor”
   colfactor <- which(argLs[["factor"]]  == colnames(metadatasample))
-  print("hhhh")
-  print(colfactor)
   facteur <- data.frame(metadatasample[,1], metadatasample[[colfactor]])
-  print(facteur)
   facteur[[2]] <- as.factor(facteur[[2]])
-  print(facteur[[2]]) ###
-  print("iiii")
   hb=1
 }
 
