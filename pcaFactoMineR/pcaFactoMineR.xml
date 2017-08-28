@@ -1,4 +1,4 @@
-<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-03-22">
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-08-28">
 
 	<description> PCA using FactoMineR package</description>
     
@@ -11,7 +11,6 @@
                 pcaFactoMineR_galaxy.R
 
                 datafile $datafile
-                scaleoption $scaleoption
                 npc $npc
                 #if str( $condPlot.plotOptions ) == "yes":
                   plotev $condPlot.plotev
@@ -20,12 +19,15 @@
                   #if str( $condPlot.condScore.plotindiv ) == "yes":
                     colorfactor $condPlot.condScore.condColor.colorfactor
                     #if str( $condPlot.condScore.condColor.colorfactor ) == "yes":
+                      samplemetadata $condPlot.condScore.condColor.samplemetadata
                       factor $condPlot.condScore.condColor.factor
                     #else :
+                      samplemetadata "None"
                       factor "None"
                     #end if
                   #else :
                     colorfactor yes
+                    samplemetadata "None"
                     factor "None"
                   #end if
                   plotvar $condPlot.condLoading.plotvar
@@ -41,6 +43,7 @@
                   plotcontrib yes
                   plotindiv yes
                   colorfactor no
+                  samplemetadata "None"
                   factor "None"
                   plotvar yes
                   contribh 0
@@ -58,6 +61,7 @@
                   pcv 2
                   tc 1
                 #end if
+                varinline $varinline
 
                 ## Outputs
                 logOut $logOut
@@ -67,13 +71,8 @@
 
   <inputs>
 
-    <param name="datafile" type="data" label="Data matrix" help="First column is a qualitative variable" format="tabular" />
+    <param name="datafile" type="data" label="Data matrix" help="Precise below if the variable are in line or column" format="tabular,csv" />
 
-    <param name="scaleoption" label="Scaling method" type="select" help="Variable standardisation">
-        <option value="none"> None </option>
-        <option value="uv" selected="True"> Unit variance </option>
-        <option value="pareto"> Pareto </option>
-    </param>
 
     <param name="npc" label="Number of principal components" type="integer" value="2" min="2" help=""/>
 
@@ -107,6 +106,7 @@
                             <option value="yes"> Yes </option>
                         </param>
                         <when value="yes">
+                            <param name="samplemetadata" type="data" label="Factor file" help="File with Biological Factor(s)" format="tabular,csv" />
                             <param name="factor" label="Name of the column of the data matrix corresponding to the qualitative variable" type="text" value="None" help=""/>
                         </when>
                         <when value="no"></when>
@@ -152,10 +152,15 @@
         <when value="no"></when>
     </conditional>
 
+        <param name="varinline" type="select" multiple="false" display="radio" label="Variable in line or column?">
+            <option value="yes">Line</option>
+            <option value="no">Column</option>
+        </param>
+
   </inputs>
   
   <outputs>
-    <data name="logOut" format="txt" label="${tool.name}_log" />
+    <data name="logOut" format="html" label="${tool.name}.log" />
     <data name="outgraphpdf" label="${tool.name}_graph" format="pdf" />
   </outputs>
 
@@ -222,11 +227,6 @@ Data matrix
 	| see "Input files" section above
 	| 
 
-Scaling method
-	| Standardisation to apply to the variables
-	| None, Unit variance (default value) or Pareto scaling
-	|
-
 Number of principal component
 	| How many principal components include in the PCA model?
 	|
@@ -251,8 +251,12 @@ Factor color
 	| Colouring of observations. Default value is "Yes"
 	|
 
+Factor file
+	| File containing the biological factor (qualitative variable) to color observations according to levels of this
+	|
+
 Factor
-	| Name of the column containing the biological factor (qualitative variable) to color observations according to levels of this
+	| Name of the column containing the biological factor 
 	|
 
 Loading plot
@@ -260,7 +264,8 @@ Loading plot
 	|
 
 Contribution threshold (abscissa)
-	| Contribution threshold for loading plot: principal component displayed in the abscissa axis
+	| Contribution threshold for loading plot: principal component displayed i0.4
+−0.3n the abscissa axis
 	|
 
 Contribution threshold (ordinate)
@@ -286,6 +291,10 @@ Horizontal Principal Component
 Vertical Principal Component
 	| Principal component displayed on the ordinate
 	|
+
+Variable Line/Column
+        | Variable in line or in column in the input file. Default value is "Line" 
+        |
 
 ------------
 Output files

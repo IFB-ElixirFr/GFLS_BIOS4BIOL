@@ -39,8 +39,6 @@ source_local <- function(fname)
 }
 
 #Import the different functions used for PCA
-#sarah maman smaman ajout path 
-#source_local("/usr/local/bioinfo/src/galaxy-test/galaxy-dist/tools/R_ACP_CATIBIOSDBIOL/pca_FactoMiner_galaxy_functions.R")
  source_local("pcaFactoMineR_functions.R")
 
 ##------------------------------
@@ -56,26 +54,28 @@ flagC <- "\n"
 argLs <- parseCommandArgs(evaluate=FALSE)
 
 log <- argLs[["logOut"]]
-
   # Inputs
 	# Matrice donnees
 data <- read.table(argLs[["datafile"]],header=TRUE,sep="\t",dec=".",check.names = FALSE)
 rownames(data) <- data[,1]
-print(rownames(data))
-data <- data[,-1]
-print(data)
 
 	# Facteur biologique
 hb=0
 if(argLs[["factor"]] != "None")
 {
-  facteur <- data[,1]
-  if(mode(facteur) != 'character')
+  metadatasample <- read.table(argLs[["samplemetadata"]],header=TRUE,sep="\t",dec=".",check.names = FALSE)
+  rownames(metadatasample) <- metadatasample[,1]
+# Test si le  facteur choisi est bien dans le samplemetadata
+  if (any(argLs[["factor"]] %in% colnames(metadatasample)) ==FALSE)
   {
-    stop("\n First column must be a factor (variable qualitative)\n")
+    #log_error(simpleCondition("Factor is not in samplemetadata."))
+    stop("\n Factor is not in samplemetadata \n")
   }
-  facteur <- as.factor(facteur)
-  data[,1] <- as.factor(data[,1])
+# On cree une dataframe avec l’id des samples (1ere colonne de metadatasample+ le facteur choisi 
+# qui est en colonne “colfactor”
+  colfactor <- which(argLs[["factor"]]  == colnames(metadatasample))
+  facteur <- data.frame(metadatasample[,1], metadatasample[[colfactor]])
+  facteur[[2]] <- as.factor(facteur[[2]])
   hb=1
 }
 
@@ -84,6 +84,7 @@ eigenplot=0
 contribplot=0
 scoreplot=0
 loadingplot=0
+variable_in_line=0
 
 if (argLs[["plotev"]]=="yes")
 {
@@ -107,13 +108,22 @@ if (argLs[["plotvar"]]=="yes")
   loadingplot=1
 }
 
+if (argLs[["varinline"]]=="yes")
+{
+  variable_in_line=1 
+}
+
+
+
+
+
   # Outputs
 nomGraphe <- argLs[["outgraphpdf"]]
-res.pca <- pca.main(ids=data,bioFact=facteur,ncp=argLs[["npc"]],hb=hb,scalingMethod=argLs[["scaleoption"]],
+res.pca <- pca.main(ids=data,bioFact=facteur,ncp=argLs[["npc"]],hb=hb,
                     minContribution=c(argLs[["contribh"]],argLs[["contribv"]]),mainTitle=argLs[["title"]],
                     textSize=argLs[["tc"]],principalPlane=c(argLs[["pch"]],argLs[["pcv"]]),eigenplot=eigenplot,
                     contribplot=contribplot,scoreplot=scoreplot,loadingplot=loadingplot,
-                    nomGraphe=argLs[["outgraphpdf"]])
+                    nomGraphe=argLs[["outgraphpdf"]],variable_in_line=variable_in_line,log_file=log)
 
 
 ################################# fin  ##############################################
