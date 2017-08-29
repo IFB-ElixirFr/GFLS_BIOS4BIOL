@@ -1,4 +1,4 @@
-<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-08-28">
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-08-29">
 
 	<description> PCA using FactoMineR package</description>
     

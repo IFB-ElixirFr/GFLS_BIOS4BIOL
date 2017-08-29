@@ -191,19 +191,14 @@ verif_data=function(){
   ## Disposition matrice de donnees
     ## Transposition si variables en ligne
   Tids <- ids
-
   if (variable_in_line == 1)
   {
-    
-    rownames(Tids) <- Tids[,1]
     Tids <- Tids[,-1]
     Tids <- t(Tids)
     Tids <- data.frame(rownames(Tids), Tids)
     colnames(Tids)[1] <- "Sample"
   }
-  print(Tids)
   rownames(Tids) <- as.character(Tids[,1])
-  print(Tids)
 
    
   ## suivant la presence variable qualitative (hb=1),l'appel a la fonction PCA est modifié
@@ -211,6 +206,7 @@ verif_data=function(){
   {
     ## Concatenation
     data <- merge(bioFact,Tids,by.x=1,by.y=1)
+    rownames(data) <- as.character(data[,1])
     ## Suppression identifiants individus
     data <- data[,-1]
     data[,1] <- as.factor(data[,1])
