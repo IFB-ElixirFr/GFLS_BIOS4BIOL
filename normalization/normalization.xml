@@ -12,16 +12,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
-<tool id="normalization" name="Normalization" version="1.0.0">
+<tool id="normalization" name="Normalization" version="1.0.1">
     <description>Normalize your data with some well known methods</description>
-    <command interpreter="perl">
-    normalization.pl 
-    "$input_file"
-    "$transformation_method"
-    "$na_encoding"
-    "$output_file"
-    "$log_file"
-    "$variable_in_line"
+    <requirements>
+        <requirement type="binary"> R </requirement>
+    </requirements>
+
+    <command interpreter="Rscript">
+    normalization_galaxy.R
+    input_file "$input_file"
+    transformation_method "$transformation_method"
+    na_encoding "$na_encoding"
+    output_file "$output_file"
+    log_file "$log_file"
+    variable_in_line "$variable_in_line"
     </command>
     <inputs>                  
         <param format="tabular,csv,txt" name="input_file" type="data" label="Input count file"/>

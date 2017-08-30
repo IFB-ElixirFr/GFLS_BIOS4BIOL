@@ -13,7 +13,7 @@
 # Authors : luc.jouneau(at)inra.fr
 #	    valentin.marcon(at)inra.fr
 # Version : 0.9
-# Date    : 10/3/2017
+# Date    : 30/08/2017
 #-----------------------------------------------------------------
 
 normalization=function(
