@@ -15,7 +15,9 @@
 <tool id="normalization" name="Normalization" version="1.0.1">
     <description>Normalize your data with some well known methods</description>
     <requirements>
-        <requirement type="binary"> R </requirement>
+        <requirement type="package">R</requirement>
+        <requirement type="package">bioconductor-deseq2</requirement>
+        <requirement type="package">r-batch</requirement>
     </requirements>
 
     <command interpreter="Rscript">

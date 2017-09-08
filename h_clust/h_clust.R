@@ -103,7 +103,6 @@ h_clust <- function(input_file,
   		cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
   		q(save="no",status=1)
   }
-  
   tab_in=tryCatch(
   	{
   		tab_in=read.table(file=input_file,sep="\t",header=T,quote="\"",na.strings=na_encoding,check.names=FALSE)

@@ -28,7 +28,7 @@ source_local <- function(fname)
 	source(paste(base_dir, fname, sep="/"))
 }
 
-#Import the different functions used for PCA
+#Import the different functions used for Normalization
 source_local("normalization.R")
 
 ##------------------------------

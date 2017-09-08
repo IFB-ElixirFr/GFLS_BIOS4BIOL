@@ -14,19 +14,29 @@
 #-->
 <tool id="summary_statistics" name="Summary statistics"  version="1.0.0">
     <description>Produce simple descriptive statistics from a numeric table</description>
-          <command interpreter="perl">summary_statistics.pl 
-          --filein "$file_in"
-          --NAcode "$NA_code"
-          --statcondstat "$stat_cond.stat"
+    <requirements>
+        <requirement type="package">R</requirement>
+        <requirement type="package">bioconductor-edger</requirement>
+        <requirement type="package">bioconductor-limma</requirement>
+        <requirement type="package">r-batch</requirement>
+        <requirement type="package">r-locfit</requirement>
+    </requirements>
+
+
+          <command interpreter="Rscript">
+          summary_statistics_galaxy.R
+          file_in "$file_in"
+          NA_code "$NA_code"
+          stat "$stat_cond.stat"
           #if $stat_cond.stat =="T":
-             --statcondstatchosen "$stat_cond.stat_chosen"
-          #end if 
-          --plotingcondploting  "$ploting_cond.ploting"
-          #if $ploting_cond.ploting =="T":
-             --plotingcondplotchosen  "$ploting_cond.plot_chosen"
+             stat_chosen "$stat_cond.stat_chosen"
           #end if
-          --outputfile "$outputfile"
-          --logfile "$log_file"
+          ploting  "$ploting_cond.ploting"
+          #if $ploting_cond.ploting =="T":
+             plot_chosen "$ploting_cond.plot_chosen"
+          #end if
+          outputfile "$outputfile"
+          log_file "$log_file"
            </command>
                   <inputs>
                         <param format="csv, txt" name="file_in" type="data" label="Input File"/>

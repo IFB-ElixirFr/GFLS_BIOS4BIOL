@@ -1,9 +1,12 @@
-<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-08-29">
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-09-04">
 
 	<description> PCA using FactoMineR package</description>
     
   	<requirements>
-		<requirement type="binary"> R </requirement>
+            <requirement type="package">R</requirement>
+            <requirement type="package">bioconductor-pcamethods</requirement>
+            <requirement type="package" version="r3.3.1_0">r-factominer</requirement>
+            <requirement type="package">r-batch</requirement>
 	</requirements>
 
 	<command interpreter="Rscript">
