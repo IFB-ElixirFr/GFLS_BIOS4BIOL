@@ -18,12 +18,6 @@
 
 
 ##------------------------------
-## Options
-##------------------------------
-strAsFacL <- options()$stringsAsFactors
-options(stringsAsFactors = FALSE)
-
-##------------------------------
 ## Libraries laoding
 ##------------------------------
 # For parseCommandArgs function
@@ -47,7 +41,8 @@ argLs <- parseCommandArgs(evaluate=FALSE)
 
 desc_fct(file.in=argLs[["file_in"]],
 nacode=argLs[["NA_code"]],
-stat.out=argLs[["outputfile"]],
+table_file=argLs[["table_file"]],
+graph_file=argLs[["graph_file"]],
 stat=argLs[["stat"]],
 chosen.stat=argLs[["stat_chosen"]],
 ploting=argLs[["ploting"]],

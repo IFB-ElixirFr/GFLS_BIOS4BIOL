@@ -16,11 +16,12 @@
 #      (quantiles, mean, variance, standard error of the mean)            #
 ###########################################################################
         
-desc_fct <- function(file.in, nacode, stat.out, stat, chosen.stat, ploting, chosen.plot, log_file){
+desc_fct <- function(file.in, nacode, table_file, graph_file, stat, chosen.stat, ploting, chosen.plot, log_file){
   # Parameters:
   # - file.in: count matrix input (tab-separated) [file name]
   # - nacode: missing value coding character
-  # - stat.out: results file of chosen statistics [file name]
+  # - table_file: results file containing table of chosen statistics [file name]
+  # - graph_file: pdf file containing plots for chosen statistics [file name]
   # - stat: should statistics be calculated? (TRUE/FALSE)
   # - chosen.stat: character listing the chosen statistics (comma-separated)
   # - ploting: should graphics be displayed? (TRUE/FALSE)
@@ -32,28 +33,25 @@ desc_fct <- function(file.in, nacode, stat.out, stat, chosen.stat, ploting, chos
 # Read and verify data - - - - - - - - - - - - 
 # Checks valids for all modules
 
-
-library(limma)#######################VAL
-
+log_error=function(message="") {
 	line_use="line"
 	column_use="column"
 
-log_error=function(message="") {
-		cat("<HTML><HEAD><TITLE>Normalization report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
-		cat("&#9888 An error occurred while trying to read your table.\n<BR>",file=log_file,append=T,sep="")
-		cat("Please check that:\n<BR>",file=log_file,append=T,sep="")
-		cat("<UL>\n",file=log_file,append=T,sep="")
-		cat("  <LI> the table you want to process contains the same number of columns for each line</LI>\n",file=log_file,append=T,sep="")
-		cat("  <LI> the first line of your table is a header line (specifying the name of each ",column_use,")</LI>\n",file=log_file,append=T,sep="")
-		cat("  <LI> the first column of your table specifies the name of each ",line_use,"</LI>\n",file=log_file,append=T,sep="")
-		cat("  <LI> both individual and variable names should be unique</LI>\n",file=log_file,append=T,sep="")
-		cat("  <LI> each value is separated from the other by a <B>TAB</B> character</LI>\n",file=log_file,append=T,sep="")
-		cat("  <LI> except for first line and first column, table should contain a numeric value</LI>\n",file=log_file,append=T,sep="")
-		cat("  <LI> this value may contain character '.' as decimal separator or '",nacode,"' for missing values</LI>\n",file=log_file,append=T,sep="")
-		cat("</UL>\n",file=log_file,append=T,sep="")
-		cat("-------<BR>\nError messages recieved:<BR><FONT color=red>\n",conditionMessage(message),"</FONT>\n",file=log_file,append=T,sep="")
-		cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
-		q(save="no",status=1)
+	cat("<HTML><HEAD><TITLE>Normalization report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+	cat("&#9888 An error occurred while trying to read your table.\n<BR>",file=log_file,append=T,sep="")
+	cat("Please check that:\n<BR>",file=log_file,append=T,sep="")
+	cat("<UL>\n",file=log_file,append=T,sep="")
+	cat("  <LI> the table you want to process contains the same number of columns for each line</LI>\n",file=log_file,append=T,sep="")
+	cat("  <LI> the first line of your table is a header line (specifying the name of each ",column_use,")</LI>\n",file=log_file,append=T,sep="")
+	cat("  <LI> the first column of your table specifies the name of each ",line_use,"</LI>\n",file=log_file,append=T,sep="")
+	cat("  <LI> both individual and variable names should be unique</LI>\n",file=log_file,append=T,sep="")
+	cat("  <LI> each value is separated from the other by a <B>TAB</B> character</LI>\n",file=log_file,append=T,sep="")
+	cat("  <LI> except for first line and first column, table should contain a numeric value</LI>\n",file=log_file,append=T,sep="")
+	cat("  <LI> this value may contain character '.' as decimal separator or '",nacode,"' for missing values</LI>\n",file=log_file,append=T,sep="")
+	cat("</UL>\n",file=log_file,append=T,sep="")
+	cat("-------<BR>\nError messages recieved:<BR><FONT color=red>\n",conditionMessage(message),"</FONT>\n",file=log_file,append=T,sep="")
+	cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
+	q(save="no",status=1)
 }
 
 tab_in=tryCatch(
@@ -166,12 +164,7 @@ if(stat=="T" & length(chosen.stat)!=0){
     stat.res <- cbind(stat.res,colD)
   }
   
-  print("1")
-  print(stat.res)
-  print("2")
-  print(stat.out)
- 
-  write.table(stat.res,stat.out,col.names=FALSE,sep="\t",quote=FALSE)
+  write.table(stat.res,table_file,col.names=FALSE,sep="\t",quote=FALSE)
   
 } # end if(stat)
 
@@ -181,56 +174,74 @@ if(stat=="T" & length(chosen.stat)!=0){
 
 if(ploting=="T" & length(chosen.plot)!=0){
   
-  
+  nb_graph_per_row=4
+  nb_graph=ncol(Dataset)-1
+
+  nb_row=round(nb_graph/nb_graph_per_row)
+
+  nb_empty_plot=nb_graph %% nb_graph_per_row
+  if (nb_empty_plot != 0) {
+	nb_row=nb_row+1
+  }
+
+  page_height=3.5 * nb_row
+	
+  pdf(file=graph_file,height=page_height)
+
   graph.list <- strsplit(chosen.plot,",")[[1]]
   print("ooo2")
   print(graph.list) 
+
+  #For the pair plot, we stick to the default layout
+  if("pairsplot" %in% graph.list){
+    pairs(Dataset[,-1])
+  }
+
+  #For the other plots, we have 4 plots per line
+  par(mfrow=c(nb_row,nb_graph_per_row),mar=c(2, 3, 3, 1) + 0.1)
+  
   if("boxplot" %in% graph.list){
     for(ech in 2:ncol(Dataset)){
-      png(paste("boxplot_",colnames(Dataset)[ech],".png",sep=""))
-      boxplot(Dataset[,ech],xlab=colnames(Dataset)[ech])
-      dev.off()
+      boxplot(Dataset[,ech],main=colnames(Dataset)[ech],xlab=NULL)
     }
+    #Complete page with empty plots
+    i=0; while (i<nb_empty_plot) {plot.new();i=i+1;}
   }
   
   if("histogram" %in% graph.list){
     for(ech in 2:ncol(Dataset)){
-      png(paste("histogram_",colnames(Dataset)[ech],".png",sep=""))
       hist(Dataset[,ech],main=colnames(Dataset)[ech],xlab=NULL)
-      dev.off()
     }
+    #Complete page with empty plots
+    i=0; while (i<nb_empty_plot) {plot.new();i=i+1;}
   }
   
   if("density" %in% graph.list){
     for(ech in 2:ncol(Dataset)){
-      png(paste("density_",colnames(Dataset)[ech],".png",sep=""))
       plot(density(Dataset[,ech],na.rm=TRUE),main=colnames(Dataset)[ech])
-      dev.off()
     }
+    #Complete page with empty plots
+    i=0; while (i<nb_empty_plot) {plot.new();i=i+1;}
   }
   
-  if("pairsplot" %in% graph.list){
-    png("pairsplot.png",width=(ncol(Dataset)-1)*200,height=(ncol(Dataset)-1)*200,res=100)
-    pairs(Dataset[,-1])
-    dev.off()
-  }
   
   if("MAplot" %in% graph.list){
     if(min(Dataset[,-1],na.rm=TRUE)<0){
 	  cat("\n----\nError: MAplot only available for positive variables\n----",file=log_file,append=T,sep="")
 	  q(save="no",status=1)
 	}
-    library(edgeR)
+    library(edgeR) #Warning : Import also limma package
     for(ech in 2:(ncol(Dataset)-1)){
       for(ech2 in (ech+1):ncol(Dataset)){
-        png(paste("MAplot_",colnames(Dataset)[ech],"_",colnames(Dataset)[ech2],".png",sep=""))
         temp.pair <- na.omit(Dataset[,c(ech,ech2)])
         maPlot(temp.pair[,1],temp.pair[,2],main=paste(colnames(Dataset)[ech],"VS",colnames(Dataset)[ech2]))
-        dev.off()
       }
     }
-    
+    #Do not complete page with empty plots for this plot because it generates nb_variables X nb_variables graphs
   }
+
+  #Close pdf device
+  dev.off()
   
 } # end if(ploting)
 
@@ -244,4 +255,5 @@ cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
 
 
 } # end of function
+
 

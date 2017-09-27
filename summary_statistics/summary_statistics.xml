@@ -35,7 +35,8 @@
           #if $ploting_cond.ploting =="T":
              plot_chosen "$ploting_cond.plot_chosen"
           #end if
-          outputfile "$outputfile"
+          table_file "$table_file"
+          graph_file "$graph_file"
           log_file "$log_file"
            </command>
                   <inputs>
@@ -85,7 +86,8 @@
                   </inputs>
                   <outputs>
 	             <data format="html" name="log_file" label ="Summary_statistics.log"/>
-                     <data format="html" name="outputfile" label ="Summary_statistics_report.html"/>
+                     <data format="tabular" name="table_file" label ="Summary_statistics_report.tsv"/>
+                     <data format="pdf" name="graph_file" label ="Summary_statistics_report.pdf"/>
                   </outputs>
   <help>
 
