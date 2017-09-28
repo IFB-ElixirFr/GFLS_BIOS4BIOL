@@ -49,17 +49,27 @@ argLs <- parseCommandArgs(evaluate=FALSE)
 group_member_file=argLs[["group_member_file"]]
 if (group_member_file=="NO"){
     group_member_file<-NULL
-} 
+}
+select=argLs[["select"]]
+if (select=="NULL"){
+    select<-NULL
+}
+column_clustering=argLs[["column_clustering"]]
+if (column_clustering=="TRUE"){
+    column_clustering<-TRUE
+} else {
+    column_clustering<-FALSE
+}
 
 h_clust(input_file=argLs[["input_file"]],
      group_member_file=group_member_file,
      output_file=argLs[["output_file"]],
      log_file=argLs[["log_file"]],
-     format_image_out="jpeg",
+     format_image_out=argLs[["format_image_out"]],
      distance_method=argLs[["distance_method"]],
      agglomeration_method=argLs[["agglomeration_method"]],
-     column_clustering=argLs[["column_clustering"]],
-     select=argLs[["select"]],
+     column_clustering=column_clustering,
+     select=select,
      plot_title=argLs[["plot_title"]],
      xlab=argLs[["xlab"]],
      ylab=argLs[["ylab"]],

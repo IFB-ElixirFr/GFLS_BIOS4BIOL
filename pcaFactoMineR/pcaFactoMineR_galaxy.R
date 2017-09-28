@@ -53,7 +53,7 @@ flagC <- "\n"
 ##------------------------------
 argLs <- parseCommandArgs(evaluate=FALSE)
 
-log <- argLs[["logOut"]]
+log_file <- argLs[["logOut"]]
   # Inputs
 	# Matrice donnees
 data <- read.table(argLs[["datafile"]],header=TRUE,sep="\t",dec=".",check.names = FALSE)
@@ -69,7 +69,15 @@ if(argLs[["factor"]] != "None")
   if (any(argLs[["factor"]] %in% colnames(metadatasample)) ==FALSE)
   {
     #log_error(simpleCondition("Factor is not in samplemetadata."))
-    stop("\n Factor is not in samplemetadata \n")
+    cat("<HTML><HEAD><TITLE>PCA FactoMineR report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+    cat("&#9888 An error occurred while trying to read your factor table.\n<BR>",file=log_file,append=T,sep="")
+    cat("Please check that:\n<BR>",file=log_file,append=T,sep="")
+    cat("<UL>\n",file=log_file,append=T,sep="")
+    cat("  <LI> you wrote the name of the column of the factor matrix corresponding to the qualitative variable </LI>\n",file=log_file,append=T,sep="")
+    cat("  <LI> you wrote the column name correctly (it is case sensitive)</LI>\n",file=log_file,append=T,sep="")
+    cat("</UL>\n",file=log_file,append=T,sep="")
+    cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
+    q(save="no",status=1)
   }
 # On cree une dataframe avec l’id des samples (1ere colonne de metadatasample+ le facteur choisi 
 # qui est en colonne “colfactor”
@@ -123,7 +131,7 @@ res.pca <- pca.main(ids=data,bioFact=facteur,ncp=argLs[["npc"]],hb=hb,
                     minContribution=c(argLs[["contribh"]],argLs[["contribv"]]),mainTitle=argLs[["title"]],
                     textSize=argLs[["tc"]],principalPlane=c(argLs[["pch"]],argLs[["pcv"]]),eigenplot=eigenplot,
                     contribplot=contribplot,scoreplot=scoreplot,loadingplot=loadingplot,
-                    nomGraphe=argLs[["outgraphpdf"]],variable_in_line=variable_in_line,log_file=log)
+                    nomGraphe=argLs[["outgraphpdf"]],variable_in_line=variable_in_line,log_file=log_file)
 
 
 ################################# fin  ##############################################

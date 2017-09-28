@@ -1,4 +1,4 @@
-<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-09-04">
+<tool id="pcaFactoMineR" name="PCAFactoMineR" version="2017-09-28">
 
 	<description> PCA using FactoMineR package</description>
     
@@ -8,6 +8,11 @@
             <requirement type="package" version="r3.3.1_0">r-factominer</requirement>
             <requirement type="package">r-batch</requirement>
 	</requirements>
+    <stdio>
+        <!-- Anything other than zero is an error -->
+        <exit_code range="1:" level="fatal"/>
+        <exit_code range=":-1" level="fatal"/>
+    </stdio>
 
 	<command interpreter="Rscript">
 
@@ -110,7 +115,7 @@
                         </param>
                         <when value="yes">
                             <param name="samplemetadata" type="data" label="Factor file" help="File with Biological Factor(s)" format="tabular,csv" />
-                            <param name="factor" label="Name of the column of the data matrix corresponding to the qualitative variable" type="text" value="None" help=""/>
+                            <param name="factor" label="Name of the column of the factor matrix corresponding to the qualitative variable" type="text" value="None" help=""/>
                         </when>
                         <when value="no"></when>
                     </conditional>

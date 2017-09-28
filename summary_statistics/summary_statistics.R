@@ -33,6 +33,8 @@ desc_fct <- function(file.in, nacode, table_file, graph_file, stat, chosen.stat,
 # Read and verify data - - - - - - - - - - - - 
 # Checks valids for all modules
 
+library(methods)
+
 log_error=function(message="") {
 	line_use="line"
 	column_use="column"
@@ -111,8 +113,6 @@ for (i in 1:ncol(tab)) {
 	}
 }
 
-print("----")
-print(tab_in)
 Dataset <- tab_in
 
 ##########################################################
@@ -121,44 +121,36 @@ Dataset <- tab_in
 if(stat=="T" & length(chosen.stat)!=0){
   
   stat.list <- strsplit(chosen.stat,",")[[1]]
-  print("ooo")
-  print(stat.list)  
   stat.res <- t(Dataset[0,,drop=FALSE])
   
   numdig <- 5
   
   if("mean" %in% stat.list){  
-    print("meaninstat")
     stat.res <- cbind(stat.res,c("Mean",round(colMeans(Dataset[,-1],na.rm=TRUE),digits=numdig)))
   }
   
   if("sd" %in% stat.list){
-    print("sdinstat")
     colSd <- apply(Dataset[,-1],2,sd,na.rm=TRUE)
     stat.res <- cbind(stat.res,c("Std.Dev",round(colSd,digits=numdig)))
   } 
   
   if("variance" %in% stat.list){
-    print("varinstat")
     colVar <- apply(Dataset[,-1],2,var,na.rm=TRUE)
     stat.res <- cbind(stat.res,c("Variance",round(colVar,digits=numdig)))
   }
   
   if(("median" %in% stat.list)&&(!("quartile" %in% stat.list))){
-    print("medianinstat")
     colMed <- apply(Dataset[,-1],2,median,na.rm=TRUE)
     stat.res <- cbind(stat.res,c("Median",round(colMed,digits=numdig)))
   }
   
   if("quartile" %in% stat.list){
-    print("quartileinstat")
     colQ <- round(apply(Dataset[,-1],2,quantile,na.rm=TRUE),digits=numdig)
     stat.res <- cbind(stat.res,c("Min",colQ[1,]),c("Q1",colQ[2,]),
                       c("Median",colQ[3,]),c("Q3",colQ[4,]),c("Max",colQ[5,]))
   }
   
   if("decile" %in% stat.list){
-    print("decileinstat")
     colD <- round(t(apply(Dataset[,-1],2,quantile,na.rm=TRUE,seq(0,1,0.1))),digits=numdig)
     colD <- rbind(paste("D",seq(0,10,1),sep=""),colD)
     stat.res <- cbind(stat.res,colD)
@@ -189,8 +181,6 @@ if(ploting=="T" & length(chosen.plot)!=0){
   pdf(file=graph_file,height=page_height)
 
   graph.list <- strsplit(chosen.plot,",")[[1]]
-  print("ooo2")
-  print(graph.list) 
 
   #For the pair plot, we stick to the default layout
   if("pairsplot" %in% graph.list){
@@ -198,7 +188,7 @@ if(ploting=="T" & length(chosen.plot)!=0){
   }
 
   #For the other plots, we have 4 plots per line
-  par(mfrow=c(nb_row,nb_graph_per_row),mar=c(2, 3, 3, 1) + 0.1)
+  par(mfrow=c(nb_row,nb_graph_per_row),mar=c(3, 3, 3, 1) + 0.1)
   
   if("boxplot" %in% graph.list){
     for(ech in 2:ncol(Dataset)){
@@ -230,6 +220,8 @@ if(ploting=="T" & length(chosen.plot)!=0){
 	  cat("\n----\nError: MAplot only available for positive variables\n----",file=log_file,append=T,sep="")
 	  q(save="no",status=1)
 	}
+    library(limma)
+
     library(edgeR) #Warning : Import also limma package
     for(ech in 2:(ncol(Dataset)-1)){
       for(ech2 in (ech+1):ncol(Dataset)){

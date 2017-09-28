@@ -35,7 +35,7 @@ h_clust <- function(input_file,
                       ppi = 300,
 		      na_encoding="NA"
 ) {
-  
+
   # This function allows to generate hierarchical cluster analysis on a table  according to differents parameters.
   # It needs a dataset : the table of data and optionally a group_member data to set colored labels.
   # It generates a clustering tree graphic from hierarchical clustering.
@@ -263,8 +263,8 @@ h_clust <- function(input_file,
   # Output -------------------------------------------
   #---------------------------------------------------
   lab.cex = min(1, 1/log(attr(tab.dist, "Size"), base = 5))
-  output_file = paste(output_file, format_image_out, sep = ".")
-  
+  #output_file = paste(output_file, format_image_out, sep = ".")
+
   if (is.null(group_member_file)) {
     if (format_image_out == "png") {
       png(output_file, width = width, height = height, units = "in", res = ppi)
@@ -307,7 +307,9 @@ h_clust <- function(input_file,
     }
     
     names(group_member) <- attr(tab.dist, "Labels")
-    
+
+
+
     if (format_image_out == "png") {
       png(output_file, width = width, height = height, units = "in", res = ppi)
       plot(dendrapply(hc, colLab, group_member, lab.cex), main = plot_title, xlab = xlab, ylab = ylab)
