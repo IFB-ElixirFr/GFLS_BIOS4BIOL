@@ -1,4 +1,4 @@
-<!--# Copyright (C) 2014 INRA
+<!--# Copyright (C) 2017 INRA
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -12,7 +12,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
-<tool id="summary_statistics" name="Summary statistics"  version="1.0.0">
+
+<tool id="summary_statistics" name="Summary statistics" version="1.0.0">
     <description>Produce simple descriptive statistics from a numeric table</description>
     <requirements>
         <requirement type="package">R</requirement>
@@ -23,106 +24,120 @@
     </requirements>
     <stdio>
         <!-- Anything other than zero is an error -->
-        <exit_code range="1:" level="fatal"/>
-        <exit_code range=":-1" level="fatal"/>
+        <exit_code range="1:" level="fatal" />
+        <exit_code range=":-1" level="fatal" />
     </stdio>
-
-
-          <command interpreter="Rscript">
-          summary_statistics_galaxy.R
-          file_in "$file_in"
-          NA_code "$NA_code"
-          stat "$stat_cond.stat"
-          #if $stat_cond.stat =="T":
-             stat_chosen "$stat_cond.stat_chosen"
-          #end if
+    <command interpreter="Rscript"><![CDATA[
+        summary_statistics_galaxy.R
+        file_in "$file_in"
+        NA_code "$NA_code"
+        stat "$stat_cond.stat"
+        #if $stat_cond.stat =="T":
+          stat_chosen "$stat_cond.stat_chosen"
+        #end if
           ploting  "$ploting_cond.ploting"
-          #if $ploting_cond.ploting =="T":
-             plot_chosen "$ploting_cond.plot_chosen"
-          #end if
-          table_file "$table_file"
-          graph_file "$graph_file"
-          log_file "$log_file"
-           </command>
-                  <inputs>
-                        <param format="csv,tabular" name="file_in" type="data" label="Input File"/>
-                        <param name="NA_code" size="30" type="text" value="NA" label="Label used for Missing values"/>                        
-                        
-                        <conditional name="stat_cond">
-                                   <param name="stat" type="select" help="Do you want to compute some basic statistics?" label="Statistics table">
-                                       <option value="T">Yes</option>
-                                       <option value="F" selected="true">No</option>
-                                   </param> 
-                             <!-- <when value="F">
-                             <validator type="empty_field" message="Your job can not be sent if you do not choose a stat representation." />
-                             </when> -->
-                             <when value="T">
-                                <param name="stat_chosen" type="select" display="checkboxes" multiple="True" label="Chosen statistic(s)">
-                                   <option value="mean">mean</option>
-                                   <option value="sd">sd</option>
-                                   <option value="variance">variance</option>
-                                   <option value="median">median</option>
-                                   <option value="quartile">quartile</option>
-                                   <option value="decile">decile</option>   
-                                   <validator type="empty_field" message="Please choose at least one statistic representation" />
-                                 </param>
-                                </when>
-                        </conditional>
-                         
-                        <conditional name="ploting_cond">
-                                   <param name="ploting" type="select" help="Do you want some standard plots?" label="Plots">
-                                       <option value="T">Yes</option>
-                                       <option value="F" selected="true">No</option>
-                                   </param> 
-                            <!-- <when value="F">
-                             <validator type="empty_field" message="Your job can not be sent if you do not choose a plot representation." />
-                             </when> -->
-                             <when value="T">
-                                <param name="plot_chosen" type="select" help=""  display="checkboxes" multiple="True" label="Chosen plot(s)">
-                                     <option value="boxplot">boxplot</option>
-                                     <option value="histogram">histogram</option>
-                                     <option value="density">density</option>
-                                     <option value="pairsplot">pairsplot</option>
-                                    <option value="MAplot">MAplot</option>                                                                                                                      
-                                <validator type="empty_field" message="Please choose at least one ploting representation." />
-                                </param>
-                             </when>
-                       </conditional>            
-                  </inputs>
-                  <outputs>
-	             <data format="html" name="log_file" label ="Summary_statistics.log"/>
-                     <data format="tabular" name="table_file" label ="Summary_statistics_report.tsv"/>
-                     <data format="pdf" name="graph_file" label ="Summary_statistics_report.pdf"/>
-                  </outputs>
-  <help>
+        #if $ploting_cond.ploting =="T":
+          plot_chosen "$ploting_cond.plot_chosen"
+        #end if
+        table_file "$table_file"
+        graph_file "$graph_file"
+        log_file "$log_file"
+    ]]></command>
+    <inputs>
+        <param format="csv,tabular" name="file_in" type="data" label="Input File" />
+        <param name="NA_code" size="30" type="text" value="NA" label="Label used for Missing values" />
+        <conditional name="stat_cond">
+            <param name="stat" type="select" help="Do you want to compute some basic statistics?" label="Statistics table">
+                <option value="T">Yes</option>
+                <option value="F" selected="true">No</option>
+            </param>
+            <when value="T">
+                <param name="stat_chosen" type="select" display="checkboxes" multiple="True" label="Chosen statistic(s)">
+                    <option value="mean">mean</option>
+                    <option value="sd">sd</option>
+                    <option value="variance">variance</option>
+                    <option value="median">median</option>
+                    <option value="quartile">quartile</option>
+                    <option value="decile">decile</option>
+                    <validator type="empty_field" message="Please choose at least one statistic representation" />
+                </param>
+            </when>
+        </conditional>
+        <conditional name="ploting_cond">
+            <param name="ploting" type="select" help="Do you want some standard plots?" label="Plots">
+                <option value="T">Yes</option>
+                <option value="F" selected="true">No</option>
+            </param>
+            <when value="T">
+                <param name="plot_chosen" type="select" help="" display="checkboxes" multiple="True" label="Chosen plot(s)">
+                    <option value="boxplot">boxplot</option>
+                    <option value="histogram">histogram</option>
+                    <option value="density">density</option>
+                    <option value="pairsplot">pairsplot</option>
+                    <option value="MAplot">MAplot</option>
+                    <validator type="empty_field" message="Please choose at least one ploting representation." />
+                </param>
+            </when>
+        </conditional>
+    </inputs>
+    <outputs>
+        <data format="html" name="log_file" label="Summary_statistics._log" />
+        <data format="tabular" name="table_file" label="Summary_statistics_report.tsv" />
+        <data format="pdf" name="graph_file" label="Summary_statistics_report.pdf" />
+    </outputs>
+    <help><![CDATA[
 
 .. class:: infomark
 
-**What this tool does:**
+==================
+Summary statistics
+==================
 
-This program produces simple descriptive statistics from a numeric table. Statistical measures are computed for each column in the table.
+-----------
+Description
+-----------
 
+What it does:
+ - This program produces simple descriptive statistics from a numeric table. Statistical measures are computed for each column in the table.
 
+-----------
+Input files
+-----------
 
-------------------
-Input/output files
-------------------
-
-The input file must be a tabulation-separated table (text file with columns being separated by a tabulation).
++---------------------------+------------+
+| Parameter : num + label   |   Format   |
++===========================+============+
+| 1 : input file            |   tabular  |
++---------------------------+------------+
 
 The first line should be a header (naming columns) and each line must begin with a row name, like the example below: 
 
-.. image:: ${static_path}/operation_icons/input_count_file.png
-
-
-This tool produces a html file displaying the results, where two kinds of output are available:
-	| - numerical values (as a table)
-	| - graphics
-
-You can also download the table and plots *via* links found in this html file. 
+.. image:: input_count_file.png
 
 
 
+----------
+Parameters
+----------
+
+Label used for Missing values
+        | Missing value coding characters
+        |
+
+statistics table
+        | if YES, allow you to choose statistic(s) you want in your report
+        |
+
+Chosen statistic(s)
+        | select the statistics you want in your report (see above "Available statistics and plots")
+        |
+
+Plots
+        | if YES, allow you to choose plot(s) you want in your report
+        |
+Chosen plot(s)
+        | select the plots you want in your report (see above "Available statistics and plots")
+        |
 
 ------------------------------
 Available statistics and plots
@@ -131,7 +146,7 @@ Available statistics and plots
 **Numerical statistical measures provided are the following ones:**
 
 
-.. image:: ${static_path}/operation_icons/descriptive_stat_1.png
+.. image:: descriptive_stat_all.png
         :width: 500
 
 
@@ -141,14 +156,14 @@ Available statistics and plots
 	* boxplot
 
 
-.. image:: http://support.sas.com/documentation/cdl/en/statug/63033/HTML/default/images/schematic.png
+.. image:: descriptive_stat_boxplot.png
 
 (source : SAS documentation)
 
 	* histogram
 
 
-.. image:: ${static_path}/operation_icons/descriptive_stat_histo.png
+.. image:: descriptive_stat_histo.png
         :width: 285
 
 In this example, about 45 values of the dataset are greater than 0 and lower than 0.5
@@ -156,7 +171,7 @@ In this example, about 45 values of the dataset are greater than 0 and lower tha
 	* density
 
 
-.. image:: ${static_path}/operation_icons/descriptive_stat_density.png
+.. image:: descriptive_stat_density.png
         :width: 275
 
 This option computes kernel density estimates (gaussian smoothing).
@@ -165,7 +180,7 @@ While a histogram displays the observed distribution of a numerical variable, a 
 	* pairsplot
 
 
-.. image:: ${static_path}/operation_icons/descriptive_stat_pairs.png
+.. image:: descriptive_stat_pairs.png
         :width: 475
 
 In this example, we have represented a pairs plot for a table with three columns, named 
@@ -175,7 +190,7 @@ the values of another column scaled on the y axis.
 	* MAplot
 
 
-.. image:: ${static_path}/operation_icons/descriptive_stat_maplot.png
+.. image:: descriptive_stat_maplot.png
         :width: 275
 
 Designed for genomic data (count data - only positive values accepted).
@@ -183,24 +198,48 @@ Each plot allows to compare two samples.
 The ordinate axis (M) represents the log ratios (binary logarithm) whereas the abscissa axis (A) corresponds to the means of log values. 
 
 
----------------------------------------------------
 
-.. class:: infomark
+------------
+Output files
+------------
 
-Information
+Summary_statistics_report.tsv
+	| contains a table with all the requested statistics
 
-Galaxy tool developed by Luc Jouneau, Sarah Maman and Mélanie Pétéra as part of the CATI:Bios4Biol statistical group. 
-Re-packaging provided by Valentin Marcon as part of the Galaxy For Life Science project. 
+Summary_statistics_report.pdf
+	| contains all the requested graphics
 
-E-learning available: Not yet.
+Summary_statistics_log
+        |
+
+---
+
+**Authors** Luc Jouneau (luc.jouneau@inra.fr), Mélanie Pétéra (melanie.petera@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr)
+
+---
+
+Contacts (noms et emails) : sigenae-support@listes.inra.fr
+
+E-learning available : Not yet.
+
+Please cite :
+
+    Depending on the help provided you can cite us in acknowledgements, references or both.
+
+    Examples :
+    Acknowledgements
+    We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Mélanie Pétéra, Sarah Maman, Luc Jouneau
+    Re-packaging provided by Valentin Marcon as part of the IFB projects 'Galaxy For Life Science project' (http://www.france-bioinformatique.fr/fr) 
+    
+    References
+    X. SIGENAE [http://www.sigenae.org/]
+
+
+Information :
 
 Tool coded in the R language:
 	| *R Core Team. R: A language and environment for statistical computing. R*
 	| *Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.*
 
-Acknowledgements:
-	| *We wish to thank the SIGENAE group for their support [ http://www.sigenae.org/ ]*
-
-
-  </help>
+    ]]></help>
 </tool>

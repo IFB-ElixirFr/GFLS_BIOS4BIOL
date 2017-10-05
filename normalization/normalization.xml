@@ -1,4 +1,4 @@
-<!--# Copyright (C) 2014 INRA
+<!--# Copyright (C) 2017 INRA
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -12,6 +12,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
+
 <tool id="normalization" name="Normalization" version="1.0.0">
     <description>Normalize your data with some well known methods</description>
     <requirements>
@@ -24,17 +25,17 @@
         <exit_code range="1:" level="fatal"/>
         <exit_code range=":-1" level="fatal"/>
     </stdio>
-    <command interpreter="Rscript">
-    normalization_galaxy.R
-    input_file "$input_file"
-    transformation_method "$transformation_method"
-    na_encoding "$na_encoding"
-    output_file "$output_file"
-    log_file "$log_file"
-    variable_in_line "$variable_in_line"
-    </command>
+    <command interpreter="Rscript"><![CDATA[
+        normalization_galaxy.R
+        input_file '${input_file}'
+        transformation_method '${transformation_method}'
+        na_encoding '${na_encoding}'
+        output_file '${output_file}'
+        log_file '${log_file}'
+        variable_in_line '${variable_in_line}'
+    ]]></command>
     <inputs>                  
-        <param format="tabular,csv" name="input_file" type="data" label="Input count file"/>
+        <param format="tabular,csv" name="input_file" type="data" label="Input file"/>
         <param name="transformation_method" type="select" label="Data transformation method" help="See the complete help below for more details"> 
             <option value="log">Log (decimal logarithm)</option>
             <option value="DESeq2">DESeq2 for NGS counts</option>
@@ -43,8 +44,6 @@
             <option value="Pareto">Pareto (mean=0;sd moderate)</option>
             <option value="TSS">Total sum scaling (TSS)</option>
             <option value="TSS_CLR">Total sum scaling + log ratio (TSS+CLR)</option>
-
-            <!--option value=""></option-->
             <validator type="empty_field" message="Please choose, at least, one data transformation method." />
         </param>                     
         <param name="na_encoding" size="30" type="text" value="NA" label="Label used for Missing values"/> 
@@ -54,28 +53,67 @@
         </param>
     </inputs>
     <outputs>
-        <data name="log_file" format="html" label="Normalization.log"/>
+        <data name="log_file" format="html" label="Normalization_log"/>
         <data name="output_file" format_source="input_file" label="Transfo-${transformation_method.value}_${input_file.name}"/>
     </outputs>
-    <help>
+    <help><![CDATA[
+
 .. class:: infomark
+
+==================
+Summary statistics
+==================
+
+-----------
+Description
+-----------
 
 What it does: Normalize your data with some well known methods
  - It needs a dataset: Tabular file containing a table of value
  - It generates: A new file containing a table of value transformed with the choosen method. A ".log" file showing the right or wrong processing of your data.
 
+-----------
+Input files
+-----------
 
-* Parameters:
-   - -Input count file: File containg table of values (separator="tab")
-   - -Data transformation method: Possible values: "log", "DESeq2", "Rlog", "Standard_score", "TSS", "TSS_CLR"
-   - -Label used for Missing values: Missing value coding character 
-   - -Variable in line or column: Indicate if variables are in lin or in columns
++---------------------------+------------+
+| Parameter : num + label   |   Format   |
++===========================+============+
+| 1 : input file            |   tabular  |
++---------------------------+------------+
 
 
+----------
+Parameters
+----------
 
-* Advices:
-   - Nature of data may change, depending on the subjects of the experimentation and/or the technology used to measure a signal on these subjects.
-   - By instance, when dealing with RNA-Seq data, expression intensity values are expressed as counts, while with microarray technology, it is expressed as fluorescence intensity.
+Data transformation method
+        | Possible values: "log", "DESeq2", "Rlog", "Standard_score", "TSS", "TSS_CLR"
+
+Label used for Missing values: 
+        | Missing value coding character 
+
+Variable in line or column: 
+        | Indicate if variables are in lin or in columns
+
+
+------------
+Output files
+------------
+
+
+Transfo-<method>_<input file name>
+        | input file normalized according to the choosen method
+
+Normalization_log
+        |
+
+-------
+Advices
+-------
+
+  - Nature of data may change, depending on the subjects of the experimentation and/or the technology used to measure a signal on these subjects.
+  - By instance, when dealing with RNA-Seq data, expression intensity values are expressed as counts, while with microarray technology, it is expressed as fluorescence intensity.
 
   
   Before to conduct any analysis on a table of data, it is important to:
@@ -85,6 +123,11 @@ What it does: Normalize your data with some well known methods
 
   If your nature of data is not adapted to the analysis you plan to do, you should first transform your data in a scale of values which fits better requirement of your analysis.
   This transformation process is named “normalization”.
+
+
+---------------------
+Normalization Methods
+---------------------
 
   In this Galaxy module, we propose several normalization methods, and we provide some guidelines to help user choose the accurate normalization method:
 
@@ -137,11 +180,9 @@ What it does: Normalize your data with some well known methods
 
 (*)PCA: Principal Component Analysis / HC: Hierarchical Clustering / SS: Summary Statistics
 
-::
-
 ---
 
-Version Galaxy Tool: V1.0
+**Authors**: Luc Jouneau (luc.jouneau@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr) 
 
 ---
 
@@ -149,7 +190,17 @@ Contacts: sigenae-support@listes.inra.fr
 
 E-learning available: Not yet.
 
-Authors: Luc Jouneau (luc.jouneau@inra.fr), Valentin Marcon (valentin.marcon@inra.fr), Sarah Maman (sarah.maman@inra.fr)
+Please cite :
 
-    </help>
+    Depending on the help provided you can cite us in acknowledgements, references or both.
+
+    Examples :
+    Acknowledgements
+    We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Luc Jouneau, Sarah Maman
+    Re-packaging provided by Valentin Marcon as part of the IFB projects 'Galaxy For Life Science project' (http://www.france-bioinformatique.fr/fr) 
+    
+    References
+    X. SIGENAE [http://www.sigenae.org/]
+
+    ]]></help>
 </tool>

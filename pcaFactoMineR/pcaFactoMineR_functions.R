@@ -262,7 +262,7 @@ verif_data=function(){
 
 
   if (!is.null(res)){
-    cat("<HTML><HEAD><TITLE>PCA FactoMineR report report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+    cat("<HTML><HEAD><TITLE>PCA FactoMineR report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
     cat("&#10003; Your process is successfull !<BR>",file=log_file,append=T,sep="")
     cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
 
