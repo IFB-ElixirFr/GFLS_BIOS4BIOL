@@ -87,8 +87,6 @@
     </outputs>
     <help><![CDATA[
 
-.. class:: infomark
-
 ==================
 Summary statistics
 ==================
@@ -99,6 +97,8 @@ Description
 
 What it does:
  - This program produces simple descriptive statistics from a numeric table. Statistical measures are computed for each column in the table.
+
+------
 
 -----------
 Input files
@@ -113,8 +113,6 @@ Input files
 The first line should be a header (naming columns) and each line must begin with a row name, like the example below: 
 
 .. image:: input_count_file.png
-
-
 
 ----------
 Parameters
@@ -205,41 +203,44 @@ Output files
 
 Summary_statistics_report.tsv
 	| contains a table with all the requested statistics
-
+        |
+ 
 Summary_statistics_report.pdf
 	| contains all the requested graphics
+        | 
 
 Summary_statistics_log
         |
-
----
+        |
+ 
+------
 
 **Authors** Luc Jouneau (luc.jouneau@inra.fr), Mélanie Pétéra (melanie.petera@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr)
 
----
-
-Contacts (noms et emails) : sigenae-support@listes.inra.fr
+Contact : sigenae-support@listes.inra.fr
 
 E-learning available : Not yet.
 
-Please cite :
-
-    Depending on the help provided you can cite us in acknowledgements, references or both.
-
-    Examples :
-    Acknowledgements
-    We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Mélanie Pétéra, Sarah Maman, Luc Jouneau
-    Re-packaging provided by Valentin Marcon as part of the IFB projects 'Galaxy For Life Science project' (http://www.france-bioinformatique.fr/fr) 
-    
-    References
-    X. SIGENAE [http://www.sigenae.org/]
-
-
-Information :
+- Information :
 
 Tool coded in the R language:
 	| *R Core Team. R: A language and environment for statistical computing. R*
 	| *Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.*
+
+.. class:: infomark
+
+-------------
+Please cite :
+-------------
+
+- (Depending on the help provided you can cite us in acknowledgements, references or both.)
+    
+Acknowledgements
+        | We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Mélanie Pétéra, Sarah Maman, Luc Jouneau
+        | Re-packaging was provided by Valentin Marcon from the INRA Migale platform (http://migale.jouy.inra.fr/), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+    
+References
+        | SIGENAE [http://www.sigenae.org/]
 
     ]]></help>
 </tool>

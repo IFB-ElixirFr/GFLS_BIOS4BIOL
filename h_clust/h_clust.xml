@@ -65,7 +65,6 @@
             </param>
             <when value="YES">
                 <param format="csv, txt" name="group_member_file" type="data" label="Input variable/individual group member file" />
-                <!-- optionnal -->
             </when>
             <when value="NO" />
         </conditional>
@@ -118,9 +117,6 @@
     </outputs>
     <help><![CDATA[
 
-.. class:: infomark
-
-
 =======================
 Hierarchical Clustering
 =======================
@@ -129,12 +125,13 @@ Hierarchical Clustering
 Description
 -----------
 
-What it does :  This function allows to generate hierarchical cluster analysis on a numeric data table according to different parameters. 
- - It needs a dataset : the numeric data table and optionally a group member data to set colored labels. 
- - It generates a graphic tree from hierarchical clustering. 
+What it does :
+ - This function allows to generate hierarchical cluster analysis on a numeric data table according to different parameters. 
 
 Download documentation here :
 http://genoweb.toulouse.inra.fr/~formation/CATIBIOS4BIOL_stats/Learning_clustering_current.pdf
+
+------
 
 -----------
 Input files
@@ -206,7 +203,6 @@ Graphic format of the output file
         | choose a format between "png", "jpeg", "tiff" and "pdf"
         |
 
-
 ------------
 Output files
 ------------
@@ -217,28 +213,31 @@ Hierarchical_clustering_report
 Hierarchical_clustering_log
         |
 
----
+------
 
 **Authors** Luc Jouneau (luc.jouneau@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr)
 
----
-
-Contacts (noms et emails) : sigenae-support@listes.inra.fr 
+Contact :  sigenae-support@listes.inra.fr 
 
 E-learning available : Not yet.
 
-Please cite :
-    
-    Depending on the help provided you can cite us in acknowledgements, references or both.
-    
-    Examples :
-    Acknowledgements
-    We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Ignacio Gonzalez, Sophie Lamarre, Sarah Maman, Luc Jouneau, Christophe Klopp
-    Re-packaging provided by Valentin Marcon as part of the IFB projects 'Galaxy For Life Science project' (http://www.france-bioinformatique.fr/fr)   
- 
-    References
-    X. SIGENAE [http://www.sigenae.org/]
-    Love MI, Huber W and Anders S (2014). “Moderated estimation of fold change and dispersion for RNA-Seq data with DESeq2”. bioRxiv. http://dx.doi.org/10.1101/002832.
+.. class:: infomark
 
+-------------
+Please cite :
+-------------
+
+- (Depending on the help provided you can cite us in acknowledgements, references or both.)
+    
+Acknowledgements
+        | We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Ignacio Gonzalez, Sophie Lamarre, Sarah Maman, Luc Jouneau, Christophe Klopp
+        | Re-packaging was provided by Valentin Marcon from the INRA Migale platform (http://migale.jouy.inra.fr/), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+        | 
+
+References
+        | SIGENAE [http://www.sigenae.org/]
+        | Love MI, Huber W and Anders S (2014). “Moderated estimation of fold change and dispersion for RNA-Seq data with DESeq2”. bioRxiv. http://dx.doi.org/10.1101/002832.
+        |
+ 
     ]]></help>
 </tool>

@@ -165,8 +165,6 @@
     </outputs>
     <help><![CDATA[
 	
-.. class:: infomark
-
 ===
 PCA
 ===
@@ -175,8 +173,10 @@ PCA
 Description
 -----------
 
-Principal Component Analysis (PCA) as done in the FactoMineR package
- 
+What it does:
+ - Principal Component Analysis (PCA) as done in the FactoMineR package
+
+------
 
 -----------
 Input files
@@ -233,8 +233,7 @@ Loading plot
 	|
 
 Contribution threshold (abscissa)
-	| Contribution threshold for loading plot: principal component displayed i0.4
-−0.3n the abscissa axis
+	| Contribution threshold for loading plot: principal component displayed in the abscissa axis
 	|
 
 Contribution threshold (ordinate)
@@ -275,28 +274,31 @@ PCAFactoMineR_graph (pdf output)
 PCAFactoMineR_log 
 	| 
 
----
+------
 
 **Authors** Marie Tremblay-Franco (marie.tremblay-franco@inra.fr), Jean-Francois Martin (jean-francois.martin@inra.fr), Sandrine Laguerre (laguerre@insa-toulouse.fr) and Valentin Marcon (valentin.marcon@inra.fr)
 
----
-
-Contacts : sigenae-support@listes.inra.fr
+Contact : sigenae-support@listes.inra.fr
 
 E-learning available : Not yet.
 
-Please cite :
-    
-    Depending on the help provided you can cite us in acknowledgements, references or both.
-    
-    Examples :
-    Acknowledgements
-    We wish to thank the SIGENAE group for ....
-    This work was performed using the facilities of the Migale platform (http://migale.jouy.inra.fr/) and the IFB project: 'Galaxy For Life Sciences' (http://www.france-bioinformatique.fr/fr)
-    
-    References
-    X. SIGENAE [http://www.sigenae.org/]
-    Lê S, Josse J, Husson F (2008). “FactoMineR: An R Package for Multivariate Analysis”. jstatsoft. http://dx.doi.org/10.18637/jss.v025.i01.
+.. class:: infomark
 
+-------------
+Please cite :
+-------------
+
+- (Depending on the help provided you can cite us in acknowledgements, references or both.)
+    
+Acknowledgements
+        | We wish to thank the SIGENAE group and the statistical CATI BIOS4Biol group : Marie Tremblay-Franco, Jean-Francois Martin, Sandrine Laguerre.
+        | Re-packaging was provided by Valentin Marcon from the INRA Migale platform (http://migale.jouy.inra.fr/), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+        | 
+    
+References
+        | SIGENAE [http://www.sigenae.org/]
+        | Lê S, Josse J, Husson F (2008). “FactoMineR: An R Package for Multivariate Analysis”. jstatsoft. http://dx.doi.org/10.18637/jss.v025.i01.
+        |
+ 
     ]]></help>
 </tool>
