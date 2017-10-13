@@ -297,8 +297,21 @@ Acknowledgements
     
 References
         | SIGENAE [http://www.sigenae.org/]
-        | Lê S, Josse J, Husson F (2008). “FactoMineR: An R Package for Multivariate Analysis”. jstatsoft. http://dx.doi.org/10.18637/jss.v025.i01.
         |
  
     ]]></help>
+    <citations>
+        <citation type="bibtex">
+        @article{10.18637/jss.v025.i01,
+        title = {{FactoMineR}: A Package for Multivariate Analysis},
+        author = {S\'ebastien Le and Julie Josse and Fran\c{c}ois Husson},
+        journal = {Journal of Statistical Software},
+        year = {2008},
+        volume = {25},
+        number = {1},
+        pages = {1--18},
+        doi = {10.18637/jss.v025.i01},
+        url = {https://dx.doi.org/10.18637/jss.v025.i01}}
+        </citation>
+    </citations>
 </tool>

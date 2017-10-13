@@ -236,8 +236,21 @@ Acknowledgements
 
 References
         | SIGENAE [http://www.sigenae.org/]
-        | Love MI, Huber W and Anders S (2014). “Moderated estimation of fold change and dispersion for RNA-Seq data with DESeq2”. bioRxiv. http://dx.doi.org/10.1101/002832.
         |
  
     ]]></help>
+    <citations>
+        <citation type="bibtex">
+        @article {Love002832,
+	author = {Love, Michael I and Huber, Wolfgang and Anders, Simon},
+	title = {Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2},
+	year = {2014},
+	doi = {10.1101/002832},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {In comparative high-throughput sequencing assays, a fundamental task is the analysis of count data, such as read counts per gene in RNA-seq data, for evidence of systematic changes across experimental conditions. Small replicate numbers, discreteness, large dynamic range and the presence of outliers require a suitable statistical approach. We present DESeq2, a method for differential analysis of count data. DESeq2 uses shrinkage estimation for dispersions and fold changes to improve stability and interpretability of the estimates. This enables a more quantitative analysis focused on the strength rather than the mere presence of differential expression and facilitates downstream tasks such as gene ranking and visualization. DESeq2 is available as an R/Bioconductor package.},
+	URL = {https://www.biorxiv.org/content/early/2014/11/17/002832},
+	eprint = {https://www.biorxiv.org/content/early/2014/11/17/002832.full.pdf},
+	journal = {bioRxiv}}
+        </citation>
+    </citations>
 </tool>
