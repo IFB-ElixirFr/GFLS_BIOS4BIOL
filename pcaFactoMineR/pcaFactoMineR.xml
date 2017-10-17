@@ -28,19 +28,19 @@
     </stdio>
     <command interpreter="Rscript"><![CDATA[
         pcaFactoMineR_galaxy.R
-        datafile $datafile
-        npc $npc
+        datafile '${datafile}'
+        npc '${npc}'
         #if str( $condPlot.plotOptions ) == "yes":
 
-          plotev $condPlot.plotev
-          plotcontrib $condPlot.plotcontrib
-          plotindiv $condPlot.condScore.plotindiv
+          plotev '${condPlot.plotev}'
+          plotcontrib '${condPlot.plotcontrib}'
+          plotindiv '${condPlot.condScore.plotindiv}'
 
           #if str( $condPlot.condScore.plotindiv ) == "yes":
-            colorfactor $condPlot.condScore.condColor.colorfactor
+            colorfactor '${condPlot.condScore.condColor.colorfactor}'
             #if str( $condPlot.condScore.condColor.colorfactor ) == "yes":
-              samplemetadata $condPlot.condScore.condColor.samplemetadata
-              factor $condPlot.condScore.condColor.factor
+              samplemetadata '${condPlot.condScore.condColor.samplemetadata}'
+              factor '${condPlot.condScore.condColor.factor}'
             #else :
               samplemetadata "None"
               factor "None"
@@ -51,11 +51,11 @@
             factor "None"
           #end if
 
-          plotvar $condPlot.condLoading.plotvar
+          plotvar '${condPlot.condLoading.plotvar}'
 
           #if str( $condPlot.condLoading.plotvar ) == "yes":
-            contribh $condPlot.condLoading.contribh
-            contribv $condPlot.condLoading.contribv
+            contribh '${condPlot.condLoading.contribh}'
+            contribv '${condPlot.condLoading.contribv}'
           #else :
             contribh 0
             contribv 0
@@ -74,21 +74,21 @@
         #end if
 
         #if str( $condGraphical.graphicalOptions ) == "yes":
-          title $condGraphical.title
-          pch $condGraphical.pch
-          pcv $condGraphical.pcv
-          tc $condGraphical.tc
+          title '${condGraphical.title}'
+          pch '${condGraphical.pch}'
+          pcv '${condGraphical.pcv}'
+          tc '${condGraphical.tc}'
         #else :
           title "PCA" 
           pch 1
           pcv 2
           tc 1
         #end if
-        varinline $varinline
+        varinline '${varinline}'
 
         ## Outputs
-        logOut $logOut
-        outgraphpdf $outgraphpdf
+        logOut '${logOut}'
+        outgraphpdf '${outgraphpdf}'
     ]]></command>
     <inputs>
         <param name="datafile" type="data" label="Data matrix" help="Precise below if the variable are in line or column" format="tabular,csv" />

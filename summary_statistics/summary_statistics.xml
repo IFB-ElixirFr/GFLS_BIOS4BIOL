@@ -29,19 +29,19 @@
     </stdio>
     <command interpreter="Rscript"><![CDATA[
         summary_statistics_galaxy.R
-        file_in "$file_in"
-        NA_code "$NA_code"
-        stat "$stat_cond.stat"
+        file_in '${file_in}'
+        NA_code '${NA_code}'
+        stat '${stat_cond.stat}'
         #if $stat_cond.stat =="T":
-          stat_chosen "$stat_cond.stat_chosen"
+          stat_chosen '${stat_cond.stat_chosen}'
         #end if
-          ploting  "$ploting_cond.ploting"
+        ploting  '${ploting_cond.ploting}'
         #if $ploting_cond.ploting =="T":
-          plot_chosen "$ploting_cond.plot_chosen"
+          plot_chosen '${ploting_cond.plot_chosen}'
         #end if
-        table_file "$table_file"
-        graph_file "$graph_file"
-        log_file "$log_file"
+        table_file '${table_file}'
+        graph_file '${graph_file}'
+        log_file '${log_file}'
     ]]></command>
     <inputs>
         <param format="csv,tabular" name="file_in" type="data" label="Input File" />
@@ -81,9 +81,13 @@
         </conditional>
     </inputs>
     <outputs>
-        <data format="html" name="log_file" label="Summary_statistics._log" />
-        <data format="tabular" name="table_file" label="Summary_statistics_report.tsv" />
-        <data format="pdf" name="graph_file" label="Summary_statistics_report.pdf" />
+        <data format="html" name="log_file" label="Summary_statistics_log" />
+        <data format="tabular" name="table_file" label="Summary_statistics_report.tsv" >
+            <filter>(stat_cond['stat'] == 'T')</filter>
+        </data>
+        <data format="pdf" name="graph_file" label="Summary_statistics_report.pdf" >
+            <filter>(ploting_cond['ploting'] == 'T')</filter>
+        </data>
     </outputs>
     <help><![CDATA[
 

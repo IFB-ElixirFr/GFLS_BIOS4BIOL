@@ -118,6 +118,8 @@ Dataset <- tab_in
 ##########################################################
 # Statistics table computation - - - - - - - - -
 
+log=""
+
 if(stat=="T" & length(chosen.stat)!=0){
   
   stat.list <- strsplit(chosen.stat,",")[[1]]
@@ -157,9 +159,13 @@ if(stat=="T" & length(chosen.stat)!=0){
   }
   
   write.table(stat.res,table_file,col.names=FALSE,sep="\t",quote=FALSE)
-  
-} # end if(stat)
 
+  log=paste(log,"&#10132; You choose to compute :",chosen.stat,"<BR>")
+ 
+} # end if(stat)
+else{
+  log=paste(log,"&#10132; You don't choose any stats<BR>")
+}
 
 ##########################################################
 # Graphics generation - - - - - - - - - - - - - 
@@ -235,13 +241,19 @@ if(ploting=="T" & length(chosen.plot)!=0){
   #Close pdf device
   dev.off()
   
+  log=paste(log,"&#10132; You choose to plot :",chosen.plot,"<BR>")
 } # end if(ploting)
+else{
+  log=paste(log,"&#10132; You don't choose any plot<BR>")
+}
+
 
 
 ##########################################################
 # Treatment successfull
 ##########################################################
 cat("<HTML><HEAD><TITLE>Summary statistics report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+cat(log,file=log_file,append=T,sep="")
 cat("&#10003; Your process is successfull!<BR>",file=log_file,append=T,sep="")
 cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
 

@@ -27,34 +27,34 @@
     </stdio>
     <command interpreter="Rscript"><![CDATA[
         h_clust_galaxy.R
-        input_file "$input_file"
-        #if $conditional.selector =="YES":
-          group_member_file "$conditional.group_member_file"
+        input_file '${input_file}'
+        #if $conditional.selector == "YES":
+          group_member_file '${conditional.group_member_file}'
         #else
-          group_member_file "$conditional.selector"
+          group_member_file '${conditional.selector}'
         #end if
-        output_file "$output_file"
-        log_file "$log_file"
-        distance_method "$distance_method"
-        agglomeration_method "$agglomeration_method"
-        column_clustering "$sample_clustering"
-        select "$select"
-        plot_title "$plot_title"
-        xlab "$xlab"
-        ylab "$ylab"  
-        #if $moreoption.more =="YES":
-          width "$moreoption.width"
-          height "$moreoption.height"
-          ppi "$moreoption.ppi"
-          format_image_out "$moreoption.format_image_out"
+        output_file '${output_file}'
+        log_file '${log_file}'
+        distance_method '${distance_method}'
+        agglomeration_method '${agglomeration_method}'
+        column_clustering '${sample_clustering}'
+        select '${select}'
+        plot_title '${plot_title}'
+        xlab '${xlab}'
+        ylab '${ylab}'
+        #if $moreoption.more == "YES":
+          width '${moreoption.width}'
+          height '${moreoption.height}'
+          ppi '${moreoption.ppi}'
+          format_image_out '${moreoption.format_image_out}'
         #end if
-        #if $moreoption.more =="NO":
+        #if $moreoption.more == "NO":
           width "7"
           height "7"
           ppi "300"
           format_image_out "png"
         #end if
-        na_encoding "$NA_code"
+        na_encoding '${NA_code}'
     ]]></command>
     <inputs>
         <param format="csv,tabular" name="input_file" type="data" label="Input file" help="Data file on which clustering will be performed" />
@@ -76,9 +76,9 @@
         </param>
         <param name="agglomeration_method" type="select" label="The agglomeration method to be used (one choice mandatory)">
             <option value="ward">ward</option>            <option value="single">single</option><option value="complete">complete</option><option value="average">average</option><validator type="empty_field" message="Please choose, at least, one agglomeration method to be used." /></param>
-        <param name="sample_clustering" type="select" label="Clustering is performed on the columns" help="If 'No': clustering is performed on the line">
-            <option value="TRUE">Yes</option>
-            <option value="FALSE">No</option>
+        <param name="sample_clustering" type="select" label="Clustering is performed on:" help="(default columns)">
+            <option value="TRUE">Columns</option>
+            <option value="FALSE">Lines</option>
         </param>
         <param name="select" size="20" type="text" value="NULL" label="Number of top elements to use for clustering, selected by highest row variance. If NULL all the elements will be used" />
         <param name="NA_code" size="30" type="text" value="NA" label="Label used for Missing values" />

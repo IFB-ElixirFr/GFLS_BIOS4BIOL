@@ -263,6 +263,7 @@ write.table(file=output_file,tab_out,sep="\t",row.names=F,quote=F)
 # Treatment successfull
 ##########################################################
 cat("<HTML><HEAD><TITLE>Normalization report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+cat(paste("&#10132; You choose to apply the transformation method :",transformation_method,"<BR>"),file=log_file,append=F,sep="")
 cat("&#10003; Your normalization process is successfull !<BR>",file=log_file,append=T,sep="")
 cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
 
