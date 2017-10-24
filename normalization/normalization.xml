@@ -56,6 +56,16 @@
         <data name="log_file" format="html" label="Normalization_log"/>
         <data name="output_file" format_source="input_file" label="Transfo-${transformation_method.value}_${input_file.name}"/>
     </outputs>
+    <tests>
+        <test>
+            <param name="input_file" value="decathlon.tsv"/>
+            <param name="transformation_method" value="log"/>
+            <param name="na_encoding" value="NA"/>
+            <param name="variable_in_line" value="0"/>
+            <output name="log_file" file="log_file"/>
+            <output name="output_file" file="output_file"/>
+        </test>
+    </tests>
     <help><![CDATA[
 
 =========
@@ -191,7 +201,7 @@ Total sum scaling+Log ratio normalization (TSS+CLR)
 
 **Authors**: Luc Jouneau (luc.jouneau@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr) 
 
-Contact : sigenae-support@listes.inra.fr
+Contact : support.sigenae@inra.fr
 
 E-learning available : Not yet.
 
@@ -205,8 +215,8 @@ Please cite :
     
 Acknowledgements
         | We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Luc Jouneau, Sarah Maman
-        | Re-packaging was provided by Valentin Marcon from the INRA Migale platform (http://migale.jouy.inra.fr/), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
-        |
+        | Re-packaging was provided by Valentin Marcon (INRA, Migale platform http://migale.jouy.inra.fr), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+        |  
    
 References
         | SIGENAE [http://www.sigenae.org/]

@@ -89,6 +89,23 @@
             <filter>(ploting_cond['ploting'] == 'T')</filter>
         </data>
     </outputs>
+    <tests>
+        <test>
+            <param name="file_in" value="decathlon.tsv"/>
+            <param name="Na_code" value="NA"/>
+            <conditional name="stat_cond">
+                <param name="stat" value="T"/>
+                <param name="stat_chosen" value="mean,sd,variance,median,quartile,decile"/>
+            </conditional>
+            <conditional name="ploting_cond">
+                <param name="ploting" value="T"/>
+                <param name="plot_chosen" value="boxplot,histogram,density,pairsplot,MAplot"/>
+            </conditional>
+            <output name="log_file" file="log_file"/>
+            <output name="table_file" file="table_file"/>
+            <output name="graph_file" file="graph_file" compare="sim_size"/>
+        </test>
+    </tests>
     <help><![CDATA[
 
 ==================
@@ -221,7 +238,7 @@ Summary_statistics_log
 
 **Authors** Luc Jouneau (luc.jouneau@inra.fr), Mélanie Pétéra (melanie.petera@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr)
 
-Contact : sigenae-support@listes.inra.fr
+Contact : support.sigenae@inra.fr
 
 E-learning available : Not yet.
 
@@ -241,8 +258,9 @@ Please cite :
     
 Acknowledgements
         | We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Mélanie Pétéra, Sarah Maman, Luc Jouneau
-        | Re-packaging was provided by Valentin Marcon from the INRA Migale platform (http://migale.jouy.inra.fr/), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
-    
+        | Re-packaging was provided by Valentin Marcon (INRA, Migale platform http://migale.jouy.inra.fr), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+        |   
+ 
 References
         | SIGENAE [http://www.sigenae.org/]
 

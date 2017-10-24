@@ -87,8 +87,8 @@
         varinline '${varinline}'
 
         ## Outputs
-        logOut '${logOut}'
-        outgraphpdf '${outgraphpdf}'
+        logOut '${log_file}'
+        outgraphpdf '${output_file}'
     ]]></command>
     <inputs>
         <param name="datafile" type="data" label="Data matrix" help="Precise below if the variable are in line or column" format="tabular,csv" />
@@ -160,9 +160,24 @@
         </param>
     </inputs>
     <outputs>
-        <data name="logOut" format="html" label="${tool.name}_log" />
-        <data name="outgraphpdf" label="${tool.name}_graph" format="pdf" />
+        <data name="log_file" format="html" label="${tool.name}_log" />
+        <data name="output_file" label="${tool.name}_graph" format="pdf" />
     </outputs>
+    <tests>
+        <test>
+            <param name="datafile" value="decathlon.tsv"/>
+            <param name="npc" value="2"/>
+            <conditional name="condPlot">
+                <param name="plotOptions" value="no"/>
+            </conditional>
+            <conditional name="condGraphical">
+                <param name="graphicalOptions" value="no"/>
+            </conditional>
+            <param name="varinline" value="no"/>
+            <output name="log_file" file="log_file"/>
+            <output name="output_file" file="output_file" compare="sim_size"/>
+        </test>
+    </tests>
     <help><![CDATA[
 	
 ===
@@ -278,7 +293,7 @@ PCAFactoMineR_log
 
 **Authors** Marie Tremblay-Franco (marie.tremblay-franco@inra.fr), Jean-Francois Martin (jean-francois.martin@inra.fr), Sandrine Laguerre (laguerre@insa-toulouse.fr) and Valentin Marcon (valentin.marcon@inra.fr)
 
-Contact : sigenae-support@listes.inra.fr
+Contact : support.sigenae@inra.fr
 
 E-learning available : Not yet.
 
@@ -292,7 +307,7 @@ Please cite :
     
 Acknowledgements
         | We wish to thank the SIGENAE group and the statistical CATI BIOS4Biol group : Marie Tremblay-Franco, Jean-Francois Martin, Sandrine Laguerre.
-        | Re-packaging was provided by Valentin Marcon from the INRA Migale platform (http://migale.jouy.inra.fr/), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+        | Re-packaging was provided by Valentin Marcon (INRA, Migale platform http://migale.jouy.inra.fr), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
         | 
     
 References

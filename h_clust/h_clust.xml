@@ -115,6 +115,27 @@
             </change_format>
         </data>
     </outputs>
+    <tests>
+        <test>
+            <param name="input_file" value="decathlon.tsv"/>
+            <conditional name="conditional">
+                <param name="selector" value="NO"/>
+            </conditional>
+            <param name="distance_method" value="euclidean"/>
+            <param name="agglomeration_method" value="ward"/>
+            <param name="sample_clustering" value="TRUE"/>
+            <param name="select"  value="NULL"/>
+            <param name="NA_code" value="NA"/>
+            <param name="plot_title" value="Title"/>
+            <param name="xlab" value="x axis"/>
+            <param name="ylab" value="y axis"/>
+            <conditional name="moreoption">
+                <param name="more" value="NO"/>
+            </conditional>
+            <output name="log_file" file="log_file"/>
+            <output name="output_file" file="output_file" compare="sim_size"/>
+        </test>
+    </tests>
     <help><![CDATA[
 
 =======================
@@ -217,7 +238,7 @@ Hierarchical_clustering_log
 
 **Authors** Luc Jouneau (luc.jouneau@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr)
 
-Contact :  sigenae-support@listes.inra.fr 
+Contact : support.sigenae@inra.fr 
 
 E-learning available : Not yet.
 
@@ -231,7 +252,7 @@ Please cite :
     
 Acknowledgements
         | We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Ignacio Gonzalez, Sophie Lamarre, Sarah Maman, Luc Jouneau, Christophe Klopp
-        | Re-packaging was provided by Valentin Marcon from the INRA Migale platform (http://migale.jouy.inra.fr/), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+        | Re-packaging was provided by Valentin Marcon (INRA, Migale platform http://migale.jouy.inra.fr), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
         | 
 
 References
