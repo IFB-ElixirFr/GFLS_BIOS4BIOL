@@ -131,9 +131,17 @@ Input files
 | 1 : input file            |   tabular  |
 +---------------------------+------------+
 
+The input table should be a tabulation-separated file. If your dataset is available in your current history but can not be selected via the Input File drop-down list, it may be due to incorrect format.
+Please first check that your data are effectively tabulated. If it is, then you can redefine the Galaxy format of your table into "tabular" editing its attributes ("Datatype" panel) [`See the schematic explanation here`_]. 
+
+
+.. _See the schematic explanation here: https://raw.githubusercontent.com/IFB-ElixirFr/GFLS/master/summary_statistics/static/images/ChangeDatatype.pdf
+
 The first line should be a header (naming columns) and each line must begin with a row name, like the example below: 
 
-.. image:: input_count_file.png
+.. image:: https://raw.githubusercontent.com/IFB-ElixirFr/GFLS/master/summary_statistics/static/images/input_count_file.png
+
+
 
 ----------
 Parameters
@@ -165,7 +173,7 @@ Available statistics and plots
 **Numerical statistical measures provided are the following ones:**
 
 
-.. image:: descriptive_stat_all.png
+.. image:: https://raw.githubusercontent.com/IFB-ElixirFr/GFLS/master/summary_statistics/static/images/descriptive_stat_all.png
         :width: 500
 
 
@@ -175,14 +183,14 @@ Available statistics and plots
 	* boxplot
 
 
-.. image:: descriptive_stat_boxplot.png
+.. image:: https://raw.githubusercontent.com/IFB-ElixirFr/GFLS/master/summary_statistics/static/images/descriptive_stat_boxplot.png
 
 (source : SAS documentation)
 
 	* histogram
 
 
-.. image:: descriptive_stat_histo.png
+.. image:: https://raw.githubusercontent.com/IFB-ElixirFr/GFLS/master/summary_statistics/static/images/descriptive_stat_histo.png
         :width: 285
 
 In this example, about 45 values of the dataset are greater than 0 and lower than 0.5
@@ -190,7 +198,7 @@ In this example, about 45 values of the dataset are greater than 0 and lower tha
 	* density
 
 
-.. image:: descriptive_stat_density.png
+.. image:: https://raw.githubusercontent.com/IFB-ElixirFr/GFLS/master/summary_statistics/static/images/descriptive_stat_density.png
         :width: 275
 
 This option computes kernel density estimates (gaussian smoothing).
@@ -199,7 +207,7 @@ While a histogram displays the observed distribution of a numerical variable, a 
 	* pairsplot
 
 
-.. image:: descriptive_stat_pairs.png
+.. image:: https://raw.githubusercontent.com/IFB-ElixirFr/GFLS/master/summary_statistics/static/images/descriptive_stat_pairs.png
         :width: 475
 
 In this example, we have represented a pairs plot for a table with three columns, named 
@@ -209,7 +217,7 @@ the values of another column scaled on the y axis.
 	* MAplot
 
 
-.. image:: descriptive_stat_maplot.png
+.. image:: https://raw.githubusercontent.com/IFB-ElixirFr/GFLS/master/summary_statistics/static/images/descriptive_stat_maplot.png
         :width: 275
 
 Designed for genomic data (count data - only positive values accepted).
