@@ -16,9 +16,9 @@
 <tool id="pcafactominer" name="PCAFactoMineR" version="1.0.0">
     <description>Realize a PCA analysis using FactoMineR package</description>
     <requirements>
-        <requirement type="package">R</requirement>
+        <requirement type="package" version="1.38" >r-factominer</requirement>
+        <requirement type="package">r-base</requirement>
         <requirement type="package">bioconductor-pcamethods</requirement>
-        <requirement type="package" >r-factominer</requirement>
         <requirement type="package">r-batch</requirement>
     </requirements>
     <stdio>
