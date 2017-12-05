@@ -1,0 +1,4 @@
+categories: [Statistics]
+description: Produce simple descriptive statistics from a numeric table
+name: summary_statistics
+owner: vmarcon

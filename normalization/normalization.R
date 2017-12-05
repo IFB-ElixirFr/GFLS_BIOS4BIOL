@@ -13,7 +13,7 @@
 # Authors : luc.jouneau(at)inra.fr
 #	    valentin.marcon(at)inra.fr
 # Version : 0.9
-# Date    : 10/3/2017
+# Date    : 30/08/2017
 #-----------------------------------------------------------------
 
 normalization=function(
@@ -30,13 +30,13 @@ output_file="out/table_out.txt",
 #Path to file containing messages for user if something bad happens
 log_file="log/normalization_report.html",
 #Boolean flag (0/1) indicating if variables are in line or in columns
-variable_in_line=1) {
+variable_in_line="1") {
 
 ##########################################################
 # Read and verify data
 ##########################################################
 #1°) Checks valids for all modules
-if (variable_in_line==1) {
+if (variable_in_line=="1") {
 	column_use="individual"
 	line_use="variable"
 } else {
@@ -63,11 +63,7 @@ log_error=function(message="") {
 
 tab_in=tryCatch(
 	{
-		tab_in=read.csv(file=input_file,sep="\t",header=T,quote="",na.strings=na_encoding)
-		#column names may have been transformed if they conatin space, begin with a digit, ...
-		first_line=readLines(input_file,n=1)
-		colnames(tab_in)=unlist(strsplit(first_line,"\t"))
-		tab_in
+		tab_in=read.table(file=input_file,sep="\t",header=T,quote="\"",na.strings=na_encoding,check.names=FALSE)
 	},
 	error=function(cond) {
 		log_error(message=cond)
@@ -168,8 +164,8 @@ if (transformation_method %in% c("log","TSS","TSS_CLR","DESeq2","Rlog")) {
 # End of data checks
 ##########################################################
 
-### Transpose if variable are not in line ###
-if (variable_in_line==FALSE) {
+### Transpose if variable are in line ###
+if (variable_in_line=="1") {
 	#Transpose matrix
 	tab=t(tab)
 }
@@ -253,7 +249,7 @@ for (idx_col in 1:ncol(tab)) {
 ##########################################################
 # Prepare and write output table
 ##########################################################
-if (variable_in_line==FALSE) {
+if (variable_in_line=="1") {
 	#Transpose matrix again
 	tab=t(tab)
 }
@@ -267,6 +263,7 @@ write.table(file=output_file,tab_out,sep="\t",row.names=F,quote=F)
 # Treatment successfull
 ##########################################################
 cat("<HTML><HEAD><TITLE>Normalization report</TITLE></HEAD><BODY>\n",file=log_file,append=F,sep="")
+cat(paste("&#10132; You choose to apply the transformation method :",transformation_method,"<BR>"),file=log_file,append=F,sep="")
 cat("&#10003; Your normalization process is successfull !<BR>",file=log_file,append=T,sep="")
 cat("</BODY></HTML>\n",file=log_file,append=T,sep="")
 
@@ -280,6 +277,6 @@ q(save="no",status=0)
 #Used for debug : LJO 6/3/2017
 #normalization()
 #setwd("H:/INRA/cati/groupe stats/Galaxy/normalisation")
-#normalization(transformation_method="Pareto",na_encoding="NA",input_file="datasets/valid - decathlon.txt",output_file="out/table_out.txt",log_file="log/normalization.html",variable_in_line=1)
-#normalization(transformation_method="Pareto",na_encoding="NA",input_file="datasets/invalid - NA for DESeq2_Rlog.txt",output_file="out/table_out.txt",log_file="log/normalization.html",variable_in_line=1)
+#normalization(transformation_method="Standard_score",na_encoding="NA",input_file="datasets/valid - decathlon.txt",output_file="out/table_out.txt",log_file="log/normalization.html",variable_in_line="0")
+#normalization(transformation_method="Pareto",na_encoding="NA",input_file="datasets/valid - decathlon.txt",output_file="out/table_out.txt",log_file="log/normalization.html",variable_in_line="1")
 

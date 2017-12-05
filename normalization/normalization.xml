@@ -1,4 +1,4 @@
-<!--# Copyright (C) 2014 INRA
+<!--# Copyright (C) 2017 INRA
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -12,29 +12,38 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
-<tool id="normalization" name="Normalization" version="0.2.0">
+
+<tool id="normalization" name="Normalization" version="1.0.0">
     <description>Normalize your data with some well known methods</description>
-    <command interpreter="perl">
-    normalization.pl 
-    $input_file
-    $transformation_method
-    $na_encoding
-    $output_file
-    $log_file
-    $variable_in_line
-    </command>
+    <requirements>
+        <requirement type="package">R</requirement>
+        <requirement type="package">bioconductor-deseq2</requirement>
+        <requirement type="package">r-batch</requirement>
+    </requirements>
+    <stdio>
+        <!-- Anything other than zero is an error -->
+        <exit_code range="1:" level="fatal"/>
+        <exit_code range=":-1" level="fatal"/>
+    </stdio>
+    <command interpreter="Rscript"><![CDATA[
+        normalization_galaxy.R
+        input_file '${input_file}'
+        transformation_method '${transformation_method}'
+        na_encoding '${na_encoding}'
+        output_file '${output_file}'
+        log_file '${log_file}'
+        variable_in_line '${variable_in_line}'
+    ]]></command>
     <inputs>                  
-        <param format="tabular,csv,txt" name="input_file" type="data" label="Input count file"/>
+        <param format="tabular,csv" name="input_file" type="data" label="Input file"/>
         <param name="transformation_method" type="select" label="Data transformation method" help="See the complete help below for more details"> 
-            <option value="log">Log</option>
+            <option value="log">Log (binary logarithm)</option>
             <option value="DESeq2">DESeq2 for NGS counts</option>
             <option value="Rlog">RLog (as implemented in DESeq2)</option>
             <option value="Standard_score">Standard score (mean=0;sd=1) </option>
             <option value="Pareto">Pareto (mean=0;sd moderate)</option>
             <option value="TSS">Total sum scaling (TSS)</option>
             <option value="TSS_CLR">Total sum scaling + log ratio (TSS+CLR)</option>
-
-            <!--option value=""></option-->
             <validator type="empty_field" message="Please choose, at least, one data transformation method." />
         </param>                     
         <param name="na_encoding" size="30" type="text" value="NA" label="Label used for Missing values"/> 
@@ -44,102 +53,174 @@
         </param>
     </inputs>
     <outputs>
-        <data name="log_file" format="html" label="Transfo-${transformation_method.value}.log"/>
-        <data name="output_file" format="txt" label="Transfo-${transformation_method.value}_${input_file.name}"/>
+        <data name="log_file" format="html" label="Normalization_log"/>
+        <data name="output_file" format_source="input_file" label="Transfo-${transformation_method.value}_${input_file.name}"/>
     </outputs>
-    <help>
-.. class:: infomark
+    <tests>
+        <test>
+            <param name="input_file" value="decathlon.tsv"/>
+            <param name="transformation_method" value="log"/>
+            <param name="na_encoding" value="NA"/>
+            <param name="variable_in_line" value="0"/>
+            <output name="log_file" file="log_file"/>
+            <output name="output_file" file="output_file"/>
+        </test>
+    </tests>
+    <help><![CDATA[
 
-What it does : Normalize your data with some well known methods
- - It needs a dataset : Tabular file containing a table of value
- - It generates : A new file containing a table of value transformed with the choosen method. A ".log" file showing the right or wrong processing of your data.
+=========
+Normalize
+=========
 
+-----------
+Description
+-----------
 
-* Parameters :
-   - -Input count file : File containg table of values (separator="tab")
-   - -Data transformation method : Possible values : "log", "DESeq2", "Rlog", "Standard_score", "TSS", "TSS_CLR"
-   - -Label used for Missing values : Missing value coding character
-   - -Variable in line or column : Indicate if variables are in lin or in columns
+What it does: 
+ - It normalize your data with some well known methods
 
+------
 
+-----------
+Input files
+-----------
 
-* Advices :
-   - Nature of data may change, depending on the subjects of the experimentation and/or the technology used to measure a signal on these subjects.
-   - By instance, when dealing with RNA-Seq data, expression intensity values are expressed as counts, while with microarray technology, it is expressed as fluorescence intensity.
-
-  
-  Before to conduct any analysis on a table of data, it is important to:
-  
-  - -Identify the nature of data you are dealing with
-  - -Check if this nature of data is adapted to the type of analysis you want to do
-
-  If your nature of data is not adapted to the analysis you plan to do, you should first transform your data in a scale of values which fits better requirement of your analysis.
-  This transformation process is named “normalization”.
-
-  In this Galaxy module, we propose several normalization methods, and we provide some guidelines to help user choose the accurate normalization method:
-
-* -Log normalization
-   - -Objective Homogeneity of variance even if the range of values is pretty large
-   - -Accepted values   Any positive or null real numbers
-   - (null values, will stay null after transformation)
-   - -Range of values   Input : [0;100.000] / Output : [0;17]
-   - -Adapted for       PCA, HC, SS*
-
-* -DESeq2 normalization
-   - -Objective Obtain comparable counts between samples, whatever the difference of their libraries sequencing depth
-   - -Accepted values   NGS counts (positive integers ; no missing values)
-   - (null values, will stay null after transformation)
-   - -Range of values   Input : [0;100.000] / Output : [0; 100.000]
-   - -Adapted for       Differential analysis
++---------------------------+------------+
+| Parameter : num + label   |   Format   |
++===========================+============+
+| 1 : input file            |   tabular  |
++---------------------------+------------+
 
 
-* -RLog normalization
-   - -Objective Similar to a combination of {DESeq2 + Log} transformation
-   - -Accepted values   NGS counts (positive integers ; no missing values)
-   - -Range of values   Input : [0;100.000] / Output : [0; 20]
-   - -Adapted for       PCA, HC, SS
+----------
+Parameters
+----------
+
+Data transformation method
+        | Possible values: "log", "DESeq2", "Rlog", "Standard_score", "TSS", "TSS_CLR"
+        | 
+
+Label used for Missing values: 
+        | Missing value coding character 
+        | 
+
+Variable in line or column: 
+        | Indicate if variables are in lin or in columns
+        | 
 
 
-* -Standard score normalization
-   - -Objective Transform values such as {mean=0 and standard deviation=1} for all variables.
-   - -Accepted values   No specific constraint
-   - -Range of values   No specific constraint
-   - -Adapted for       PCA, HC, SS
+------------
+Output files
+------------
 
-* -Pareto normalization
-   - -Objective Transform values such as
-   - {mean=0 and variance equal to its standard deviation instead of unit variance} for all variables.
-   - -Accepted values No specific constraint
-   - -Range of values No specific constraint
-   - -Adapted for metabolite intensity values before PCA, HC, SS
 
-* -Total sum scaling normalization (TSS)
-   - -Objective Normalizes count data by dividing variable read count by the total number of read counts in each individual sample
-   - -Accepted values   16S rRNA amplicon sequencing
-   - -Range of values   Input : no specific constraint / Output : [0;1[
-   - -Adapted for       PCA, HC, SS
+Transfo-<method>_<input file name>
+        | input file normalized according to the choosen method
+        | 
 
-* -Total sum scaling+Log ratio normalization (TSS+CLR)
-   - -Objective Transform values such as {mean=0 and standard deviation=1} for all variables.
-   - -Accepted values   16S rRNA amplicon sequencing
-   - -Range of values   Input : no specific constraint / Output : [0;1[
-   - -Adapted for       PCA, HC, SS
+Normalization_log
+        |
 
-(*)PCA : Principal Component Analysis / HC : Hierarchical clustering / SS : Summary statistics
+-------
+Advices
+-------
 
-::
+Nature of data may change
+        | Depending on the subjects of the experimentation and/or the technology used to measure a signal on these subjects.
+        | By instance, when dealing with RNA-Seq data, expression intensity values are expressed as counts, while with microarray technology, it is expressed as fluorescence intensity.
+        |  
 
----
+Before to conduct any analysis on a table of data, it is important to:
+        | Identify the nature of data you are dealing with
+        | Check if this nature of data is adapted to the type of analysis you want to do
 
-Version Galaxy Tool : V1.0
+If your nature of data is not adapted to the analysis you plan to do, you should first transform your data in a scale of values which fits better requirement of your analysis.
+This transformation process is named “normalization”.
 
----
 
-Contacts : sigenae-support@listes.inra.fr
+---------------------
+Normalization Methods
+---------------------
+
+In this Galaxy module, we propose several normalization methods, and we provide some guidelines to help user choose the accurate normalization method:
+
+Log normalization
+        |  -Objective: Binary logarithm provide homogeneity of variance even if the range of values is pretty large
+        |  -Accepted: values   Any positive or null real numbers
+        |  (null values, will stay null after transformation)
+        |  -Range of values:   Input: [0;100.000] / Output: [0;17]
+        |  -Adapted for:       PCA, HC, SS*
+        | 
+
+DESeq2 normalization
+        |  -Objective: Obtain comparable counts between samples, whatever the difference of their libraries sequencing depth
+        |  -Accepted values:   NGS counts (positive integers ; no missing values)
+        |  (null values, will stay null after transformation)
+        |  -Range of values:   Input: [0;100.000] / Output: [0; 100.000]
+        |  -Adapted for:       Differential analysis
+        | 
+
+RLog normalization
+        |  -Objective: Similar to a combination of {DESeq2 + Log} transformation
+        |  -Accepted values:   NGS counts (positive integers ; no missing values)
+        |  -Range of values:   Input: [0;100.000] / Output: [0; 20]
+        |  -Adapted for:       PCA, HC, SS
+        | 
+
+Standard score normalization
+        |  -Objective: Transform values such as {mean=0 and standard deviation=1} for all variables.
+        |  -Accepted values:   No specific constraint
+        |  -Range of values:   No specific constraint
+        |  -Adapted for:       PCA, HC, SS
+        | 
+
+Pareto normalization
+        |  -Objective: Transform values such as
+        |  {mean=0 and variance equal to its standard deviation instead of unit variance} for all variables.
+        |  -Accepted values: No specific constraint
+        |  -Range of values: No specific constraint
+        |  -Adapted for: metabolite intensity values before PCA, HC, SS
+        | 
+
+Total sum scaling normalization (TSS)
+        |  -Objective: Normalizes count data by dividing variable read count by the total number of read counts in each individual sample
+        |  -Accepted values:   16S rRNA amplicon sequencing
+        |  -Range of values:   Input: no specific constraint / Output: [0;1[
+        |  -Adapted for:       PCA, HC, SS
+        | 
+
+Total sum scaling+Log ratio normalization (TSS+CLR)
+        |  -Objective: Transform values such as {mean=0 and standard deviation=1} for all variables.
+        |  -Accepted values:   16S rRNA amplicon sequencing
+        |  -Range of values:   Input: no specific constraint / Output: [0;1[
+        |  -Adapted for:       PCA, HC, SS
+
+(*)PCA: Principal Component Analysis / HC: Hierarchical Clustering / SS: Summary Statistics
+
+------
+
+**Authors**: Luc Jouneau (luc.jouneau@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr) 
+
+Contact : support.sigenae@inra.fr
 
 E-learning available : Not yet.
 
-Authors : Luc Jouneau (luc.jouneau@inra.fr), Valentin Marcon (valentin.marcon@inra.fr), Sarah Maman (sarah.maman@inra.fr)
+.. class:: infomark
 
-    </help>
+-------------
+Please cite :
+-------------
+
+- (Depending on the help provided you can cite us in acknowledgements, references or both.)
+    
+Acknowledgements
+        | We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Luc Jouneau, Sarah Maman
+        | Re-packaging was provided by Valentin Marcon (INRA, Migale platform http://migale.jouy.inra.fr), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+        |  
+   
+References
+        | SIGENAE [http://www.sigenae.org/]
+        |
+
+    ]]></help>
 </tool>

@@ -1,4 +1,4 @@
-<!--# Copyright (C) 2014 INRA
+<!--# Copyright (C) 2017 INRA
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -12,49 +12,62 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see http://www.gnu.org/licenses/.
 #-->
-<tool id="h_clust" name="Hierarchical clustering">
-    <description>(documentation available)</description>
-    <command interpreter="perl">h_clust.pl
-    $count_file
-    #if $conditional.selector =="YES":
-          $conditional.group_member_file
-    #else
-          $conditional.selector  
-    #end if
-    $output_file
-    $log_file
-    $distance_method
-    $agglomeration_method
-    $sample_clustering
-    "$select"
-    "$plot_title"
-    "$xlab"
-    "$ylab"
-    #if $moreoption.more =="YES":
-          $moreoption.width
-          $moreoption.height
-          $moreoption.ppi
-    #end if      
-    #if $moreoption.more =="NO":
-          "7"
-          "7"
-          "300"
-    #end if
-    $NA_code
 
-    </command>
-    <inputs>                  
-        <param format="csv, txt" name="count_file" type="data" label="Data file on which clustering will be performed"/>
+<tool id="h_clust" name="Hierarchical clustering" version="1.0.0">
+    <description>Generate hierarchical cluster analysis on a numeric data table</description>
+    <requirements>
+        <requirement type="package">R</requirement>
+        <requirement type="package">r-rcolorbrewer</requirement>
+        <requirement type="package">r-batch</requirement>
+    </requirements>
+    <stdio>
+        <!-- Anything other than zero is an error -->
+        <exit_code range="1:" level="fatal"/>
+        <exit_code range=":-1" level="fatal"/>
+    </stdio>
+    <command interpreter="Rscript"><![CDATA[
+        h_clust_galaxy.R
+        input_file '${input_file}'
+        #if $conditional.selector == "YES":
+          group_member_file '${conditional.group_member_file}'
+        #else
+          group_member_file '${conditional.selector}'
+        #end if
+        output_file '${output_file}'
+        log_file '${log_file}'
+        distance_method '${distance_method}'
+        agglomeration_method '${agglomeration_method}'
+        column_clustering '${sample_clustering}'
+        select '${select}'
+        plot_title '${plot_title}'
+        xlab '${xlab}'
+        ylab '${ylab}'
+        #if $moreoption.more == "YES":
+          width '${moreoption.width}'
+          height '${moreoption.height}'
+          ppi '${moreoption.ppi}'
+          format_image_out '${moreoption.format_image_out}'
+        #end if
+        #if $moreoption.more == "NO":
+          width "7"
+          height "7"
+          ppi "300"
+          format_image_out "png"
+        #end if
+        na_encoding '${NA_code}'
+    ]]></command>
+    <inputs>
+        <param format="csv,tabular" name="input_file" type="data" label="Input file" help="Data file on which clustering will be performed" />
         <conditional name="conditional">
             <param name="selector" type="select" label="Do you have an input variable/individual group member file ?">
                 <option value="NO">No</option>
                 <option value="YES">Yes</option>
             </param>
             <when value="YES">
-                <param format="csv, txt" name="group_member_file" type="data" label="Input variable/individual group member file"/>  <!-- optionnal -->
+                <param format="csv, txt" name="group_member_file" type="data" label="Input variable/individual group member file" />
             </when>
             <when value="NO" />
-        </conditional>                     
+        </conditional>
         <param name="distance_method" type="select" label="The distance measure to be used (one choice mandatory)">
             <option value="euclidean">euclidean</option>
             <option value="correlation">correlation</option>
@@ -62,103 +75,203 @@
             <validator type="empty_field" message="Please choose, at least, one distance measure to be used." />
         </param>
         <param name="agglomeration_method" type="select" label="The agglomeration method to be used (one choice mandatory)">
-            <option value="ward">ward</option>
-            <option value="single">single</option>
-            <option value="complete">complete</option>
-            <option value="average">average</option>
-            <validator type="empty_field" message="Please choose, at least, one agglomeration method to be used." />
+            <option value="ward">ward</option>            <option value="single">single</option><option value="complete">complete</option><option value="average">average</option><validator type="empty_field" message="Please choose, at least, one agglomeration method to be used." /></param>
+        <param name="sample_clustering" type="select" label="Clustering is performed on:" help="(default columns)">
+            <option value="TRUE">Columns</option>
+            <option value="FALSE">Lines</option>
         </param>
-        <param name="sample_clustering" type="select" label="Clustering is performed on the columns">
-            <option value="TRUE">Yes</option> <!-- member.csv -->
-            <option value="FALSE">No</option>
-        </param> 
-        <param name="select" size="20" type="text" value="NULL"  label="Number of top elements to use for clustering, selected by highest row variance. If NULL all the elements will be used" />
-        <param name="NA_code" size="30" type="text" value="NA" label="Label used for Missing values"/>
-        <param name="plot_title" size="20" type="text" value="Title"  label="An overall title for the plot" />
-        <param name="xlab" size="20" type="text" value="x axis"  label="A title for the x axis" /> 
-        <param name="ylab" size="20" type="text" value="y axis"  label="A title for the y axis" />
+        <param name="select" size="20" type="text" value="NULL" label="Number of top elements to use for clustering, selected by highest row variance. If NULL all the elements will be used" />
+        <param name="NA_code" size="30" type="text" value="NA" label="Label used for Missing values" />
+        <param name="plot_title" size="20" type="text" value="Title" label="An overall title for the plot" />
+        <param name="xlab" size="20" type="text" value="x axis" label="A title for the x axis" />
+        <param name="ylab" size="20" type="text" value="y axis" label="A title for the y axis" />
         <conditional name="moreoption">
             <param name="more" type="select" label="Would you like to parameter more  graphic option">
                 <option value="NO">No</option>
                 <option value="YES">Yes</option>
             </param>
             <when value="YES">
-                <param name="width" size="20" type="integer" value="7"  label="The width of the graphics region in inches" />
-                <param name="height" size="20" type="integer" value="7"  label="The height of the graphics region in inches" />
-                <param name="ppi" size="20" type="integer" value="300"  label="The nominal resolution in ppi" />
+                <param name="width" size="20" type="integer" value="7" label="The width of the graphics region in inches" />
+                <param name="height" size="20" type="integer" value="7" label="The height of the graphics region in inches" />
+                <param name="ppi" size="20" type="integer" value="300" label="The nominal resolution in ppi" />
+                <param name="format_image_out" type="select" label="Graphic format of the output file">
+                    <option value="png">png</option>
+                    <option value="jpeg">jpeg</option>
+                    <option value="tiff">tiff</option>
+                    <option value="pdf">pdf</option>
+                    <validator type="empty_field" message="Please choose one output format." />
+                </param>
             </when>
             <when value="NO" />
-        </conditional> 
-        </inputs>
-        <outputs>
-            <data name="log_file" format="html" label="Hierarchical_clustering.log"/>
-            <data name="output_file" format="html" label ="Hierarchical_clustering.report"/> 
-        </outputs>
-    <help>
+        </conditional>
+    </inputs>
+    <outputs>
+        <data name="log_file" format="html" label="Hierarchical_clustering_log" />
+        <data name="output_file" format="png" label="Hierarchical_clustering_report">
+            <change_format>
+                <when input="moreoption['format_image_out']" value="jpeg" format="jpg" />
+                <when input="moreoption['format_image_out']" value="tiff" format="tiff" />
+                <when input="moreoption['format_image_out']" value="pdf" format="pdf" />
+            </change_format>
+        </data>
+    </outputs>
+    <tests>
+        <test>
+            <param name="input_file" value="decathlon.tsv"/>
+            <conditional name="conditional">
+                <param name="selector" value="NO"/>
+            </conditional>
+            <param name="distance_method" value="euclidean"/>
+            <param name="agglomeration_method" value="ward"/>
+            <param name="sample_clustering" value="TRUE"/>
+            <param name="select"  value="NULL"/>
+            <param name="NA_code" value="NA"/>
+            <param name="plot_title" value="Title"/>
+            <param name="xlab" value="x axis"/>
+            <param name="ylab" value="y axis"/>
+            <conditional name="moreoption">
+                <param name="more" value="NO"/>
+            </conditional>
+            <output name="log_file" file="log_file"/>
+            <output name="output_file" file="output_file" compare="sim_size"/>
+        </test>
+    </tests>
+    <help><![CDATA[
 
-.. class:: infomark
+=======================
+Hierarchical Clustering
+=======================
 
-What it does :  This function allows to generate hierarchical cluster analysis on a numeric data table according to different parameters. 
+-----------
+Description
+-----------
 
-It needs a dataset : the numeric data table and optionally a group member data to set colored labels. 
-It generates a graphic tree from hierarchical clustering. 
- 
-
-.. image:: ./static/images/e_learning_book.png
+What it does :
+ - This function allows to generate hierarchical cluster analysis on a numeric data table according to different parameters. 
 
 Download documentation here :
 http://genoweb.toulouse.inra.fr/~formation/CATIBIOS4BIOL_stats/Learning_clustering_current.pdf
 
+------
 
-Parameters :
+-----------
+Input files
+-----------
 
-Data file: Numeric data table file should be a txt or csv file with tabular as separator. Do you have an input variable/individual group member file ?: if YES the labels are colored. If NO the labels are not colored.
++---------------------------+------------+
+| Parameter : num + label   |   Format   |
++===========================+============+
+| 1 : input file            |   tabular  |
++---------------------------+------------+
 
-Input variable/individual group member file: Input variable/individual group member file should be a tabular file, with only one column which correspond to the condition, group you want to color in the hierarchical clustering. No title to the column (look at the example).
- 
-The distance measure to be used (one choice mandatory): This must be one of "euclidean", "correlation" or "maximum". The distance measure mostly used is "euclidean" and "correlation". 
-The agglomeration method to be used (one choice mandatory): This should be one of "ward", "single", "complete" or "average". The distance measure mostly used is "ward".
+----------
+Parameters
+----------
 
+Do you have an input variable/individual group member file ?
+        | if YES the labels are colored. If NO the labels are not colored.
+        |
 
-Clustering is performed on the columns: if YES clustering is performed on the columns. if NO clustering is performed on the lines.
+Input variable/individual group member file
+        | Input variable/individual group member file should be a tabular file, with only one column which correspond to the condition, group you want to color in the hierarchical clustering. No title to the column (look at the example).
+        |
 
-Number of top elements to use for clustering: Number of columns (or lines) to take into account for the clustering. The top elements will be selected by variance (top 10 elements with the biggest variance). If NULL all the elements will be used to perform clustering. For NGS or microarray data, this allows to perform a clustering on the top n most variables genes.
+The distance measure to be used (one choice mandatory)
+        | This must be one of "euclidean", "correlation" or "maximum". The distance measure mostly used is "euclidean" and "correlation". 
+        |
 
-Label used for Missing values : Missing value coding characters
+The agglomeration method to be used (one choice mandatory)
+        | This should be one of "ward", "single", "complete" or "average". The distance measure mostly used is "ward".
+        |
 
-An overall title for the plot: enter a title for the plot
+Clustering is performed on the columns
+        | if YES clustering is performed on the columns. if NO clustering is performed on the lines.
+        |
 
-A title for the x axis: enter a title for the x axis
+Number of top elements to use for clustering
+        | Number of columns (or lines) to take into account for the clustering. The top elements will be selected by variance (top 10 elements with the biggest variance). If NULL all the elements will be used to perform clustering. For NGS or microarray data, this allows to perform a clustering on the top n most variables genes.
+        |
 
-A title for the y axis: enter a title for the y axis
+Label used for Missing values
+        | Missing value coding characters
+        |
 
-The width of the graphics region in inches: enter a number
+An overall title for the plot
+        | enter a title for the plot
+        |
 
-The height of the graphics region in inches: enter a number
+A title for the x axis
+        | enter a title for the x axis
+        |
 
-The nominal resolution in ppi: enter a number (a higher number means a high resolution which can take times to open)
-       
----
+A title for the y axis
+        | enter a title for the y axis
+        |
 
-Version Galaxy Tool : V1.0
+The width of the graphics region in inches
+        | enter a number
+        |
 
----
+The height of the graphics region in inches
+        | enter a number
+        |
 
-Contacts (noms et emails) : sigenae-support@listes.inra.fr 
+The nominal resolution in ppi
+        | enter a number (a higher number means a high resolution which can take times to open)
+        |
+
+Graphic format of the output file
+        | choose a format between "png", "jpeg", "tiff" and "pdf"
+        |
+
+------------
+Output files
+------------
+
+Hierarchical_clustering_report
+        |
+
+Hierarchical_clustering_log
+        |
+
+------
+
+**Authors** Luc Jouneau (luc.jouneau@inra.fr), Sarah Maman (sarah.maman@inra.fr) and Valentin Marcon (valentin.marcon@inra.fr)
+
+Contact : support.sigenae@inra.fr 
 
 E-learning available : Not yet.
 
+.. class:: infomark
+
+-------------
 Please cite :
+-------------
+
+- (Depending on the help provided you can cite us in acknowledgements, references or both.)
     
-Depending on the help provided you can cite us in acknowledgements, references or both.
-    
-Examples :
 Acknowledgements
-We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Ignacio Gonzalez, Sophie Lamarre, Sarah Maman, Luc Jouneau, Christophe Klopp
-    
+        | We wish to thank SIGENAE group and the statistical CATI BIOS4Biol group : Ignacio Gonzalez, Sophie Lamarre, Sarah Maman, Luc Jouneau, Christophe Klopp
+        | Re-packaging was provided by Valentin Marcon (INRA, Migale platform http://migale.jouy.inra.fr), as part of the IFB project 'Galaxy For Life Science' (http://www.france-bioinformatique.fr/fr)
+        | 
+
 References
-X. SIGENAE [http://www.sigenae.org/]
-Love MI, Huber W and Anders S (2014). “Moderated estimation of fold change and dispersion for RNA-Seq data with DESeq2.”
-bioRxiv. http://dx.doi.org/10.1101/002832, http://dx.doi.org/10.1101/002832.
-    </help>
+        | SIGENAE [http://www.sigenae.org/]
+        |
+ 
+    ]]></help>
+    <citations>
+        <citation type="bibtex">
+        @article {Love002832,
+	author = {Love, Michael I and Huber, Wolfgang and Anders, Simon},
+	title = {Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2},
+	year = {2014},
+	doi = {10.1101/002832},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {In comparative high-throughput sequencing assays, a fundamental task is the analysis of count data, such as read counts per gene in RNA-seq data, for evidence of systematic changes across experimental conditions. Small replicate numbers, discreteness, large dynamic range and the presence of outliers require a suitable statistical approach. We present DESeq2, a method for differential analysis of count data. DESeq2 uses shrinkage estimation for dispersions and fold changes to improve stability and interpretability of the estimates. This enables a more quantitative analysis focused on the strength rather than the mere presence of differential expression and facilitates downstream tasks such as gene ranking and visualization. DESeq2 is available as an R/Bioconductor package.},
+	URL = {https://www.biorxiv.org/content/early/2014/11/17/002832},
+	eprint = {https://www.biorxiv.org/content/early/2014/11/17/002832.full.pdf},
+	journal = {bioRxiv}}
+        </citation>
+    </citations>
 </tool>

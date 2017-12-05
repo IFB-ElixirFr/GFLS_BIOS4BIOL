@@ -1,0 +1,4 @@
+categories: [Statistics]
+description: Realize a PCA analysis using FactoMineR package
+name: pcafactominer
+owner: vmarcon
