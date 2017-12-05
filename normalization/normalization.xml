@@ -37,7 +37,7 @@
     <inputs>                  
         <param format="tabular,csv" name="input_file" type="data" label="Input file"/>
         <param name="transformation_method" type="select" label="Data transformation method" help="See the complete help below for more details"> 
-            <option value="log">Log (decimal logarithm)</option>
+            <option value="log">Log (binary logarithm)</option>
             <option value="DESeq2">DESeq2 for NGS counts</option>
             <option value="Rlog">RLog (as implemented in DESeq2)</option>
             <option value="Standard_score">Standard score (mean=0;sd=1) </option>
@@ -145,7 +145,7 @@ Normalization Methods
 In this Galaxy module, we propose several normalization methods, and we provide some guidelines to help user choose the accurate normalization method:
 
 Log normalization
-        |  -Objective: Decimal logarithm provide homogeneity of variance even if the range of values is pretty large
+        |  -Objective: Binary logarithm provide homogeneity of variance even if the range of values is pretty large
         |  -Accepted: values   Any positive or null real numbers
         |  (null values, will stay null after transformation)
         |  -Range of values:   Input: [0;100.000] / Output: [0;17]
