@@ -22,6 +22,12 @@ All the **R**, **Perl** and **XML** scripts are made by this team.
   - Manager of the GFLS_Stats_Explorer *project : sarah.maman[a]inra.fr*
   - Developper for the GFLS project : *valentin.marcon[a]inra.fr*
 
+- __(:exclamation:UPDATE 05/12/17) Toolshed repository :__
+  - **summary_statistics** : [Test Toolshed (05/12/17)](https://testtoolshed.g2.bx.psu.edu/repository?repository_id=1108a93855a8316d&changeset_revision=4da9d07e7225)
+  - **h_clust** : [Test Toolshed (05/12/17)](https://testtoolshed.g2.bx.psu.edu/repository?repository_id=0d3021e65aabd13b&changeset_revision=663d1783595d)
+  - **pcaFactoMineR** [Test Toolshed (05/12/17)](https://testtoolshed.g2.bx.psu.edu/repository?repository_id=03e370a4163dc21f&changeset_revision=641fe38db118)
+  - **normalization** : [Test Toolshed (05/12/17)](https://testtoolshed.g2.bx.psu.edu/repository?repository_id=5b7283f43927994c&changeset_revision=b9c53156ff72)
+  
 ##  :computer: Dev processus :
 
 To work on this project you need to clone it (html or ssh way)
