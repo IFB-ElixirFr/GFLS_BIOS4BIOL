@@ -18,7 +18,7 @@
     <requirements>
         <requirement type="package">R</requirement>
         <requirement type="package">bioconductor-pcamethods</requirement>
-        <requirement type="package" version="r3.3.1_0">r-factominer</requirement>
+        <requirement type="package" >r-factominer</requirement>
         <requirement type="package">r-batch</requirement>
     </requirements>
     <stdio>

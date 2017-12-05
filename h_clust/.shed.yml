@@ -1,0 +1,4 @@
+categories: [Statistics]
+description: Generate hierarchical cluster analysis on a numeric data table
+name: h_clust
+owner: vmarcon
