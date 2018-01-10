@@ -1,4 +1,4 @@
-# GFLS (Galaxy For Life Science)  :heavy_minus_sign::sparkles::sparkles::four::herb::microscope::heavy_minus_sign:
+# GFLS (Galaxy For Life Science)  :heavy_minus_sign::sparkles::sparkles::four::herb::microscope::heavy_minus_sign: BIOS4BIOL
 
 ##  :bar_chart: GFLS_Stats_Explorer :
 
