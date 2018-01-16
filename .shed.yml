@@ -1,15 +1,25 @@
 owner: "vmarcon"
 homepage_url: "https://github.com/IFB-ElixirFr/GFLS_BIOS4BIOL"
+exclude:
+  - README.md
 categories:
   - "Statistics"
-auto_tool_repositories:
-  name_template: "{{ tool_id }}"
-  description_template: "{{ tool_name }}, stastistical tool from BIOS4BIOL group, made with the help of the GFLS project."
+type: repository_suite_definition
 suite:
-  name: "suite_StatsExplorer_GFLS_1_0"
+  name: "suite_statsexplorer_gfls_1_0"
   description: "A suite of statistical tools designed to make simple exploratory analysis."
-  long_description:
-  > "Normalization : Normalize your data with some well known methods"
-  > "Summary statistics : Produce simple descriptive statistics from a numerical table"
-  > "Hierarchical clustering : Generate hierarchical cluster analysis on a numeric data table"
-  > "PCAFactoMineR : Realize a PCA analysis using FactoMineR package"
+  long_description: |
+    > This suite is made by BIOS4BIOL group, with the help of GFLS project. It contains:
+    > -Normalization : Normalize your data with some well known methods
+    > -Summary statistics : Produce simple descriptive statistics from a numerical table
+    > -Hierarchical clustering : Generate hierarchical cluster analysis on a numeric data table
+    > -PCAFactoMineR : Realize a PCA analysis using FactoMineR package
+  include_repositories:
+  - name: normalization
+    owner: vmarcon
+  - name: summary_statistics
+    owner: vmarcon
+  - name: h_clust
+    owner: vmarcon
+  - name: pcafactominer
+    owner: vmarcon
