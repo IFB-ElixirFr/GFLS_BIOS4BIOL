@@ -76,6 +76,9 @@ Normalize
 Description
 -----------
 
+ - This tool is part of a set of statistical tools made by members of the BIOS4BIOL group ("Normalization", "Summary statistics", "Hierarchical clustering" and "PCAFactoMineR").
+ - Please use this Normalization module before using other modules of the suite.
+
 What it does: 
  - It normalize your data with some well known methods
 
