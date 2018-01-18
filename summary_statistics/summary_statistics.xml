@@ -14,7 +14,7 @@
 #-->
 
 <tool id="summary_statistics" name="Summary statistics" version="1.0.0">
-    <description>Produce simple descriptive statistics from a numeric table</description>
+    <description>Produce simple descriptive statistics from a numerical table</description>
     <requirements>
         <requirement type="package">R</requirement>
         <requirement type="package">bioconductor-edger</requirement>
@@ -116,8 +116,12 @@ Summary statistics
 Description
 -----------
 
+ - This tool is part of a set of statistical tools made by members of the BIOS4BIOL group ("Normalization", "Summary statistics", "Hierarchical clustering" and "PCAFactoMineR").
+ - Please use the Normalization module that come with the suite before using this module.
+
+
 What it does:
- - This program produces simple descriptive statistics from a numeric table. Statistical measures are computed for each column in the table.
+ - This program produces simple descriptive statistics from a numerical table. Statistical measures are computed for each column in the table.
 
 ------
 

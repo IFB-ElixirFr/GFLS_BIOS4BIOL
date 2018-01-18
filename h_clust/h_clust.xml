@@ -146,6 +146,9 @@ Hierarchical Clustering
 Description
 -----------
 
+ - This tool is part of a set of statistical tools made by members of the BIOS4BIOL group ("Normalization", "Summary statistics", "Hierarchical clustering" and "PCAFactoMineR").
+ - Please use the Normalization module that come with the suite before using this module.
+
 What it does :
  - This function allows to generate hierarchical cluster analysis on a numeric data table according to different parameters. 
 
