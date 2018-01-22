@@ -6,27 +6,50 @@ This repository concern the **GFLS_Stats_Explorer** part of the GFLS project.
 It is made in collaboration with the **statistics group of the CATI "BIOS4BIOL"**.
 All the **R**, **Perl** and **XML** scripts are made by this team.
 
-* __There is 3+1 tool on this project :__
-  - **summary_statistics** : This tool produces simple descriptive statistics from a numeric table. Statistical measures are computed for each column in the table. *@contact melanie.petera[a]inra.fr*
-  - **h_clust** : This tool allows to generate hierarchical cluster analysis on a numeric data table according to differents parameters. *@contact luc.jouneau[a]inra.fr*
-  - **pcaFactoMineR** This tool launch a Principal Component Analysis (PCA) as done in the FactoMineR package *@contact laguerre[a]insa-toulouse.fr*
-  - **normalization** : This last one (the +1) was made during the GFLS project after an enhancement discussion of the differents tools with the stats group. It propose the user different normalization method to preprocess data tables (in tabular format). *@contact luc.jouneau[a]inra.fr*
+**[:heavy_exclamation_mark:Last Update]** We improved the wrappers with best practices of Galaxy community.
+The dependencies are managed with Conda. 
+Tools are avaible in the Toolshed (see below).
+Tools are available on some French bioinformatics platform (see below).
 
-* __The aim of the GFLS project is to :__
-  - **Enhance the wrappers** of this tools
+---
+
+* __The aim of the GFLS is to :__
+  - **Enhance the wrappers** of the tools
   - **Package** their dependencies
   - Make them at disposition of everyone into different **instances** (Galaxy servers, Cloud)
 
-- __Other Contacts :__
+* __There is 3+1 tool on this project :__
+  - **summary_statistics** : This tool produces simple descriptive statistics from a numerical table. Statistical measures are computed for each column in the table. *:envelope: @contact melanie.petera[a]inra.fr*
+  - **h_clust** : This tool allows to generate hierarchical cluster analysis on a numeric data table according to differents parameters. *:envelope: @contact luc.jouneau[a]inra.fr*
+  - **pcaFactoMineR** This tool launch a Principal Component Analysis (PCA) as done in the FactoMineR package *:envelope: @contact marie.tremblay-franco[a]inra.fr*
+  - **normalization** : This last one (the +1) was made during the GFLS project after an enhancement discussion of the differents tools with the stats group. It propose the user different normalization method to preprocess data tables (in tabular format). *:envelope: @contact luc.jouneau[a]inra.fr*
+
+---
+
+- __:envelope: Contacts :__
   - Manager of the GFLS project : *olivier.inizan[a]inra.fr*
   - Manager of the GFLS_Stats_Explorer *project : sarah.maman[a]inra.fr*
   - Developper for the GFLS project : *valentin.marcon[a]inra.fr*
 
-- __(:exclamation:UPDATE 05/12/17) Toolshed repository :__
-  - **summary_statistics** : [Test Toolshed (05/12/17)](https://testtoolshed.g2.bx.psu.edu/repository?repository_id=1108a93855a8316d&changeset_revision=4da9d07e7225)
-  - **h_clust** : [Test Toolshed (05/12/17)](https://testtoolshed.g2.bx.psu.edu/repository?repository_id=0d3021e65aabd13b&changeset_revision=663d1783595d)
-  - **pcaFactoMineR** [Test Toolshed (05/12/17)](https://testtoolshed.g2.bx.psu.edu/repository?repository_id=03e370a4163dc21f&changeset_revision=641fe38db118)
-  - **normalization** : [Test Toolshed (05/12/17)](https://testtoolshed.g2.bx.psu.edu/repository?repository_id=5b7283f43927994c&changeset_revision=b9c53156ff72)
+---
+
+- __:open_file_folder: Toolshed repository :__
+  - **Summary Statistics** : [Toolshed](https://toolshed.g2.bx.psu.edu/repository/display_tool?repository_id=a22ecd1d534f115a&render_repository_actions_for=tool_shed&tool_config=%2Fsrv%2Ftoolshed%2Fmain%2Fvar%2Fdata%2Frepos%2F003%2Frepo_3762%2Fsummary_statistics.xml&changeset_revision=46ddb0591d8b)
+  - **Hierarchical Clustering** : [Toolshed](https://toolshed.g2.bx.psu.edu/repository/display_tool?repository_id=130a7f992a413e74&render_repository_actions_for=tool_shed&tool_config=%2Fsrv%2Ftoolshed%2Fmain%2Fvar%2Fdata%2Frepos%2F003%2Frepo_3763%2Fh_clust.xml&changeset_revision=dc678d2c1976)
+  - **PCAFactoMineR** [Toolshed)](https://toolshed.g2.bx.psu.edu/repository/display_tool?repository_id=637293c9fce67224&render_repository_actions_for=tool_shed&tool_config=%2Fsrv%2Ftoolshed%2Fmain%2Fvar%2Fdata%2Frepos%2F003%2Frepo_3764%2FpcaFactoMineR.xml&changeset_revision=7acfb3bdad66)
+  - **Normalization** : [Toolshed](https://toolshed.g2.bx.psu.edu/repository/display_tool?repository_id=94d3cdf711399f29&render_repository_actions_for=tool_shed&tool_config=%2Fsrv%2Ftoolshed%2Fmain%2Fvar%2Fdata%2Frepos%2F003%2Frepo_3761%2Fnormalization.xml&changeset_revision=79f00bc83ecc)
+  
+  - **suite_statsexplorer_gfls_1_0** : [Toolshed](https://toolshed.g2.bx.psu.edu/repository?repository_id=6ef805e21b873090&changeset_revision=e86c42fe824d) (Allow you to install all four tools at a time)
+  
+- __:computer: Instance :__
+  
+  Tools are available on this instances (in the "statistics" category):
+  - **Galaxy Sigenae/Genotool** : [http://sigenae-workbench.toulouse.inra.fr/galaxy/](http://sigenae-workbench.toulouse.inra.fr/galaxy/)
+  - **Galaxy Migale** : [http://migale.jouy.inra.fr/galaxy/](http://migale.jouy.inra.fr/galaxy/)
+  
+---
+
+---
   
 ##  :computer: Dev processus :
 
